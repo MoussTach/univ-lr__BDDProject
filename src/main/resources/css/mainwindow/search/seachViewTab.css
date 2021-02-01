@@ -1,0 +1,25 @@
+/*noinspection CssUnusedSymbol*/
+.jfx-tab-pane {
+    -fx-font-family: "Calibri Light";
+}
+
+/* JFX Tab Pane */
+/*noinspection CssUnusedSymbol*/
+.jfx-tab-pane .headers-region {
+    -fx-background-color: rgb(246, 246, 246);
+}
+
+/*noinspection CssUnusedSymbol*/
+.jfx-tab-pane .tab-header-background {
+    -fx-background-color: rgb(246, 246, 246);
+}
+
+/*noinspection CssUnusedSymbol*/
+.jfx-tab-pane .tab-header-area .jfx-rippler {
+    -jfx-rippler-fill: rgb(222, 222, 222);
+}
+
+/*noinspection CssUnusedSymbol*/
+.jfx-tab-pane .tab-selected-line {
+    -fx-background-color: rgb(255, 0, 7);
+}

@@ -9,10 +9,94 @@
 <?import javafx.scene.layout.StackPane?>
 <?import org.controlsfx.control.StatusBar?>
 
-<BorderPane fx:id="bPaneMainView" minHeight="400.0" minWidth="800.0" stylesheets="@../../../../../css/application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bdd.application.view.mainwindow.MainWindowView">
+<?import com.jfoenix.controls.JFXTabPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.Label?>
+<?import java.net.URL?>
+<BorderPane fx:id="bPaneMainView" minHeight="400.0" minWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bdd.application.view.mainwindow.MainWindowView">
     <top>
         <fx:include source="MenuBarView.fxml" />
     </top>
+    <center>
+        <JFXTabPane fx:id="tabpaneSearch_menu" rotateGraphic="true" side="LEFT" tabMaxHeight="90.0" tabMaxWidth="120.0" tabMinHeight="90.0" tabMinWidth="120.0">
+            <Tab fx:id="tabSearch_tabScheduling">
+                <graphic>
+                    <BorderPane rotate="90.0">
+                        <center>
+                            <ImageView fitHeight="64.0" fitWidth="64.0">
+                                <Image url="@../../../../../img/search/search_Book_64.png" />
+                            </ImageView>
+                        </center>
+                        <bottom>
+                            <Label fx:id="lblSearch_tabScheduling_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="90.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabScheduling_label" textAlignment="CENTER" wrapText="true">
+                                <padding>
+                                    <Insets bottom="5.0" />
+                                </padding>
+                            </Label>
+                        </bottom>
+                    </BorderPane>
+                </graphic>
+                <!-- <fx:include source="section/schedule/Search_Schedule_SectionView.fxml" /> -->
+            </Tab>
+            <Tab fx:id="tabSearch_tabSAV">
+                <graphic>
+                    <BorderPane rotate="90.0">
+                        <center>
+                            <ImageView fitHeight="64.0" fitWidth="64.0">
+                                <Image url="@../../../../../img/search/search_Project_64.png" />
+                            </ImageView>
+                        </center>
+                        <bottom>
+                            <Label fx:id="lblSearch_tabSAV_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabSAV_label" textAlignment="CENTER" wrapText="true">
+                                <padding>
+                                    <Insets bottom="5.0" />
+                                </padding>
+                            </Label>
+                        </bottom>
+                    </BorderPane>
+                </graphic>
+                <!-- <fx:include source="section/sav/Search_SAV_SectionView.fxml" /> -->
+            </Tab>
+            <Tab fx:id="tabSearch_tabCustomer">
+                <graphic>
+                    <BorderPane rotate="90.0">
+                        <center>
+                            <ImageView fitHeight="52.0" fitWidth="52.0">
+                                <Image url="@../../../../../img/search/search_Person_64.png" />
+                            </ImageView>
+                        </center>
+                        <bottom>
+                            <Label fx:id="lblSearch_tabCustomer_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabCustomer_label" textAlignment="CENTER" wrapText="true">
+                                <padding>
+                                    <Insets bottom="5.0" />
+                                </padding>
+                            </Label>
+                        </bottom>
+                    </BorderPane>
+                </graphic>
+                <!-- <fx:include source="section/customer/Search_Customer_SectionView.fxml" /> -->
+            </Tab>
+            <Tab fx:id="tabSearch_tabMachine">
+                <graphic>
+                    <BorderPane rotate="90.0">
+                        <center>
+                            <ImageView fitHeight="52.0" fitWidth="52.0">
+                                <Image url="@../../../../../img/search/search_Publication_64.png" />
+                            </ImageView>
+                        </center>
+                        <bottom>
+                            <Label fx:id="lblSearch_tabMachine_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabMachine_label" textAlignment="CENTER" wrapText="true">
+                                <padding>
+                                    <Insets bottom="5.0" />
+                                </padding>
+                            </Label>
+                        </bottom>
+                    </BorderPane>
+                </graphic>
+                <!-- <fx:include source="section/machine/Search_Machine_SectionView.fxml" /> -->
+            </Tab>
+        </JFXTabPane>
+    </center>
     <bottom>
         <StatusBar fx:id="statusBarMainView" BorderPane.alignment="CENTER">
             <rightItems>
@@ -34,11 +118,8 @@
             </rightItems>
         </StatusBar>
     </bottom>
-   <center>
-       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
-           <ImageView fitHeight="256.0" fitWidth="256.0" pickOnBounds="true" preserveRatio="true">
-               <Image url="@../../../../../img/logo/Logo_univLR_256.png"/>
-           </ImageView>
-       </StackPane>
-   </center>
+    <stylesheets>
+        <URL value="@../../../../../css/application.css" />
+        <URL value="@../../../../../css/mainwindow/search/seachViewTab.css" />
+    </stylesheets>
 </BorderPane>
