@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class GeneticRelation {
 
-    private final StringProperty document_ID_src = new SimpleStringProperty("n/a");
-    private final StringProperty document_ID_dest = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Document> document_ID_src = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Document> document_ID_dest = new SimpleObjectProperty<>(null);
     private final StringProperty geneticStatus = new SimpleStringProperty("n/a");
 
     /**
@@ -42,18 +42,18 @@ public class GeneticRelation {
     /**
      * Getter for the variable document_ID_src.
      *
-     * @return {@link String} - return the variable document_ID_src.
+     * @return {@link Document} - return the variable document_ID_src.
      */
-    public String getdocument_ID_src() {
+    public Document getdocument_ID_src() {
         return document_ID_src.get();
     }
 
     /**
      * Getter for the variable document_ID_dest.
      *
-     * @return {@link String} - return the variable document_ID_dest.
+     * @return {@link Document} - return the variable document_ID_dest.
      */
-    public String getdocument_ID_dest() {
+    public Document getdocument_ID_dest() {
         return document_ID_dest.get();
     }
 
@@ -69,10 +69,10 @@ public class GeneticRelation {
     /**
      * Setter for the variable document_ID_src.
      *
-     * @param document_ID_src - {@link String} - index of the GeneticRelation class.
+     * @param document_ID_src - {@link Document} - index of the GeneticRelation class.
      * @return - {@link GeneticRelation} - builder pattern return
      */
-    public GeneticRelation setdocument_ID_src(String document_ID_src) {
+    public GeneticRelation setdocument_ID_src(Document document_ID_src) {
         this.document_ID_src.set(document_ID_src);
         return this;
     }
@@ -80,10 +80,10 @@ public class GeneticRelation {
     /**
      * Setter for the variable document_ID_dest.
      *
-     * @param document_ID_dest - {@link String} - document_ID_dest of this class.
+     * @param document_ID_dest - {@link Document} - document_ID_dest of this class.
      * @return - {@link GeneticRelation} - builder pattern return
      */
-    public GeneticRelation setdocument_ID_dest(String document_ID_dest) {
+    public GeneticRelation setdocument_ID_dest(Document document_ID_dest) {
         this.document_ID_dest.set(document_ID_dest);
         return this;
     }
@@ -104,9 +104,9 @@ public class GeneticRelation {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID_src.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID_src.
      */
-    public StringProperty document_ID_srcProperty() {
+    public ObjectProperty<Document> document_ID_srcProperty() {
         return document_ID_src;
     }
 
@@ -115,9 +115,9 @@ public class GeneticRelation {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID_dest.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID_dest.
      */
-    public StringProperty document_ID_destProperty() {
+    public ObjectProperty<Document> document_ID_destProperty() {
         return document_ID_dest;
     }
 

@@ -10,8 +10,8 @@ import javafx.beans.property.*;
  */
 public class Document_Language {
 
-    private final StringProperty document_ID = new SimpleStringProperty("n/a");
-    private final StringProperty language_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Language> language_ID = new SimpleObjectProperty<>(null);
     private final StringProperty title = new SimpleStringProperty("n/a");
     private final StringProperty subTitle = new SimpleStringProperty("n/a");
     private final StringProperty subject = new SimpleStringProperty("n/a");
@@ -50,18 +50,18 @@ public class Document_Language {
     /**
      * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable document_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getdocument_ID() {
+    public Document getdocument_ID() {
         return document_ID.get();
     }
 
     /**
      * Getter for the variable language_ID.
      *
-     * @return {@link String} - return the variable language_ID.
+     * @return {@link Language} - return the variable language_ID.
      */
-    public String getlanguage_ID() {
+    public Language getlanguage_ID() {
         return language_ID.get();
     }
 
@@ -122,10 +122,10 @@ public class Document_Language {
     /**
      * Setter for the variable document_ID.
      *
-     * @param document_ID - {@link String} - index of the Document_Language class.
+     * @param document_ID - {@link Document} - index of the Document_Language class.
      * @return - {@link Document_Language} - builder pattern return
      */
-    public Document_Language setdocument_ID(String document_ID) {
+    public Document_Language setdocument_ID(Document document_ID) {
         this.document_ID.set(document_ID);
         return this;
     }
@@ -133,10 +133,10 @@ public class Document_Language {
     /**
      * Setter for the variable language_ID.
      *
-     * @param language_ID - {@link String} - language_ID of this class.
+     * @param language_ID - {@link Language} - language_ID of this class.
      * @return - {@link Document_Language} - builder pattern return
      */
-    public Document_Language setlanguage_ID(String language_ID) {
+    public Document_Language setlanguage_ID(Language language_ID) {
         this.language_ID.set(language_ID);
         return this;
     }
@@ -212,9 +212,9 @@ public class Document_Language {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty document_IDProperty() {
+    public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
     }
 
@@ -223,9 +223,9 @@ public class Document_Language {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable language_ID.
+     * @return {@link ObjectProperty<Language>} - return the property of the variable language_ID.
      */
-    public StringProperty language_IDProperty() {
+    public ObjectProperty<Language> language_IDProperty() {
         return language_ID;
     }
 

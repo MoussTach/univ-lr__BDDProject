@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.jobclass;
 
 import javafx.beans.property.*;
 
+
 /**
  * Job class.
  * Client on the database (getted with the Sage database throught a ODBC).
@@ -10,8 +11,8 @@ import javafx.beans.property.*;
  */
 public class AuthTranscipt {
 
-    private final StringProperty document_ID = new SimpleStringProperty("n/a");
-    private final IntegerProperty person_ID = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
 
     /**
      * Default Constructor
@@ -38,28 +39,28 @@ public class AuthTranscipt {
     /**
      * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable document_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getdocument_ID() {
+    public Document getdocument_ID() {
         return document_ID.get();
     }
 
     /**
      * Getter for the variable person_ID.
      *
-     * @return {@link Integer} - return the variable person_ID.
+     * @return {@link Person} - return the variable person_ID.
      */
-    public Integer getperson_ID() {
+    public Person getperson_ID() {
         return person_ID.get();
     }
 
     /**
      * Setter for the variable document_ID.
      *
-     * @param document_ID - {@link String} - index of the AuthTranscipt class.
+     * @param document_ID - {@link Document} - index of the AuthTranscipt class.
      * @return - {@link AuthTranscipt} - builder pattern return
      */
-    public AuthTranscipt setdocument_ID(String document_ID) {
+    public AuthTranscipt setdocument_ID(Document document_ID) {
         this.document_ID.set(document_ID);
         return this;
     }
@@ -67,10 +68,10 @@ public class AuthTranscipt {
     /**
      * Setter for the variable person_ID.
      *
-     * @param person_ID - {@link Integer} - person_ID of this class.
+     * @param person_ID - {@link Person} - person_ID of this class.
      * @return - {@link AuthTranscipt} - builder pattern return
      */
-    public AuthTranscipt setperson_ID(Integer person_ID) {
+    public AuthTranscipt setperson_ID(Person person_ID) {
         this.person_ID.set(person_ID);
         return this;
     }
@@ -80,9 +81,9 @@ public class AuthTranscipt {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty document_IDProperty() {
+    public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
     }
 
@@ -91,9 +92,9 @@ public class AuthTranscipt {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable person_ID.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable person_ID.
      */
-    public IntegerProperty person_IDProperty() {
+    public ObjectProperty<Person> person_IDProperty() {
         return person_ID;
     }
 

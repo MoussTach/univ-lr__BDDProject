@@ -13,18 +13,18 @@ import java.util.Date;
 public class Document {
 
     private final StringProperty document_ID = new SimpleStringProperty("n/a");
-    private final StringProperty category_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Category> category_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> dateCreation_start = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> dateCreation_end = new SimpleObjectProperty<>(null);
-    private final StringProperty natureOfDoc_ID = new SimpleStringProperty("n/a");
-    private final StringProperty condition_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<NatureOfDoc> natureOfDoc_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Condition> condition_ID = new SimpleObjectProperty<>(null);
     private final StringProperty format = new SimpleStringProperty("n/a");
     private final StringProperty location = new SimpleStringProperty("n/a");
     private final StringProperty geographicLocation = new SimpleStringProperty("n/a");
     private final StringProperty rights = new SimpleStringProperty("n/a");
     private final StringProperty copyright = new SimpleStringProperty("n/a");
     private final StringProperty shippingLocation = new SimpleStringProperty("n/a");
-    private final IntegerProperty Recipient = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Person> Recipient = new SimpleObjectProperty<>(null);
     private final StringProperty representation = new SimpleStringProperty("n/a");
     private final StringProperty otherRelatedResources = new SimpleStringProperty("n/a");
 
@@ -75,9 +75,9 @@ public class Document {
     /**
      * Getter for the variable category_ID.
      *
-     * @return {@link String} - return the variable category_ID.
+     * @return {@link Category} - return the variable category_ID.
      */
-    public String getcategory_ID() {
+    public Category getcategory_ID() {
         return category_ID.get();
     }
 
@@ -102,18 +102,18 @@ public class Document {
     /**
      * Getter for the variable natureOfDoc_ID.
      *
-     * @return String - return the variable natureOfDoc_ID.
+     * @return {@link NatureOfDoc} - return the variable natureOfDoc_ID.
      */
-    public String getnatureOfDoc_ID() {
+    public NatureOfDoc getnatureOfDoc_ID() {
         return natureOfDoc_ID.get();
     }
 
     /**
      * Getter for the variable condition_ID.
      *
-     * @return {@link String} - return the variable condition_ID.
+     * @return {@link Condition} - return the variable condition_ID.
      */
-    public String getcondition_ID() {
+    public Condition getcondition_ID() {
         return condition_ID.get();
     }
 
@@ -174,9 +174,9 @@ public class Document {
     /**
      * Getter for the variable Recipient.
      *
-     * @return {@link Integer} - return the variable Recipient.
+     * @return {@link Person} - return the variable Recipient.
      */
-    public Integer getRecipient() {
+    public Person getRecipient() {
         return Recipient.get();
     }
 
@@ -214,10 +214,10 @@ public class Document {
     /**
      * Setter for the variable category_ID.
      *
-     * @param category_ID - {@link String} - category_ID of this class.
+     * @param category_ID - {@link Category} - category_ID of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setcategory_ID(String category_ID) {
+    public Document setcategory_ID(Category category_ID) {
         this.category_ID.set(category_ID);
         return this;
     }
@@ -247,10 +247,10 @@ public class Document {
     /**
      * Setter for the variable natureOfDoc_ID.
      *
-     * @param natureOfDoc_ID - {@link String} - natureOfDoc_ID of this class.
+     * @param natureOfDoc_ID - {@link NatureOfDoc} - natureOfDoc_ID of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setnatureOfDoc_ID(String natureOfDoc_ID) {
+    public Document setnatureOfDoc_ID(NatureOfDoc natureOfDoc_ID) {
         this.natureOfDoc_ID.set(natureOfDoc_ID);
         return this;
     }
@@ -258,10 +258,10 @@ public class Document {
     /**
      * Setter for the variable condition_ID.
      *
-     * @param condition_ID - {@link String} - condition_ID of this class.
+     * @param condition_ID - {@link Condition} - condition_ID of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setcondition_ID(String condition_ID) {
+    public Document setcondition_ID(Condition condition_ID) {
         this.condition_ID.set(condition_ID);
         return this;
     }
@@ -335,10 +335,10 @@ public class Document {
     /**
      * Setter for the variable Recipient.
      *
-     * @param Recipient - {@link Integer} - Recipient of this class.
+     * @param Recipient - {@link Person} - Recipient of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setRecipient(Integer Recipient) {
+    public Document setRecipient(Person Recipient) {
         this.Recipient.set(Recipient);
         return this;
     }
@@ -382,9 +382,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable category_ID.
+     * @return {@link ObjectProperty<Category>} - return the property of the variable category_ID.
      */
-    public StringProperty category_IDProperty() {
+    public ObjectProperty<Category> category_IDProperty() {
         return category_ID;
     }
 
@@ -415,9 +415,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable natureOfDoc_ID.
+     * @return {@link ObjectProperty<NatureOfDoc>} - return the property of the variable natureOfDoc_ID.
      */
-    public StringProperty natureOfDoc_IDProperty() {
+    public ObjectProperty<NatureOfDoc> natureOfDoc_IDProperty() {
         return natureOfDoc_ID;
     }
 
@@ -426,9 +426,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable condition_ID.
+     * @return {@link ObjectProperty<Condition>} - return the property of the variable condition_ID.
      */
-    public StringProperty condition_IDProperty() {
+    public ObjectProperty<Condition> condition_IDProperty() {
         return condition_ID;
     }
 
@@ -503,9 +503,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable Recipient.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable Recipient.
      */
-    public IntegerProperty RecipientProperty() {
+    public ObjectProperty<Person> RecipientProperty() {
         return Recipient;
     }
 

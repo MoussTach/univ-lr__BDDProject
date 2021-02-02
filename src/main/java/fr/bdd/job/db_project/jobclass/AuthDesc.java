@@ -13,8 +13,8 @@ import java.util.Date;
 public class AuthDesc {
 
     private final StringProperty authDesc_ID = new SimpleStringProperty("n/a");
-    private final IntegerProperty person_ID = new SimpleIntegerProperty(0);
-    private final StringProperty language = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Language> language = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> dateNotice = new SimpleObjectProperty<>(null);
 
     /**
@@ -53,18 +53,18 @@ public class AuthDesc {
     /**
      * Getter for the variable person_ID.
      *
-     * @return {@link Integer} - return the variable person_ID.
+     * @return {@link Person} - return the variable person_ID.
      */
-    public Integer getperson_ID() {
+    public Person getperson_ID() {
         return person_ID.get();
     }
 
     /**
      * Getter for the variable language.
      *
-     * @return {@link String} - return the variable language.
+     * @return {@link Language} - return the variable language.
      */
-    public String getlanguage() {
+    public Language getlanguage() {
         return language.get();
     }
 
@@ -91,10 +91,10 @@ public class AuthDesc {
     /**
      * Setter for the variable person_ID.
      *
-     * @param person_ID - {@link Integer} - person_ID of this class.
+     * @param person_ID - {@link Person} - person_ID of this class.
      * @return - {@link AuthDesc} - builder pattern return
      */
-    public AuthDesc setperson_ID(Integer person_ID) {
+    public AuthDesc setperson_ID(Person person_ID) {
         this.person_ID.set(person_ID);
         return this;
     }
@@ -102,10 +102,10 @@ public class AuthDesc {
     /**
      * Setter for the variable language.
      *
-     * @param language - {@link String} - language of this class.
+     * @param language - {@link Language} - language of this class.
      * @return - {@link AuthDesc} - builder pattern return
      */
-    public AuthDesc setlanguage(String language) {
+    public AuthDesc setlanguage(Language language) {
         this.language.set(language);
         return this;
     }
@@ -137,9 +137,9 @@ public class AuthDesc {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable person_ID.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable person_ID.
      */
-    public IntegerProperty person_IDProperty() {
+    public ObjectProperty<Person> person_IDProperty() {
         return person_ID;
     }
 
@@ -148,9 +148,9 @@ public class AuthDesc {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable language.
+     * @return {@link ObjectProperty<Language>} - return the property of the variable language.
      */
-    public StringProperty languageProperty() {
+    public ObjectProperty<Language> languageProperty() {
         return language;
     }
 

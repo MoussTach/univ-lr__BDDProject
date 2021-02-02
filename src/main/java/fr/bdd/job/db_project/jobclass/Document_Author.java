@@ -12,8 +12,8 @@ import java.util.Date;
  */
 public class Document_Author {
 
-    private final StringProperty document_ID = new SimpleStringProperty("n/a");
-    private final IntegerProperty category_ID = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Category> category_ID = new SimpleObjectProperty<>(null);
 
     /**
      * Default Constructor
@@ -40,28 +40,28 @@ public class Document_Author {
     /**
      * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable document_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getdocument_ID() {
+    public Document getdocument_ID() {
         return document_ID.get();
     }
 
     /**
      * Getter for the variable category_ID.
      *
-     * @return {@link Integer} - return the variable category_ID.
+     * @return {@link Category} - return the variable category_ID.
      */
-    public Integer getcategory_ID() {
+    public Category getcategory_ID() {
         return category_ID.get();
     }
 
     /**
      * Setter for the variable document_ID.
      *
-     * @param document_ID - {@link String} - index of the Document_Author class.
+     * @param document_ID - {@link Document} - index of the Document_Author class.
      * @return - {@link Document_Author} - builder pattern return
      */
-    public Document_Author setdocument_ID(String document_ID) {
+    public Document_Author setdocument_ID(Document document_ID) {
         this.document_ID.set(document_ID);
         return this;
     }
@@ -69,10 +69,10 @@ public class Document_Author {
     /**
      * Setter for the variable category_ID.
      *
-     * @param category_ID - {@link Integer} - category_ID of this class.
+     * @param category_ID - {@link Category} - category_ID of this class.
      * @return - {@link Document_Author} - builder pattern return
      */
-    public Document_Author setcategory_ID(Integer category_ID) {
+    public Document_Author setcategory_ID(Category category_ID) {
         this.category_ID.set(category_ID);
         return this;
     }
@@ -82,9 +82,9 @@ public class Document_Author {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty document_IDProperty() {
+    public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
     }
 
@@ -93,9 +93,9 @@ public class Document_Author {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable category_ID.
+     * @return {@link ObjectProperty<Category>} - return the property of the variable category_ID.
      */
-    public IntegerProperty category_IDProperty() {
+    public ObjectProperty<Category> category_IDProperty() {
         return category_ID;
     }
 

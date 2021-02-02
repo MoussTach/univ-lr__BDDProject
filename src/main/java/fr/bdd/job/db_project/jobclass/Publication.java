@@ -17,7 +17,7 @@ public class Publication {
     private final StringProperty place = new SimpleStringProperty("n/a");
     private final StringProperty type = new SimpleStringProperty("n/a");
     private final StringProperty periodicity = new SimpleStringProperty("n/a");
-    private final IntegerProperty director = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Person> director = new SimpleObjectProperty<>(null);
     /**
      * Default Constructor
      *
@@ -112,9 +112,9 @@ public class Publication {
     /**
      * Getter for the variable director.
      *
-     * @return {@link Integer} - return the variable director.
+     * @return {@link Person} - return the variable director.
      */
-    public Integer getdirector() {
+    public Person getdirector() {
         return director.get();
     }
 
@@ -198,10 +198,10 @@ public class Publication {
     /**
      * Setter for the variable director.
      *
-     * @param director - {@link Integer} - director of this class.
+     * @param director - {@link Person} - director of this class.
      * @return - {@link Publication} - builder pattern return
      */
-    public Publication setdirector(Integer director) {
+    public Publication setdirector(Person director) {
         this.director.set(director);
         return this;
     }
@@ -288,9 +288,9 @@ public class Publication {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable director.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable director.
      */
-    public IntegerProperty directorProperty() {
+    public ObjectProperty<Person> directorProperty() {
         return director;
     }
 
@@ -301,6 +301,6 @@ public class Publication {
      */
     @Override
     public String toString() {
-        return String.place("%s", publication_ID.get());
+        return String.format("%s", publication_ID.get());
     }
 }

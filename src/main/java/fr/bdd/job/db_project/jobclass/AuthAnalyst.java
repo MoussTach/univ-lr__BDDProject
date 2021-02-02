@@ -13,7 +13,7 @@ import java.util.Date;
 public class AuthAnalyst {
 
     private final StringProperty authAnalyst_ID = new SimpleStringProperty("n/a");
-    private final IntegerProperty person_ID = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> date = new SimpleObjectProperty<>(null);
 
     /**
@@ -51,9 +51,9 @@ public class AuthAnalyst {
     /**
      * Getter for the variable person_ID.
      *
-     * @return {@link Integer} - return the variable person_ID.
+     * @return {@link Person} - return the variable person_ID.
      */
-    public Integer getperson_ID() {
+    public Person getperson_ID() {
         return person_ID.get();
     }
 
@@ -80,10 +80,10 @@ public class AuthAnalyst {
     /**
      * Setter for the variable person_ID.
      *
-     * @param person_ID - {@link Integer} - person_ID of this class.
+     * @param person_ID - {@link Person} - person_ID of this class.
      * @return - {@link AuthAnalyst} - builder pattern return
      */
-    public AuthAnalyst setperson_ID(Integer person_ID) {
+    public AuthAnalyst setperson_ID(Person person_ID) {
         this.person_ID.set(person_ID);
         return this;
     }
@@ -115,9 +115,9 @@ public class AuthAnalyst {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable person_ID.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable person_ID.
      */
-    public IntegerProperty person_IDProperty() {
+    public ObjectProperty<Person> person_IDProperty() {
         return person_ID;
     }
 

@@ -2,6 +2,8 @@ package fr.bdd.job.db_project.jobclass;
 
 import javafx.beans.property.*;
 
+import java.util.Date;
+
 /**
  * Job class.
  * Client on the database (getted with the Sage database throught a ODBC).
@@ -11,8 +13,8 @@ import javafx.beans.property.*;
 public class AAP {
 
     private final IntegerProperty AAP_ID = new SimpleIntegerProperty(0);
-    private final IntegerProperty responsable = new SimpleIntegerProperty(0);
-    private final IntegerProperty student = new SimpleIntegerProperty(0);
+    private final ObjectProperty<Person> responsable = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Person> student = new SimpleObjectProperty<>(null);
     private final StringProperty edition = new SimpleStringProperty("n/a");
 
     /**
@@ -49,18 +51,18 @@ public class AAP {
     /**
      * Getter for the variable responsable.
      *
-     * @return {@link Integer} - return the variable responsable.
+     * @return {@link Person} - return the variable responsable.
      */
-    public Integer getresponsable() {
+    public Person getresponsable() {
         return responsable.get();
     }
 
     /**
      * Getter for the variable student.
      *
-     * @return {@link Integer} - return the variable student.
+     * @return {@link Person} - return the variable student.
      */
-    public Integer getstudent() {
+    public Person getstudent() {
         return student.get();
     }
 
@@ -76,7 +78,7 @@ public class AAP {
     /**
      * Setter for the variable AAP_ID.
      *
-     * @param AAP_ID - {@link Integer} - index of the AAP class.
+     * @param AAP_ID - {@link Person} - index of the AAP class.
      * @return - {@link AAP} - builder pattern return
      */
     public AAP setAAP_ID(Integer AAP_ID) {
@@ -87,10 +89,10 @@ public class AAP {
     /**
      * Setter for the variable responsable.
      *
-     * @param responsable - {@link Integer} - responsable of this class.
+     * @param responsable - {@link Person} - responsable of this class.
      * @return - {@link AAP} - builder pattern return
      */
-    public AAP setresponsable(Integer responsable) {
+    public AAP setresponsable(Person responsable) {
         this.responsable.set(responsable);
         return this;
     }
@@ -98,10 +100,10 @@ public class AAP {
     /**
      * Setter for the variable student.
      *
-     * @param student - {@link Integer} - student of this class.
+     * @param student - {@link Person} - student of this class.
      * @return - {@link AAP} - builder pattern return
      */
-    public AAP setstudent(Integer student) {
+    public AAP setstudent(Person student) {
         this.student.set(student);
         return this;
     }
@@ -133,9 +135,9 @@ public class AAP {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable responsable.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable responsable.
      */
-    public IntegerProperty responsableProperty() {
+    public ObjectProperty<Person> responsableProperty() {
         return responsable;
     }
 
@@ -144,9 +146,9 @@ public class AAP {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable student.
+     * @return {@link ObjectProperty<Person>} - return the property of the variable student.
      */
-    public IntegerProperty studentProperty() {
+    public ObjectProperty<Person> studentProperty() {
         return student;
     }
 

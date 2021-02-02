@@ -10,10 +10,10 @@ import javafx.beans.property.*;
  */
 public class Document_Project {
 
-    private final StringProperty document_ID = new SimpleStringProperty("n/a");
-    private final StringProperty project_ID = new SimpleStringProperty("n/a");
-    private final IntegerProperty AAP_ID = new SimpleIntegerProperty(0);
-    private final StringProperty respGroup_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Project> project_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<AAP> AAP_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<RespGroup> respGroup_ID = new SimpleObjectProperty<>(null);
    
     /**
      * Default Constructor
@@ -42,46 +42,46 @@ public class Document_Project {
     /**
      * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable document_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getdocument_ID() {
+    public Document getdocument_ID() {
         return document_ID.get();
     }
 
     /**
      * Getter for the variable project_ID.
      *
-     * @return {@link String} - return the variable project_ID.
+     * @return {@link Project} - return the variable project_ID.
      */
-    public String getproject_ID() {
+    public Project getproject_ID() {
         return project_ID.get();
     }
 
     /**
      * Getter for the variable AAP_ID.
      *
-     * @return {@link Integer} - return the variable AAP_ID.
+     * @return {@link AAP} - return the variable AAP_ID.
      */
-    public Integer getAAP_ID() {
+    public AAP getAAP_ID() {
         return AAP_ID.get();
     }
 
     /**
      * Getter for the variable respGroup_ID.
      *
-     * @return {@link String} - return the variable respGroup_ID.
+     * @return {@link RespGroup} - return the variable respGroup_ID.
      */
-    public String getrespGroup_ID() {
+    public RespGroup getrespGroup_ID() {
         return respGroup_ID.get();
     }
 
     /**
      * Setter for the variable document_ID.
      *
-     * @param document_ID - {@link String} - index of the Document_Project class.
+     * @param document_ID - {@link Document} - index of the Document_Project class.
      * @return - {@link Document_Project} - builder pattern return
      */
-    public Document_Project setdocument_ID(String document_ID) {
+    public Document_Project setdocument_ID(Document document_ID) {
         this.document_ID.set(document_ID);
         return this;
     }
@@ -89,10 +89,10 @@ public class Document_Project {
     /**
      * Setter for the variable project_ID.
      *
-     * @param project_ID - {@link String} - project_ID of this class.
+     * @param project_ID - {@link Project} - project_ID of this class.
      * @return - {@link Document_Project} - builder pattern return
      */
-    public Document_Project setproject_ID(String project_ID) {
+    public Document_Project setproject_ID(Project project_ID) {
         this.project_ID.set(project_ID);
         return this;
     }
@@ -100,10 +100,10 @@ public class Document_Project {
     /**
      * Setter for the variable AAP_ID.
      *
-     * @param AAP_ID - {@link Integer} - AAP_ID of this class.
+     * @param AAP_ID - {@link AAP} - AAP_ID of this class.
      * @return - {@link Document_Project} - builder pattern return
      */
-    public Document_Project setAAP_ID(Integer AAP_ID) {
+    public Document_Project setAAP_ID(AAP AAP_ID) {
         this.AAP_ID.set(AAP_ID);
         return this;
     }
@@ -111,10 +111,10 @@ public class Document_Project {
     /**
      * Setter for the variable respGroup_ID.
      *
-     * @param respGroup_ID - {@link String} - respGroup_ID of this class.
+     * @param respGroup_ID - {@link RespGroup} - respGroup_ID of this class.
      * @return - {@link Document_Project} - builder pattern return
      */
-    public Document_Project setrespGroup_ID(String respGroup_ID) {
+    public Document_Project setrespGroup_ID(RespGroup respGroup_ID) {
         this.respGroup_ID.set(respGroup_ID);
         return this;
     }
@@ -124,9 +124,9 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty document_IDProperty() {
+    public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
     }
 
@@ -135,9 +135,9 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable project_ID.
+     * @return {@link ObjectProperty<Project>} - return the property of the variable project_ID.
      */
-    public StringProperty project_IDProperty() {
+    public ObjectProperty<Project> project_IDProperty() {
         return project_ID;
     }
 
@@ -146,9 +146,9 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link IntegerProperty} - return the property of the variable AAP_ID.
+     * @return {@link ObjectProperty<AAP>} - return the property of the variable AAP_ID.
      */
-    public IntegerProperty AAP_IDProperty() {
+    public ObjectProperty<AAP> AAP_IDProperty() {
         return AAP_ID;
     }
 
@@ -157,9 +157,9 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable respGroup_ID.
+     * @return {@link ObjectProperty<RespGroup>} - return the property of the variable respGroup_ID.
      */
-    public StringProperty respGroup_IDProperty() {
+    public ObjectProperty<RespGroup> respGroup_IDProperty() {
         return respGroup_ID;
     }
 
