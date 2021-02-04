@@ -127,7 +127,7 @@ public class DAO_Category implements Dao<Category> {
         ));
 
         for (Map.Entry<String,String> entry : map.entrySet()) {
-            select_sql.append(String.format(" AND %s = ?", entry.getKey()));
+            select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 

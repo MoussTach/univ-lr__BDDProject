@@ -124,7 +124,7 @@ public class DAO_Condition implements Dao<Condition> {
         ));
 
         for (Map.Entry<String,String> entry : map.entrySet()) {
-            select_sql.append(String.format(" AND %s = ?", entry.getKey()));
+            select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 
@@ -155,7 +155,7 @@ public class DAO_Condition implements Dao<Condition> {
     public List<Condition> selectAll() throws SQLException {
         final List<Condition> retConditions = new ArrayList<>();
 
-        String format = String.format("%s %s %s",
+        String format = String.format("%s %s",
                 String.format("SELECT %s", "condition_ID"),
                 String.format("FROM %s ", "Condition"));
         final String selectAll_sql = format;
