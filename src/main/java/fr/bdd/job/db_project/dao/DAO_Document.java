@@ -1,12 +1,11 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.log.generate.CustomLogger;
 
-import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -24,11 +23,11 @@ import java.util.Map;
 public class DAO_Document implements Dao<Document> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Document.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Document#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Document#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -40,9 +39,9 @@ public class DAO_Document implements Dao<Document> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Document(DataConnection conn) throws InvalidKeyException {
+    public DAO_Document(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -51,10 +50,10 @@ public class DAO_Document implements Dao<Document> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -68,9 +67,9 @@ public class DAO_Document implements Dao<Document> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link Document} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @ - throw this exception when the given list dont have the key wanted
      */
-    public final Document select(String id) throws SQLException, InvalidKeyException {
+    public final Document select(String id) throws SQLException {
         Document retDocument = null;
         DAO_Category dao_category = new DAO_Category(this.connectionHandle_);
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
@@ -89,7 +88,7 @@ public class DAO_Document implements Dao<Document> {
                 String.format("FROM %s ", "Document"),
                 String.format("WHERE document_ID = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try (final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -124,9 +123,9 @@ public class DAO_Document implements Dao<Document> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Document} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @ - throw this exception when the given list dont have the key wanted
      */
-    public final List<Document> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<Document> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
         final List<Document> retCategories = new ArrayList<>();
         DAO_Category dao_category = new DAO_Category(this.connectionHandle_);
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
@@ -152,13 +151,13 @@ public class DAO_Document implements Dao<Document> {
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Document Document =
                         new Document()
                                 .setdocument_ID(resultSelect.getString("document_ID"))
@@ -189,10 +188,10 @@ public class DAO_Document implements Dao<Document> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Document}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public List<Document> selectAll() throws SQLException, InvalidKeyException {
+    public List<Document> selectAll() throws SQLException {
         final List<Document> retCategories = new ArrayList<>();
         DAO_Category dao_category = new DAO_Category(this.connectionHandle_);
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
@@ -204,11 +203,11 @@ public class DAO_Document implements Dao<Document> {
                 String.format("FROM %s ", "Document"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Document Document =
                         new Document()
                                 .setdocument_ID(resultSelectAll.getString("document_ID"))
@@ -234,7 +233,7 @@ public class DAO_Document implements Dao<Document> {
     }
 
     @Override
-    public List<Document> selectAll(List<Document> excludeList) throws SQLException, InvalidKeyException {
+    public List<Document> selectAll(List<Document> excludeList) throws SQLException {
         return null;
     }
 
@@ -247,10 +246,10 @@ public class DAO_Document implements Dao<Document> {
      * @param obj - {@link Document} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean insert(Document obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Document obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -289,7 +288,7 @@ public class DAO_Document implements Dao<Document> {
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s)", "Document", "document_ID", "category_ID", "Document", "dateCreation_end", "natureOfDoc_ID", "condition_ID", "format", "location"),
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getdocument_ID());
         prepInsert.setString(obj.getcategory_ID().getcategory_ID());
         prepInsert.setDate((Date) obj.getdateCreation_start());
@@ -326,10 +325,10 @@ public class DAO_Document implements Dao<Document> {
      * @param obj - {@link Document} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean update(Document obj) throws SQLException, InvalidKeyException {
+    public boolean update(Document obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -382,7 +381,7 @@ public class DAO_Document implements Dao<Document> {
                 String.format("SET %s = ?", "otherRelatedResources"),
                 String.format("WHERE %s = ?", "document_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getdocument_ID());
         prepUpdate.setString(obj.getcategory_ID().getcategory_ID());
         prepUpdate.setDate((Date) obj.getdateCreation_start());
@@ -410,10 +409,6 @@ public class DAO_Document implements Dao<Document> {
         return retBool;
     }
 
-    @Override
-    public boolean upsert(Document obj) throws SQLException, InvalidKeyException {
-        return false;
-    }
 
     /**
      * DELETE the job class.
@@ -451,7 +446,7 @@ public class DAO_Document implements Dao<Document> {
                 String.format("DELETE FROM %s", "Document"),
                 String.format("WHERE %s = ?", "document_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setString(obj.getdocument_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

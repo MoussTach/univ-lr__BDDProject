@@ -9,7 +9,7 @@ import javafx.beans.property.*;
  *
  * @author Gaetan Brenckle
  */
-public class AuthTranscipt {
+public class AuthTranscript {
 
     private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
@@ -19,14 +19,14 @@ public class AuthTranscipt {
      *
      * @author Gaetan Brenckle
      */
-    public AuthTranscipt() {}
+    public AuthTranscript() {}
 
     /**
      * Clone constructor
      *
-     * @param clone - {@link AuthTranscipt}
+     * @param clone - {@link AuthTranscript}
      */
-    public AuthTranscipt(AuthTranscipt clone) {
+    public AuthTranscript(AuthTranscript clone) {
 
         if (clone != null) {
 
@@ -57,10 +57,10 @@ public class AuthTranscipt {
     /**
      * Setter for the variable document_ID.
      *
-     * @param document_ID - {@link Document} - index of the AuthTranscipt class.
-     * @return - {@link AuthTranscipt} - builder pattern return
+     * @param document_ID - {@link Document} - index of the AuthTranscript class.
+     * @return - {@link AuthTranscript} - builder pattern return
      */
-    public AuthTranscipt setdocument_ID(Document document_ID) {
+    public AuthTranscript setdocument_ID(Document document_ID) {
         this.document_ID.set(document_ID);
         return this;
     }
@@ -69,9 +69,9 @@ public class AuthTranscipt {
      * Setter for the variable person_ID.
      *
      * @param person_ID - {@link Person} - person_ID of this class.
-     * @return - {@link AuthTranscipt} - builder pattern return
+     * @return - {@link AuthTranscript} - builder pattern return
      */
-    public AuthTranscipt setperson_ID(Person person_ID) {
+    public AuthTranscript setperson_ID(Person person_ID) {
         this.person_ID.set(person_ID);
         return this;
     }

@@ -1,12 +1,11 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Publication;
 import fr.bdd.log.generate.CustomLogger;
 
-import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +22,11 @@ import java.util.Map;
 public class DAO_Publication implements Dao<Publication> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Publication.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Publication#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Publication#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -39,9 +38,9 @@ public class DAO_Publication implements Dao<Publication> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Publication(DataConnection conn) throws InvalidKeyException {
+    public DAO_Publication(Connection conn){
         this.connectionHandle_ = conn;
     }
 
@@ -50,10 +49,10 @@ public class DAO_Publication implements Dao<Publication> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn){
         this.connectionHandle_ = conn;
     }
 
@@ -67,9 +66,9 @@ public class DAO_Publication implements Dao<Publication> {
      * @param id - {@link Integer} - index of the associate job class. Can handle null.
      * @return - {@link Publication} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+
      */
-    public final Publication select(Integer id) throws SQLException, InvalidKeyException {
+    public final Publication select(Integer id) throws SQLException {
         Publication retPublication = null;
         DAO_Person dao_person = new DAO_Person(this.connectionHandle_);
 
@@ -85,7 +84,7 @@ public class DAO_Publication implements Dao<Publication> {
                 String.format("FROM %s ", "Publication"),
                 String.format("WHERE publication_ID = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setInt(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -114,9 +113,9 @@ public class DAO_Publication implements Dao<Publication> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Publication} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+
      */
-    public final List<Publication> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<Publication> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
         final List<Publication> retCategories = new ArrayList<>();
         DAO_Person dao_person = new DAO_Person(this.connectionHandle_);
 
@@ -135,17 +134,17 @@ public class DAO_Publication implements Dao<Publication> {
         ));
 
         for (Map.Entry<String,String> entry : map.entrySet()) {
-            select_sql.append(String.format(" AND %s = ?", entry.getKey()));
+            select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Publication Publication =
                         new Publication()
                                 .setpublication_ID(resultSelect.getInt("publication_ID"))
@@ -170,10 +169,10 @@ public class DAO_Publication implements Dao<Publication> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Publication}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+
      */
     @Override
-    public List<Publication> selectAll() throws SQLException, InvalidKeyException {
+    public List<Publication> selectAll() throws SQLException {
         final List<Publication> retCategories = new ArrayList<>();
         DAO_Person dao_person = new DAO_Person(this.connectionHandle_);
 
@@ -182,11 +181,11 @@ public class DAO_Publication implements Dao<Publication> {
                 String.format("FROM %s ", "Publication"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Publication Publication =
                         new Publication()
                                 .setpublication_ID(resultSelectAll.getInt("publication_ID"))
@@ -205,7 +204,7 @@ public class DAO_Publication implements Dao<Publication> {
     }
 
     @Override
-    public List<Publication> selectAll(List<Publication> excludeList) throws SQLException, InvalidKeyException {
+    public List<Publication> selectAll(List<Publication> excludeList) throws SQLException {
         return null;
     }
 
@@ -218,10 +217,10 @@ public class DAO_Publication implements Dao<Publication> {
      * @param obj - {@link Publication} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+
      */
     @Override
-    public boolean insert(Publication obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Publication obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -260,7 +259,7 @@ public class DAO_Publication implements Dao<Publication> {
                 String.format("INSERT INTO %s (%s, %s, %s, %s, %s, %s, %s, %s)", "Publication", "publication_ID", "numPublication", "publication", "title", "place", "type", "periodicity", "director"),
                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setInt(obj.getpublication_ID());
         prepInsert.setString(obj.getnumPublication());
         prepInsert.setString(obj.getpublication());
@@ -290,10 +289,10 @@ public class DAO_Publication implements Dao<Publication> {
      * @param obj - {@link Publication} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+
      */
     @Override
-    public boolean update(Publication obj) throws SQLException, InvalidKeyException {
+    public boolean update(Publication obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -339,7 +338,7 @@ public class DAO_Publication implements Dao<Publication> {
                 String.format("SET %s = ?", "director"),
                 String.format("WHERE %s = ?", "publication_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setInt(obj.getpublication_ID());
         prepUpdate.setString(obj.getnumPublication());
         prepUpdate.setString(obj.getpublication());
@@ -360,10 +359,6 @@ public class DAO_Publication implements Dao<Publication> {
         return retBool;
     }
 
-    @Override
-    public boolean upsert(Publication obj) throws SQLException, InvalidKeyException {
-        return false;
-    }
 
     /**
      * DELETE the job class.
@@ -401,7 +396,7 @@ public class DAO_Publication implements Dao<Publication> {
                 String.format("DELETE FROM %s", "Publication"),
                 String.format("WHERE %s = ?", "publication_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setInt(obj.getpublication_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

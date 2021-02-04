@@ -1,12 +1,11 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Project;
 import fr.bdd.log.generate.CustomLogger;
 
-import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +22,11 @@ import java.util.Map;
 public class DAO_Project implements Dao<Project> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Project.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Project#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Project#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -39,9 +38,9 @@ public class DAO_Project implements Dao<Project> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Project(DataConnection conn) throws InvalidKeyException {
+    public DAO_Project(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -50,10 +49,10 @@ public class DAO_Project implements Dao<Project> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -67,9 +66,8 @@ public class DAO_Project implements Dao<Project> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link Project} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
-    public final Project select(String id) throws SQLException, InvalidKeyException {
+*/
+    public final Project select(String id) throws SQLException{
         Project retProject = null;
 
         if (id == null) {
@@ -84,7 +82,7 @@ public class DAO_Project implements Dao<Project> {
                 String.format("FROM %s ", "Project"),
                 String.format("WHERE id = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -106,9 +104,8 @@ public class DAO_Project implements Dao<Project> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Project} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
-    public final List<Project> selectByMultiProject(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+*/
+    public final List<Project> selectByMultiProject(HashMap<String, String> map) throws SQLException{
         final List<Project> retProjects = new ArrayList<>();
 
         if (map == null) {
@@ -126,17 +123,17 @@ public class DAO_Project implements Dao<Project> {
         ));
 
         for (Map.Entry<String,String> entry : map.entrySet()) {
-            select_sql.append(String.format(" AND %s = ?", entry.getKey()));
+            select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Project Project =
                         new Project().setproject_ID(resultSelect.getString("project_ID"));
                 retProjects.add(Project);
@@ -152,10 +149,9 @@ public class DAO_Project implements Dao<Project> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Project}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public List<Project> selectAll() throws SQLException, InvalidKeyException {
+    public List<Project> selectAll() throws SQLException{
         final List<Project> retProjects = new ArrayList<>();
 
         String format = String.format("%s %s %s",
@@ -163,11 +159,11 @@ public class DAO_Project implements Dao<Project> {
                 String.format("FROM %s ", "Project"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Project Project =
                         new Project()
                                 .setproject_ID(resultSelectAll.getString("project_ID"));
@@ -179,7 +175,7 @@ public class DAO_Project implements Dao<Project> {
     }
 
     @Override
-    public List<Project> selectAll(List<Project> excludeList) throws SQLException, InvalidKeyException {
+    public List<Project> selectAll(List<Project> excludeList) throws SQLException{
         return null;
     }
 
@@ -192,10 +188,9 @@ public class DAO_Project implements Dao<Project> {
      * @param obj - {@link Project} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
+*/
     @Override
-    public boolean insert(Project obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Project obj) throws SQLException{
         boolean retBool = true;
 
         if (obj == null) {
@@ -220,7 +215,7 @@ public class DAO_Project implements Dao<Project> {
                 String.format("INSERT INTO %s (%s)", "Project", "project_ID"),
                 "VALUES (?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getproject_ID());
 
         retBool = prepInsert.executeUpdate() > 0;
@@ -243,10 +238,9 @@ public class DAO_Project implements Dao<Project> {
      * @param obj - {@link Project} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
+*/
     @Override
-    public boolean update(Project obj) throws SQLException, InvalidKeyException {
+    public boolean update(Project obj) throws SQLException{
         boolean retBool = true;
 
         if (obj == null) {
@@ -272,7 +266,7 @@ public class DAO_Project implements Dao<Project> {
                 String.format("SET %s = ?", "project_ID"),
                 String.format("WHERE %s = ?", "project_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getproject_ID());
 
         retBool = prepUpdate.executeUpdate() > 0;
@@ -286,10 +280,6 @@ public class DAO_Project implements Dao<Project> {
         return retBool;
     }
 
-    @Override
-    public boolean upsert(Project obj) throws SQLException, InvalidKeyException {
-        return false;
-    }
 
     /**
      * DELETE the job class.
@@ -327,7 +317,7 @@ public class DAO_Project implements Dao<Project> {
                 String.format("DELETE FROM %s", "Project"),
                 String.format("WHERE %s = ?", "project_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setString(obj.getproject_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

@@ -12,7 +12,7 @@ import java.util.Date;
  */
 public class AuthAnalyst {
 
-    private final StringProperty authAnalyst_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> date = new SimpleObjectProperty<>(null);
 
@@ -32,7 +32,7 @@ public class AuthAnalyst {
 
         if (clone != null) {
 
-            this.authAnalyst_ID.set(clone.authAnalyst_ID.get());
+            this.document_ID.set(clone.document_ID.get());
 
             this.person_ID.set(clone.person_ID.get());
             this.date.set(clone.date.get());
@@ -40,12 +40,12 @@ public class AuthAnalyst {
     }
 
     /**
-     * Getter for the variable authAnalyst_ID.
+     * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable authAnalyst_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getauthAnalyst_ID() {
-        return authAnalyst_ID.get();
+    public Document getdocument_ID() {
+        return document_ID.get();
     }
 
     /**
@@ -67,13 +67,13 @@ public class AuthAnalyst {
     }
 
     /**
-     * Setter for the variable authAnalyst_ID.
+     * Setter for the variable document_ID.
      *
-     * @param authAnalyst_ID - {@link String} - index of the AuthAnalyst class.
+     * @param document_ID - {@link Document} - index of the AuthAnalyst class.
      * @return - {@link AuthAnalyst} - builder pattern return
      */
-    public AuthAnalyst setauthAnalyst_ID(String authAnalyst_ID) {
-        this.authAnalyst_ID.set(authAnalyst_ID);
+    public AuthAnalyst setdocument_ID(Document document_ID) {
+        this.document_ID.set(document_ID);
         return this;
     }
 
@@ -100,14 +100,14 @@ public class AuthAnalyst {
     }
 
     /**
-     * Property of the variable authAnalyst_ID.
+     * Property of the variable document_ID.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable authAnalyst_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty authAnalyst_IDProperty() {
-        return authAnalyst_ID;
+    public ObjectProperty<Document> document_IDProperty() {
+        return document_ID;
     }
 
     /**
@@ -139,6 +139,6 @@ public class AuthAnalyst {
      */
     @Override
     public String toString() {
-        return String.format("%s", authAnalyst_ID.get());
+        return String.format("%s", document_ID.get());
     }
 }

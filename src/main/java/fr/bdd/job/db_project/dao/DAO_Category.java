@@ -137,7 +137,7 @@ public class DAO_Category implements Dao<Category> {
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Category Category =
                         new Category().setcategory_ID(resultSelect.getString("category_ID"))
                                     .setdataCategory(resultSelect.getString("dataCategory"))
@@ -169,7 +169,7 @@ public class DAO_Category implements Dao<Category> {
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Category Category =
                         new Category()
                                 .setcategory_ID(resultSelectAll.getString("category_ID"))

@@ -12,9 +12,9 @@ import java.util.Date;
  */
 public class AuthDesc {
 
-    private final StringProperty authDesc_ID = new SimpleStringProperty("n/a");
+    private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Person> person_ID = new SimpleObjectProperty<>(null);
-    private final ObjectProperty<Language> language = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Language> language_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Date> dateNotice = new SimpleObjectProperty<>(null);
 
     /**
@@ -33,21 +33,21 @@ public class AuthDesc {
 
         if (clone != null) {
 
-            this.authDesc_ID.set(clone.authDesc_ID.get());
+            this.document_ID.set(clone.document_ID.get());
 
             this.person_ID.set(clone.person_ID.get());
-            this.language.set(clone.language.get());
+            this.language_ID.set(clone.language_ID.get());
             this.dateNotice.set(clone.dateNotice.get());
         }
     }
 
     /**
-     * Getter for the variable authDesc_ID.
+     * Getter for the variable document_ID.
      *
-     * @return {@link String} - return the variable authDesc_ID.
+     * @return {@link Document} - return the variable document_ID.
      */
-    public String getauthDesc_ID() {
-        return authDesc_ID.get();
+    public Document getdocument_ID() {
+        return document_ID.get();
     }
 
     /**
@@ -64,8 +64,8 @@ public class AuthDesc {
      *
      * @return {@link Language} - return the variable language.
      */
-    public Language getlanguage() {
-        return language.get();
+    public Language getlanguage_ID() {
+        return language_ID.get();
     }
 
     /**
@@ -78,13 +78,13 @@ public class AuthDesc {
     }
 
     /**
-     * Setter for the variable authDesc_ID.
+     * Setter for the variable document_ID.
      *
-     * @param authDesc_ID - {@link String} - index of the AuthDesc class.
+     * @param document_ID - {@link Document} - index of the AuthDesc class.
      * @return - {@link AuthDesc} - builder pattern return
      */
-    public AuthDesc setauthDesc_ID(String authDesc_ID) {
-        this.authDesc_ID.set(authDesc_ID);
+    public AuthDesc setdocument_ID(Document document_ID) {
+        this.document_ID.set(document_ID);
         return this;
     }
 
@@ -105,8 +105,8 @@ public class AuthDesc {
      * @param language - {@link Language} - language of this class.
      * @return - {@link AuthDesc} - builder pattern return
      */
-    public AuthDesc setlanguage(Language language) {
-        this.language.set(language);
+    public AuthDesc setlanguage_ID(Language language) {
+        this.language_ID.set(language);
         return this;
     }
 
@@ -122,14 +122,14 @@ public class AuthDesc {
     }
 
     /**
-     * Property of the variable authDesc_ID.
+     * Property of the variable document_ID.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable authDesc_ID.
+     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
      */
-    public StringProperty authDesc_IDProperty() {
-        return authDesc_ID;
+    public ObjectProperty<Document> document_IDProperty() {
+        return document_ID;
     }
 
     /**
@@ -151,7 +151,7 @@ public class AuthDesc {
      * @return {@link ObjectProperty<Language>} - return the property of the variable language.
      */
     public ObjectProperty<Language> languageProperty() {
-        return language;
+        return language_ID;
     }
 
     /**
@@ -172,6 +172,6 @@ public class AuthDesc {
      */
     @Override
     public String toString() {
-        return String.format("%s", authDesc_ID.get());
+        return String.format("%s", document_ID.get());
     }
 }

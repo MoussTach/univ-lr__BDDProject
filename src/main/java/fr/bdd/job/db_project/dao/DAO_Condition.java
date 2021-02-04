@@ -91,7 +91,6 @@ public class DAO_Condition implements Dao<Condition> {
                 retCondition =
                         new Condition()
                                 .setcondition_ID(resultSelect.getString("condition_ID"));
-
             }
         }
         return retCondition;
@@ -127,6 +126,9 @@ public class DAO_Condition implements Dao<Condition> {
             select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
+        select_sql.append(String.format(" ORDER BY %s ", "condition_ID"));
+
+
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
@@ -134,7 +136,7 @@ public class DAO_Condition implements Dao<Condition> {
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Condition condition =
                         new Condition().setcondition_ID(resultSelect.getString("condition_ID"));
                 retConditions.add(condition);
@@ -164,7 +166,7 @@ public class DAO_Condition implements Dao<Condition> {
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Condition condition =
                         new Condition()
                                 .setcondition_ID(resultSelectAll.getString("condition_ID"));

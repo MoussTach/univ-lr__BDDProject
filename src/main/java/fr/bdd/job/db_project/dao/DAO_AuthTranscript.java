@@ -2,10 +2,11 @@ package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
-import fr.bdd.job.db_project.jobclass.NatureOfDoc;
+import fr.bdd.job.db_project.jobclass.AuthTranscript;
 import fr.bdd.log.generate.CustomLogger;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -15,22 +16,22 @@ import java.util.Map;
 
 /**
  * DAO pattern class.
- * Used for the job class {@link NatureOfDoc}
+ * Used for the job class {@link AuthTranscript}
  *
  * @author Gaetan Brenckle
  */
-public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
+public class DAO_AuthTranscript implements Dao<AuthTranscript> {
 
-    private static final CustomLogger LOGGER = CustomLogger.create(DAO_NatureOfDoc.class.getName());
+    private static final CustomLogger LOGGER = CustomLogger.create(DAO_AuthTranscript.class.getName());
     private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_NatureOfDoc#setConnection(Connection)} before any other function.
+     * Need to call {@link DAO_AuthTranscript#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
-    public DAO_NatureOfDoc() {
+    public DAO_AuthTranscript() {
     }
 
     /**
@@ -40,7 +41,7 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      *
      * @param conn - {@link Connection} - connection used.
      */
-    public DAO_NatureOfDoc(Connection conn) {
+    public DAO_AuthTranscript(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -64,37 +65,39 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      * @author Gaetan Brenckle
      *
      * @param id - {@link String} - index of the associate job class. Can handle null.
-     * @return - {@link NatureOfDoc} - the job class that can be found with the index
+     * @return - {@link AuthTranscript} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
      */
-    public final NatureOfDoc select(String id) throws SQLException {
-        NatureOfDoc retNatureOfDoc = null;
+    public final AuthTranscript select(String id) throws SQLException {
+        AuthTranscript retAuthTranscript = null;
+        DAO_Document dao_document = new DAO_Document(this.connectionHandle_);
+        DAO_Person dao_Person = new DAO_Person(this.connectionHandle_);
 
         if (id == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("NatureOfDoc select when the given id is null");
+                LOGGER.warn("AuthTranscript select when the given id is null");
             }
-            return retNatureOfDoc;
+            return retAuthTranscript;
         }
 
         final String select_sql = String.format("%s %s %s",
-                String.format("SELECT %s, %s", "natureOfDoc_ID", "supportOfDoc"),
-                String.format("FROM %s ", "NatureOfDoc"),
-                String.format("WHERE natureOfDoc_ID = ?"));
+                String.format("SELECT %s, %s", "document_ID", "person_ID"),
+                String.format("FROM %s ", "AuthTranscript"),
+                String.format("WHERE id = ?"));
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
             if (resultSelect.next()) {
-                retNatureOfDoc =
-                        new NatureOfDoc()
-                                .setnatureOfDoc_ID(resultSelect.getString("natureOfDoc_ID"))
-                                .setsupportOfDoc(resultSelect.getString("supportOfDoc"));
+                retAuthTranscript =
+                        new AuthTranscript()
+                                .setdocument_ID(dao_document.select(resultSelect.getString("document_ID")))
+                                .setperson_ID(dao_Person.select(resultSelect.getInt("person_ID")));
 
             }
         }
-        return retNatureOfDoc;
+        return retAuthTranscript;
     }
 
     /**
@@ -103,23 +106,25 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      * @author Gaetan Brenckle
      *
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
-     * @return - {@link NatureOfDoc} - the job class that can be found with the index
+     * @return - {@link AuthTranscript} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
      */
-    public final List<NatureOfDoc> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
-        final List<NatureOfDoc> retSupportOfDocs = new ArrayList<>();
+    public final List<AuthTranscript> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
+        final List<AuthTranscript> retCategories = new ArrayList<>();
+        DAO_Document dao_document = new DAO_Document(this.connectionHandle_);
+        DAO_Person dao_Person = new DAO_Person(this.connectionHandle_);
 
         if (map == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("NatureOfDoc select when the given id is null");
+                LOGGER.warn("AuthTranscript select when the given id is null");
             }
-            return retSupportOfDocs;
+            return retCategories;
         }
 
 
         StringBuilder select_sql = new StringBuilder(String.format("%s %s %s",
-                String.format("SELECT %s, %s", "natureOfDoc_ID", "supportOfDoc"),
-                String.format("FROM %s ", "NatureOfDoc"),
+                String.format("SELECT %s, %s", "document_ID", "person_ID"),
+                String.format("FROM %s ", "AuthTranscript"),
                 String.format("WHERE 1=1")
         ));
 
@@ -135,31 +140,33 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
             while (resultSelect.next()) {
-                NatureOfDoc NatureOfDoc =
-                        new NatureOfDoc()
-                                    .setnatureOfDoc_ID(resultSelect.getString("natureOfDoc_ID"))
-                                    .setsupportOfDoc(resultSelect.getString("supportOfDoc"));
-                retSupportOfDocs.add(NatureOfDoc);
+                AuthTranscript AuthTranscript =
+                        new AuthTranscript()
+                                        .setdocument_ID(dao_document.select(resultSelect.getString("document_ID")))
+                                        .setperson_ID(dao_Person.select(resultSelect.getInt("person_ID")));
+                retCategories.add(AuthTranscript);
             }
         }
-        return retSupportOfDocs;
+        return retCategories;
     }
 
     /**
-     * SELECT of all occurance of the NatureOfDoc class.
+     * SELECT of all occurance of the AuthTranscript class.
      *
      * @author Gaetan Brenckle
      *
-     * @return - {@link List} - a list that contain all occurance of {@link NatureOfDoc}, the job class associate.
+     * @return - {@link List} - a list that contain all occurance of {@link AuthTranscript}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
-    public List<NatureOfDoc> selectAll() throws SQLException {
-        final List<NatureOfDoc> retSupportOfDocs = new ArrayList<>();
+    public List<AuthTranscript> selectAll() throws SQLException {
+        final List<AuthTranscript> retCategories = new ArrayList<>();
+        DAO_Document dao_document = new DAO_Document(this.connectionHandle_);
+        DAO_Person dao_Person = new DAO_Person(this.connectionHandle_);
 
         String format = String.format("%s %s",
-                String.format("SELECT %s, %s", "natureOfDoc_ID", "supportOfDoc"),
-                String.format("FROM %s ", "NatureOfDoc"));
+                String.format("SELECT %s, %s", "document_ID", "person_ID"),
+                String.format("FROM %s ", "AuthTranscript"));
         final String selectAll_sql = format;
 
         final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
@@ -167,19 +174,19 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
             while (resultSelectAll.next()) {
-                NatureOfDoc NatureOfDoc =
-                        new NatureOfDoc()
-                                .setnatureOfDoc_ID(resultSelectAll.getString("natureOfDoc_ID"))
-                                .setsupportOfDoc(resultSelectAll.getString("supportOfDoc"));
-                retSupportOfDocs.add(NatureOfDoc);
+                AuthTranscript AuthTranscript =
+                        new AuthTranscript()
+                                .setdocument_ID(dao_document.select(resultSelectAll.getString("document_ID")))
+                                .setperson_ID(dao_Person.select(resultSelectAll.getInt("person_ID")));
+                retCategories.add(AuthTranscript);
             }
         }
 
-        return retSupportOfDocs;
+        return retCategories;
     }
 
     @Override
-    public List<NatureOfDoc> selectAll(List<NatureOfDoc> excludeList) throws SQLException {
+    public List<AuthTranscript> selectAll(List<AuthTranscript> excludeList) throws SQLException {
         return null;
     }
 
@@ -189,31 +196,31 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link NatureOfDoc} - insert the job class.
+     * @param obj - {@link AuthTranscript} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
-    public boolean insert(NatureOfDoc obj) throws SQLException {
+    public boolean insert(AuthTranscript obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "NatureOfDoc"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "AuthTranscript"));
             }
             return false;
         }
 
-        if (obj.getnatureOfDoc_ID() == null || obj.getnatureOfDoc_ID().isEmpty()) {
+        if (obj.getdocument_ID() == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "natureOfDoc_ID"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "document_ID"));
             }
             retBool = false;
         }
 
-        if (obj.getsupportOfDoc() == null || obj.getsupportOfDoc().isEmpty()) {
+        if (obj.getperson_ID() == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "supportOfDoc"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "person_ID"));
             }
             retBool = false;
         }
@@ -223,17 +230,17 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
         }
 
         String insert_sql = String.format("%s %s ",
-                String.format("INSERT INTO %s (%s, %s)", "NatureOfDoc", "natureOfDoc_ID", "supportOfDoc"),
+                String.format("INSERT INTO %s (%s, %s)", "AuthTranscript", "document_ID", "person_ID"),
                 "VALUES (?, ?)");
 
         final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
-        prepInsert.setString(obj.getnatureOfDoc_ID());
-        prepInsert.setString(obj.getsupportOfDoc());
+        prepInsert.setString(obj.getdocument_ID().getdocument_ID());
+        prepInsert.setInt(obj.getperson_ID().getperson_ID());
 
         retBool = prepInsert.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Insert a new %s : [%s]", "NatureOfDoc", prepInsert.printSqlStatement(insert_sql));
+            String printedSql = String.format("Insert a new %s : [%s]", "AuthTranscript", prepInsert.printSqlStatement(insert_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
@@ -247,31 +254,31 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link NatureOfDoc} - insert the job class.
+     * @param obj - {@link AuthTranscript} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
-    public boolean update(NatureOfDoc obj) throws SQLException {
+    public boolean update(AuthTranscript obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "NatureOfDoc"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "AuthTranscript"));
             }
             return false;
         }
 
-        if (obj.getnatureOfDoc_ID() == null || obj.getnatureOfDoc_ID().isEmpty()) {
+        if (obj.getdocument_ID() == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "natureOfDoc_ID"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "document_ID"));
             }
             retBool = false;
         }
 
-        if (obj.getsupportOfDoc() == null || obj.getsupportOfDoc().isEmpty()) {
+        if (obj.getperson_ID() == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "supportOfDoc"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "person_ID"));
             }
             retBool = false;
         }
@@ -281,19 +288,19 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
         }
 
         String update_sql = String.format("%s %s %s %s ",
-                String.format("UPDATE %s", "NatureOfDoc"),
-                String.format("SET %s = ?", "natureOfDoc_ID"),
-                String.format("SET %s = ?", "supportOfDoc"),
-                String.format("WHERE %s = ?", "natureOfDoc_ID"));
+                String.format("UPDATE %s", "AuthTranscript"),
+                String.format("SET %s = ?", "document_ID"),
+                String.format("SET %s = ?", "person_ID"),
+                String.format("WHERE %s = ?", "document_ID"));
 
         final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
-        prepUpdate.setString(obj.getnatureOfDoc_ID());
-        prepUpdate.setString(obj.getsupportOfDoc());
+        prepUpdate.setString(obj.getdocument_ID().getdocument_ID());
+        prepUpdate.setInt(obj.getperson_ID().getperson_ID());
 
         retBool = prepUpdate.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Update a new %s : [%s]", "NatureOfDoc", prepUpdate.printSqlStatement(update_sql));
+            String printedSql = String.format("Update a new %s : [%s]", "AuthTranscript", prepUpdate.printSqlStatement(update_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
@@ -307,24 +314,24 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link NatureOfDoc} - insert the job class.
+     * @param obj - {@link AuthTranscript} - insert the job class.
      * @return - boolean - the state of the sql delete.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
-    public boolean delete(NatureOfDoc obj) throws SQLException {
+    public boolean delete(AuthTranscript obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "NatureOfDoc"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "AuthTranscript"));
             }
             return false;
         }
 
-        if (obj.getnatureOfDoc_ID() == null || obj.getnatureOfDoc_ID().isEmpty()) {
+        if (obj.getdocument_ID() == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "natureOfDoc_ID"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "document_ID"));
             }
             retBool = false;
         }
@@ -334,16 +341,16 @@ public class DAO_NatureOfDoc implements Dao<NatureOfDoc> {
         }
 
         String delete_sql = String.format("%s %s ",
-                String.format("DELETE FROM %s", "NatureOfDoc"),
-                String.format("WHERE %s = ?", "natureOfDoc_ID"));
+                String.format("DELETE FROM %s", "AuthTranscript"),
+                String.format("WHERE %s = ?", "document_ID"));
 
         final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
-        prepDelete.setString(obj.getnatureOfDoc_ID());
+        prepDelete.setString(obj.getdocument_ID().getdocument_ID());
 
         retBool = prepDelete.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Delete a new %s : [%s]", "NatureOfDoc", prepDelete.printSqlStatement(delete_sql));
+            String printedSql = String.format("Delete a new %s : [%s]", "AuthTranscript", prepDelete.printSqlStatement(delete_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);

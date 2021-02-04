@@ -1,12 +1,11 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.RespGroup;
 import fr.bdd.log.generate.CustomLogger;
 
-import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +22,11 @@ import java.util.Map;
 public class DAO_RespGroup implements Dao<RespGroup> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_RespGroup.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_RespGroup#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_RespGroup#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -39,9 +38,9 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_RespGroup(DataConnection conn) throws InvalidKeyException {
+    public DAO_RespGroup(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -50,10 +49,10 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -67,9 +66,9 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link RespGroup} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     
      */
-    public final RespGroup select(String id) throws SQLException, InvalidKeyException {
+    public final RespGroup select(String id) throws SQLException {
         RespGroup retRespGroup = null;
 
         if (id == null) {
@@ -84,7 +83,7 @@ public class DAO_RespGroup implements Dao<RespGroup> {
                 String.format("FROM %s ", "RespGroup"),
                 String.format("WHERE id = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -106,9 +105,9 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link RespGroup} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     
      */
-    public final List<RespGroup> selectByMultiRespGroup(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<RespGroup> selectByMultiRespGroup(HashMap<String, String> map) throws SQLException {
         final List<RespGroup> retRespGroups = new ArrayList<>();
 
         if (map == null) {
@@ -126,17 +125,17 @@ public class DAO_RespGroup implements Dao<RespGroup> {
         ));
 
         for (Map.Entry<String,String> entry : map.entrySet()) {
-            select_sql.append(String.format(" AND %s = ?", entry.getKey()));
+            select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 RespGroup RespGroup =
                         new RespGroup().setrespGroup_ID(resultSelect.getString("respGroup_ID"));
                 retRespGroups.add(RespGroup);
@@ -152,10 +151,9 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link RespGroup}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public List<RespGroup> selectAll() throws SQLException, InvalidKeyException {
+    public List<RespGroup> selectAll() throws SQLException {
         final List<RespGroup> retRespGroups = new ArrayList<>();
 
         String format = String.format("%s %s %s",
@@ -163,11 +161,10 @@ public class DAO_RespGroup implements Dao<RespGroup> {
                 String.format("FROM %s ", "RespGroup"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
-
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 RespGroup RespGroup =
                         new RespGroup()
                                 .setrespGroup_ID(resultSelectAll.getString("respGroup_ID"));
@@ -179,7 +176,7 @@ public class DAO_RespGroup implements Dao<RespGroup> {
     }
 
     @Override
-    public List<RespGroup> selectAll(List<RespGroup> excludeList) throws SQLException, InvalidKeyException {
+    public List<RespGroup> selectAll(List<RespGroup> excludeList) throws SQLException {
         return null;
     }
 
@@ -192,10 +189,10 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      * @param obj - {@link RespGroup} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     
      */
     @Override
-    public boolean insert(RespGroup obj) throws SQLException, InvalidKeyException {
+    public boolean insert(RespGroup obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -220,7 +217,7 @@ public class DAO_RespGroup implements Dao<RespGroup> {
                 String.format("INSERT INTO %s (%s)", "RespGroup", "respGroup_ID"),
                 "VALUES (?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getrespGroup_ID());
 
         retBool = prepInsert.executeUpdate() > 0;
@@ -243,10 +240,10 @@ public class DAO_RespGroup implements Dao<RespGroup> {
      * @param obj - {@link RespGroup} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     
      */
     @Override
-    public boolean update(RespGroup obj) throws SQLException, InvalidKeyException {
+    public boolean update(RespGroup obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -272,7 +269,7 @@ public class DAO_RespGroup implements Dao<RespGroup> {
                 String.format("SET %s = ?", "respGroup_ID"),
                 String.format("WHERE %s = ?", "respGroup_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getrespGroup_ID());
 
         retBool = prepUpdate.executeUpdate() > 0;
@@ -286,10 +283,6 @@ public class DAO_RespGroup implements Dao<RespGroup> {
         return retBool;
     }
 
-    @Override
-    public boolean upsert(RespGroup obj) throws SQLException, InvalidKeyException {
-        return false;
-    }
 
     /**
      * DELETE the job class.
@@ -327,7 +320,7 @@ public class DAO_RespGroup implements Dao<RespGroup> {
                 String.format("DELETE FROM %s", "RespGroup"),
                 String.format("WHERE %s = ?", "respGroup_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setString(obj.getrespGroup_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

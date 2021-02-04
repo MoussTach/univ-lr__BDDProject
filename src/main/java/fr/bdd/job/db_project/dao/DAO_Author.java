@@ -1,12 +1,11 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Author;
 import fr.bdd.log.generate.CustomLogger;
 
-import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +22,11 @@ import java.util.Map;
 public class DAO_Author implements Dao<Author> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Author.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Author#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Author#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -39,9 +38,9 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Author(DataConnection conn) throws InvalidKeyException {
+    public DAO_Author(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -50,10 +49,10 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -67,9 +66,8 @@ public class DAO_Author implements Dao<Author> {
      * @param id - {@link Integer} - index of the associate job class. Can handle null.
      * @return - {@link Author} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final Author select(Integer id) throws SQLException, InvalidKeyException {
+    public final Author select(Integer id) throws SQLException {
         Author retAuthor = null;
 
         if (id == null) {
@@ -84,7 +82,7 @@ public class DAO_Author implements Dao<Author> {
                 String.format("FROM %s ", "Author"),
                 String.format("WHERE author_ID = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setInt(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -107,9 +105,8 @@ public class DAO_Author implements Dao<Author> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Author} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
-    public final List<Author> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+*/
+    public final List<Author> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
         final List<Author> retAuthors = new ArrayList<>();
 
         if (map == null) {
@@ -131,13 +128,13 @@ public class DAO_Author implements Dao<Author> {
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
-            if (resultSelect.next()) {
+            while (resultSelect.next()) {
                 Author Author =
                         new Author()
                                     .setauthor_ID(resultSelect.getInt("author_ID"))
@@ -155,10 +152,9 @@ public class DAO_Author implements Dao<Author> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Author}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
+    */
     @Override
-    public List<Author> selectAll() throws SQLException, InvalidKeyException {
+    public List<Author> selectAll() throws SQLException {
         final List<Author> retAuthors = new ArrayList<>();
 
         String format = String.format("%s %s",
@@ -166,11 +162,10 @@ public class DAO_Author implements Dao<Author> {
                 String.format("FROM %s ", "Author"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
-
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
-            if (resultSelectAll.next()) {
+            while (resultSelectAll.next()) {
                 Author Author =
                         new Author()
                                 .setauthor_ID(resultSelectAll.getInt("author_ID"))
@@ -183,7 +178,7 @@ public class DAO_Author implements Dao<Author> {
     }
 
     @Override
-    public List<Author> selectAll(List<Author> excludeList) throws SQLException, InvalidKeyException {
+    public List<Author> selectAll(List<Author> excludeList) throws SQLException {
         return null;
     }
 
@@ -196,10 +191,9 @@ public class DAO_Author implements Dao<Author> {
      * @param obj - {@link Author} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
+*/
     @Override
-    public boolean insert(Author obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Author obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -231,7 +225,7 @@ public class DAO_Author implements Dao<Author> {
                 String.format("INSERT INTO %s (%s, %s)", "Author", "author_ID", "name"),
                 "VALUES (?, ?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setInt(obj.getauthor_ID());
         prepInsert.setString(obj.getname());
 
@@ -255,10 +249,9 @@ public class DAO_Author implements Dao<Author> {
      * @param obj - {@link Author} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
-     */
+*/
     @Override
-    public boolean update(Author obj) throws SQLException, InvalidKeyException {
+    public boolean update(Author obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -292,7 +285,7 @@ public class DAO_Author implements Dao<Author> {
                 String.format("SET %s = ?", "name"),
                 String.format("WHERE %s = ?", "author_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setInt(obj.getauthor_ID());
         prepUpdate.setString(obj.getname());
 
@@ -307,10 +300,6 @@ public class DAO_Author implements Dao<Author> {
         return retBool;
     }
 
-    @Override
-    public boolean upsert(Author obj) throws SQLException, InvalidKeyException {
-        return false;
-    }
 
     /**
      * DELETE the job class.
@@ -348,7 +337,7 @@ public class DAO_Author implements Dao<Author> {
                 String.format("DELETE FROM %s", "Author"),
                 String.format("WHERE %s = ?", "author_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setInt(obj.getauthor_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

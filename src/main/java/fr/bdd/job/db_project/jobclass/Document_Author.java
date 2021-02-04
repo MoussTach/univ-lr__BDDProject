@@ -13,7 +13,7 @@ import java.util.Date;
 public class Document_Author {
 
     private final ObjectProperty<Document> document_ID = new SimpleObjectProperty<>(null);
-    private final ObjectProperty<Category> category_ID = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<Author> author_ID = new SimpleObjectProperty<>(null);
 
     /**
      * Default Constructor
@@ -33,7 +33,7 @@ public class Document_Author {
 
             this.document_ID.set(clone.document_ID.get());
 
-            this.category_ID.set(clone.category_ID.get());
+            this.author_ID.set(clone.author_ID.get());
         }
     }
 
@@ -47,12 +47,12 @@ public class Document_Author {
     }
 
     /**
-     * Getter for the variable category_ID.
+     * Getter for the variable author_ID.
      *
-     * @return {@link Category} - return the variable category_ID.
+     * @return {@link Author} - return the variable author_ID.
      */
-    public Category getcategory_ID() {
-        return category_ID.get();
+    public Author getauthor_ID() {
+        return author_ID.get();
     }
 
     /**
@@ -67,13 +67,13 @@ public class Document_Author {
     }
 
     /**
-     * Setter for the variable category_ID.
+     * Setter for the variable author_ID.
      *
-     * @param category_ID - {@link Category} - category_ID of this class.
+     * @param author_ID - {@link Author} - author_ID of this class.
      * @return - {@link Document_Author} - builder pattern return
      */
-    public Document_Author setcategory_ID(Category category_ID) {
-        this.category_ID.set(category_ID);
+    public Document_Author setauthor_ID(Author author_ID) {
+        this.author_ID.set(author_ID);
         return this;
     }
 
@@ -89,14 +89,14 @@ public class Document_Author {
     }
 
     /**
-     * Property of the variable category_ID.
+     * Property of the variable author_ID.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Category>} - return the property of the variable category_ID.
+     * @return {@link ObjectProperty<Author>} - return the property of the variable author_ID.
      */
-    public ObjectProperty<Category> category_IDProperty() {
-        return category_ID;
+    public ObjectProperty<Author> author_IDProperty() {
+        return author_ID;
     }
 
     /**
