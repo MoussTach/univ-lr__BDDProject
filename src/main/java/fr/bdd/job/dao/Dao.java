@@ -3,6 +3,7 @@ package fr.bdd.job.dao;
 import fr.bdd.dataconnection.DataConnection;
 
 import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -20,10 +21,9 @@ public interface Dao<T> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
+     * @param conn - {@link Connection} - Connection used.
      */
-    void setConnection(DataConnection conn) throws InvalidKeyException;
+    void setConnection(Connection conn);
 
     /**
      * SELECT of all occurance of the job class.
@@ -32,9 +32,8 @@ public interface Dao<T> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link T}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    List<T> selectAll() throws SQLException, InvalidKeyException;
+    List<T> selectAll() throws SQLException;
 
     /**
      * SELECT of all occurance of the job class.
@@ -45,9 +44,8 @@ public interface Dao<T> {
      * @param excludeList - {@link List} - list of key
      * @return - {@link List} - a list that contain all occurance of {@link T}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    List<T> selectAll(List<T> excludeList) throws SQLException, InvalidKeyException;
+    List<T> selectAll(List<T> excludeList) throws SQLException;
 
     /**
      * INSERT the job class.
@@ -57,9 +55,8 @@ public interface Dao<T> {
      * @param obj - {@link T} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    boolean insert(T obj) throws SQLException, InvalidKeyException;
+    boolean insert(T obj) throws SQLException;
 
     /**
      * UPDATE the job class.
@@ -69,21 +66,8 @@ public interface Dao<T> {
      * @param obj - {@link T} - update the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    boolean update(T obj) throws SQLException, InvalidKeyException;
-
-    /**
-     * INSERT OR UPDATE the job class depending if it exists.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @param obj - {@link T} - update the job class.
-     * @return - boolean - the state of the sql update.
-     * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw the exception to force a try catch when used.
-     */
-    boolean upsert(T obj) throws SQLException, InvalidKeyException;
+    boolean update(T obj) throws SQLException;
 
     /**
      * DELETE the job class.
@@ -93,7 +77,6 @@ public interface Dao<T> {
      * @param obj - {@link T} - delete the job class.
      * @return - boolean - the state of the sql delete.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    boolean delete(T obj) throws SQLException, InvalidKeyException;
+    boolean delete(T obj) throws SQLException;
 }

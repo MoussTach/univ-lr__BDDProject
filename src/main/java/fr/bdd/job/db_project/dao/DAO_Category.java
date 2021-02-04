@@ -7,6 +7,7 @@ import fr.bdd.job.db_project.jobclass.Category;
 import fr.bdd.log.generate.CustomLogger;
 
 import java.security.InvalidKeyException;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -23,11 +24,11 @@ import java.util.Map;
 public class DAO_Category implements Dao<Category> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Category.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Category#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Category#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -39,9 +40,9 @@ public class DAO_Category implements Dao<Category> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Category(DataConnection conn) throws InvalidKeyException {
+    public DAO_Category(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -50,10 +51,10 @@ public class DAO_Category implements Dao<Category> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -67,9 +68,8 @@ public class DAO_Category implements Dao<Category> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link Category} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final Category select(String id) throws SQLException, InvalidKeyException {
+    public final Category select(String id) throws SQLException {
         Category retCategory = null;
 
         if (id == null) {
@@ -84,7 +84,7 @@ public class DAO_Category implements Dao<Category> {
                 String.format("FROM %s ", "Category"),
                 String.format("WHERE id = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -108,9 +108,8 @@ public class DAO_Category implements Dao<Category> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Category} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final List<Category> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<Category> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
         final List<Category> retCategories = new ArrayList<>();
 
         if (map == null) {
@@ -132,7 +131,7 @@ public class DAO_Category implements Dao<Category> {
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
@@ -156,10 +155,9 @@ public class DAO_Category implements Dao<Category> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Category}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public List<Category> selectAll() throws SQLException, InvalidKeyException {
+    public List<Category> selectAll() throws SQLException {
         final List<Category> retCategories = new ArrayList<>();
 
         String format = String.format("%s %s",
@@ -167,7 +165,7 @@ public class DAO_Category implements Dao<Category> {
                 String.format("FROM %s ", "Category"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
@@ -185,7 +183,7 @@ public class DAO_Category implements Dao<Category> {
     }
 
     @Override
-    public List<Category> selectAll(List<Category> excludeList) throws SQLException, InvalidKeyException {
+    public List<Category> selectAll(List<Category> excludeList) throws SQLException {
         return null;
     }
 
@@ -198,10 +196,9 @@ public class DAO_Category implements Dao<Category> {
      * @param obj - {@link Category} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean insert(Category obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Category obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -240,7 +237,7 @@ public class DAO_Category implements Dao<Category> {
                 String.format("INSERT INTO %s (%s, %s, %s)", "Category", "category_ID", "dataCategory", "prefix"),
                 "VALUES (?, ?, ?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getcategory_ID());
         prepInsert.setString(obj.getdataCategory());
         prepInsert.setString(obj.getprefix());
@@ -265,10 +262,9 @@ public class DAO_Category implements Dao<Category> {
      * @param obj - {@link Category} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean update(Category obj) throws SQLException, InvalidKeyException {
+    public boolean update(Category obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -310,7 +306,7 @@ public class DAO_Category implements Dao<Category> {
                 String.format("SET %s = ?", "prefix"),
                 String.format("WHERE %s = ?", "Category_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getcategory_ID());
         prepUpdate.setString(obj.getdataCategory());
         prepUpdate.setString(obj.getprefix());
@@ -324,11 +320,6 @@ public class DAO_Category implements Dao<Category> {
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
         }
         return retBool;
-    }
-
-    @Override
-    public boolean upsert(Category obj) throws SQLException, InvalidKeyException {
-        return false;
     }
 
     /**
@@ -367,7 +358,7 @@ public class DAO_Category implements Dao<Category> {
                 String.format("DELETE FROM %s", "Category"),
                 String.format("WHERE %s = ?", "Category_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setString(obj.getcategory_ID());
 
         retBool = prepDelete.executeUpdate() > 0;

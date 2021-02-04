@@ -1,14 +1,12 @@
 package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
-import fr.bdd.dataconnection.DataConnection;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Condition;
 import fr.bdd.log.generate.CustomLogger;
-import org.apache.logging.log4j.Level;
 
 import java.security.InvalidKeyException;
-import java.sql.PreparedStatement;
+import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -25,11 +23,11 @@ import java.util.Map;
 public class DAO_Condition implements Dao<Condition> {
 
     private static final CustomLogger LOGGER = CustomLogger.create(DAO_Condition.class.getName());
-    private DataConnection connectionHandle_ = null;
+    private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Condition#setConnection(DataConnection)} before any other function.
+     * Need to call {@link DAO_Condition#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
@@ -41,9 +39,9 @@ public class DAO_Condition implements Dao<Condition> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - connection used.
+     * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Condition(DataConnection conn) throws InvalidKeyException {
+    public DAO_Condition(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -52,10 +50,10 @@ public class DAO_Condition implements Dao<Condition> {
      *
      * @author Gaetan Brenckle
      *
-     * @param conn - {@link DataConnection} - Connection used.
+     * @param conn - {@link Connection} - Connection used.
      */
     @Override
-    public void setConnection(DataConnection conn) throws InvalidKeyException {
+    public void setConnection(Connection conn) {
         this.connectionHandle_ = conn;
     }
 
@@ -69,9 +67,8 @@ public class DAO_Condition implements Dao<Condition> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link Condition} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final Condition select(String id) throws SQLException, InvalidKeyException {
+    public final Condition select(String id) throws SQLException {
         Condition retCondition = null;
 
         if (id == null) {
@@ -86,7 +83,7 @@ public class DAO_Condition implements Dao<Condition> {
                 String.format("FROM %s ", "Condition"),
                 String.format("WHERE id = ?"));
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
@@ -108,9 +105,8 @@ public class DAO_Condition implements Dao<Condition> {
      * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
      * @return - {@link Condition} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final List<Condition> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<Condition> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
         final List<Condition> retConditions = new ArrayList<>();
 
         if (map == null) {
@@ -132,7 +128,7 @@ public class DAO_Condition implements Dao<Condition> {
         }
 
 
-        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(select_sql.toString()));
+        final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
         for (Map.Entry<String,String> entry : map.entrySet()) {
             prepSelect.setString(entry.getValue());
         }
@@ -154,10 +150,9 @@ public class DAO_Condition implements Dao<Condition> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Condition}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public List<Condition> selectAll() throws SQLException, InvalidKeyException {
+    public List<Condition> selectAll() throws SQLException {
         final List<Condition> retConditions = new ArrayList<>();
 
         String format = String.format("%s %s %s",
@@ -165,7 +160,7 @@ public class DAO_Condition implements Dao<Condition> {
                 String.format("FROM %s ", "Condition"));
         final String selectAll_sql = format;
 
-        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(selectAll_sql));
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
@@ -181,7 +176,7 @@ public class DAO_Condition implements Dao<Condition> {
     }
 
     @Override
-    public List<Condition> selectAll(List<Condition> excludeList) throws SQLException, InvalidKeyException {
+    public List<Condition> selectAll(List<Condition> excludeList) throws SQLException {
         return null;
     }
 
@@ -194,10 +189,9 @@ public class DAO_Condition implements Dao<Condition> {
      * @param obj - {@link Condition} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean insert(Condition obj) throws SQLException, InvalidKeyException {
+    public boolean insert(Condition obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -222,7 +216,7 @@ public class DAO_Condition implements Dao<Condition> {
                 String.format("INSERT INTO %s (%s)", "Condition", "condition_ID"),
                 "VALUES (?)");
 
-        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(insert_sql));
+        final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getcondition_ID());
 
         retBool = prepInsert.executeUpdate() > 0;
@@ -245,10 +239,9 @@ public class DAO_Condition implements Dao<Condition> {
      * @param obj - {@link Condition} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
     @Override
-    public boolean update(Condition obj) throws SQLException, InvalidKeyException {
+    public boolean update(Condition obj) throws SQLException {
         boolean retBool = true;
 
         if (obj == null) {
@@ -274,7 +267,7 @@ public class DAO_Condition implements Dao<Condition> {
                 String.format("SET %s = ?", "condition_ID"),
                 String.format("WHERE %s = ?", "condition_ID"));
 
-        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(update_sql));
+        final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getcondition_ID());
 
         retBool = prepUpdate.executeUpdate() > 0;
@@ -286,11 +279,6 @@ public class DAO_Condition implements Dao<Condition> {
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
         }
         return retBool;
-    }
-
-    @Override
-    public boolean upsert(Condition obj) throws SQLException, InvalidKeyException {
-        return false;
     }
 
     /**
@@ -329,7 +317,7 @@ public class DAO_Condition implements Dao<Condition> {
                 String.format("DELETE FROM %s", "Condition"),
                 String.format("WHERE %s = ?", "condition_ID"));
 
-        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.getConnection().prepareStatement(delete_sql));
+        final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
         prepDelete.setString(obj.getcondition_ID());
 
         retBool = prepDelete.executeUpdate() > 0;
