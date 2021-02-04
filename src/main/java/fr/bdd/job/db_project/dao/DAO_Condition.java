@@ -141,6 +141,7 @@ public class DAO_Condition implements Dao<Condition> {
             if (resultSelect.next()) {
                 Condition condition =
                         new Condition().setcondition_ID(resultSelect.getString("condition_ID"));
+                retConditions.add(condition);
             }
         }
         return retConditions;

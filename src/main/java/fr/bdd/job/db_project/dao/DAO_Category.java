@@ -110,7 +110,7 @@ public class DAO_Category implements Dao<Category> {
      * @throws SQLException - throw the exception to force a try catch when used.
      * @throws InvalidKeyException - throw this exception when the given list dont have the key wanted
      */
-    public final List<Category> selectByMultiCategory(HashMap<String, String> map) throws SQLException, InvalidKeyException {
+    public final List<Category> selectByMultiCondition(HashMap<String, String> map) throws SQLException, InvalidKeyException {
         final List<Category> retCategories = new ArrayList<>();
 
         if (map == null) {
@@ -143,6 +143,7 @@ public class DAO_Category implements Dao<Category> {
                         new Category().setcategory_ID(resultSelect.getString("category_ID"))
                                     .setdataCategory(resultSelect.getString("dataCategory"))
                                     .setprefix(resultSelect.getString("prefix"));
+                retCategories.add(Category);
             }
         }
         return retCategories;
