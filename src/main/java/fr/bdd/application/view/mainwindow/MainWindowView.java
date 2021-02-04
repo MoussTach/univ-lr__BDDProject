@@ -9,9 +9,7 @@ import fr.bdd.log.generate.CustomLogger;
 import javafx.beans.property.ObjectProperty;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
+import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import org.controlsfx.control.StatusBar;
@@ -30,8 +28,12 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
     private final ObjectProperty<ResourceBundle> resBundleWindow_ = LanguageBundle.getInstance().bindResourceBundle("properties.language.lg_window");
     private static final CustomLogger LOGGER = CustomLogger.create(MainWindowView.class.getName());
 
-    @FXML
-    public BorderPane bPaneMainView;
+    @FXML public BorderPane bPaneMainView;
+
+    @FXML private Label lblTabCategory_SearchDocument_label;
+    @FXML private Label lblTabCategory_SearchProject_label;
+    @FXML private Label lblTabCategory_SearchPerson_label;
+    @FXML private Label lblTabCategory_SearchPublication_label;
 
     @FXML
     public StatusBar statusBarMainView;
@@ -53,21 +55,17 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
         mainWindowViewModel.act_openTaskExternal();
     }
 
-    // Method to to get extension of a file
-    private String getExtension(String fileName){
-        String extension = "";
-
-        int i = fileName.lastIndexOf('.');
-        if (i > 0 && i < fileName.length() - 1) //if the name is not empty
-            return fileName.substring(i + 1).toLowerCase();
-
-        return extension;
-    }
-
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         this.setViewModel(mainWindowViewModel);
 
+        //Text
+        lblTabCategory_SearchDocument_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchDocument_label_Property());
+        lblTabCategory_SearchProject_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchProject_label_Property());
+        lblTabCategory_SearchPerson_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchPerson_label_Property());
+        lblTabCategory_SearchPublication_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchPublication_label_Property());
+
+        //Value
         mainWindowViewModel.setbPaneMainProperty(bPaneMainView);
         mainWindowViewModel.bindProgressProperty(statusBarMainView.progressProperty());
         mainWindowViewModel.bindProgress_labelProperty(statusBarMainView.textProperty());
@@ -96,6 +94,13 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
 
     @Override
     public void onViewRemoved_Cycle() {
+        //Text
+        lblTabCategory_SearchDocument_label.textProperty().unbind();
+        lblTabCategory_SearchProject_label.textProperty().unbind();
+        lblTabCategory_SearchPerson_label.textProperty().unbind();
+        lblTabCategory_SearchPublication_label.textProperty().unbind();
+
+        //Value
         statusBarMainView.progressProperty().unbind();
         statusBarMainView.textProperty().unbind();
     }

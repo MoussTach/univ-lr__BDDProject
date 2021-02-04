@@ -141,7 +141,7 @@ public class Launch extends Application {
         PRIMARYSTAGE = primaryStage;
 
         final ViewTuple<MainWindowView, MainWindowViewModel> MainWindowViewTuple = FluentViewLoader.fxmlView(MainWindowView.class).load();
-        final Scene scene = new Scene(MainWindowViewTuple.getView(), 1500.0D, 900.0D);
+        final Scene scene = new Scene(MainWindowViewTuple.getView(), 800.0D, 600.0D);
 
         primaryStage.setTitle("Project Database - application");
         final Image ico = new Image(getClass().getResourceAsStream("/img/logo/Logo_univLR_64.png"));

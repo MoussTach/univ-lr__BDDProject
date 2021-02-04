@@ -31,13 +31,22 @@ import java.util.ResourceBundle;
 public class MainWindowViewModel extends ViewModel_SceneCycle {
 
     private final ObjectProperty<ResourceBundle> resBundleWindow_ = LanguageBundle.getInstance().bindResourceBundle("properties.language.lg_window");
+    private final ObjectProperty<ResourceBundle> resBundleSearch_ = LanguageBundle.getInstance().bindResourceBundle("properties.language.mainwindow.search.lg_search");
 
     private static final CustomLogger LOGGER = CustomLogger.create(MainWindowViewModel.class.getName());
 
+    //Text
     private final StringProperty taskWindow_title_ = new SimpleStringProperty(this.resBundleWindow_.get().getString("taskWindow_title"));
+    private final StringProperty tabCategory_SearchDocument_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchDocument_label"));
+    private final StringProperty tabCategory_SearchProject_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchProject_label"));
+    private final StringProperty tabCategory_SearchPerson_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchPerson_label"));
+    private final StringProperty tabCategory_SearchPublication_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchPublication_label"));
+
+    //Value
     private final BooleanProperty taskWindow_isShowed_ = new SimpleBooleanProperty(false);
 
     private ChangeListener<ResourceBundle> listener_ChangedValue_bundleLanguage_Window_ = null;
+    private ChangeListener<ResourceBundle> listener_ChangedValue_bundleLanguage_Search_ = null;
 
     @InjectScope
     private MainScope mainScope;
@@ -53,9 +62,16 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][constructor] Creation of the MainWindowViewModel() object.");
         }
 
+        //RessourceBundle Listener
         if (this.listener_ChangedValue_bundleLanguage_Window_ == null) {
             this.listener_ChangedValue_bundleLanguage_Window_ = this::listener_bundleLanguage_window;
             this.resBundleWindow_.addListener(this.listener_ChangedValue_bundleLanguage_Window_);
+        }
+
+        //RessourceBundle Listener
+        if (this.listener_ChangedValue_bundleLanguage_Search_ == null) {
+            this.listener_ChangedValue_bundleLanguage_Search_ = this::listener_bundleLanguage_search;
+            this.resBundleSearch_.addListener(this.listener_ChangedValue_bundleLanguage_Search_);
         }
     }
 
@@ -102,6 +118,51 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
 
 
     /**
+     * Property of the variable tabCategory_SearchDocument_label_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchDocument_label_.
+     */
+    public StringProperty tabCategory_SearchDocument_label_Property() {
+        return tabCategory_SearchDocument_label_;
+    }
+
+    /**
+     * Property of the variable tabCategory_SearchProject_label_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchProject_label_.
+     */
+    public StringProperty tabCategory_SearchProject_label_Property() {
+        return tabCategory_SearchProject_label_;
+    }
+
+    /**
+     * Property of the variable tabCategory_SearchPerson_label_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchPerson_label_.
+     */
+    public StringProperty tabCategory_SearchPerson_label_Property() {
+        return tabCategory_SearchPerson_label_;
+    }
+
+    /**
+     * Property of the variable tabCategory_SearchPublication_label_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchPublication_label_.
+     */
+    public StringProperty tabCategory_SearchPublication_label_Property() {
+        return tabCategory_SearchPublication_label_;
+    }
+
+
+    /**
      * Setter for the scope property mainScope.bPaneNodeProperty().
      *
      * @author Gaetan Brenckle
@@ -143,6 +204,20 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
         this.taskWindow_title_.set(this.resBundleWindow_.get().getString("taskWindow_title"));
     }
 
+    /**
+     * Listener for the ressource bundle.
+     *
+     * @param observable - {@link ObservableValue} - the value observed
+     * @param oldValue - {@link ResourceBundle} - the old value that are remplaced
+     * @param newValue - {@link ResourceBundle} - the new value
+     */
+    private void listener_bundleLanguage_search(ObservableValue<? extends ResourceBundle> observable, ResourceBundle oldValue, ResourceBundle newValue) {
+        this.tabCategory_SearchDocument_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchDocument_label"));
+        this.tabCategory_SearchProject_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchProject_label"));
+        this.tabCategory_SearchPerson_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchPerson_label"));
+        this.tabCategory_SearchPublication_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchPublication_label"));
+    }
+
 
     @Override
     public void onViewAdded_Cycle() {
@@ -155,5 +230,11 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
             this.listener_ChangedValue_bundleLanguage_Window_ = null;
         }
         LanguageBundle.getInstance().unbindRessourceBundle(this.resBundleWindow_);
+
+        if (this.listener_ChangedValue_bundleLanguage_Search_ != null) {
+            this.resBundleSearch_.removeListener(this.listener_ChangedValue_bundleLanguage_Search_);
+            this.listener_ChangedValue_bundleLanguage_Search_ = null;
+        }
+        LanguageBundle.getInstance().unbindRessourceBundle(this.resBundleSearch_);
     }
 }

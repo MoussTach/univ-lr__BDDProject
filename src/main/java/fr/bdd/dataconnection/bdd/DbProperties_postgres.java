@@ -200,6 +200,4 @@ public class DbProperties_postgres extends DbConnection {
         isConnected_.set(false);
         return false;
     }
-
-
 }

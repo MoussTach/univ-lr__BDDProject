@@ -43,7 +43,6 @@ public class Document {
     public Document(Document clone) {
 
         if (clone != null) {
-
             this.document_ID.set(clone.document_ID.get());
 
             this.category_ID.set(clone.category_ID.get());
