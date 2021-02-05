@@ -32,6 +32,23 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-base</artifactId>
+            <version>15.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx</artifactId>
+            <version>15.0.1</version>
+            <type>pom</type>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>15</version>
+        </dependency>
+
         <!-- ********************************************************
                                      Interface
              ******************************************************** -->
@@ -287,7 +304,7 @@
         <arg-java-config>-Djava.library.path=${basedir}/target/${dll-directory}/64 -Dfile.encoding=UTF-8 -Xmx4096m</arg-java-config>
         <dataCreated-directory>data_created</dataCreated-directory>
         <data-directory>data_ressources</data-directory>
-        <dll-directory>dll</dll-directory>
+        <dll-directory>webkit</dll-directory>
     </properties>
 
 </project>
