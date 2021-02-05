@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import fr.bdd.custom.remastered.controls.list.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.web.*?>
+
+<StackPane stylesheets="@../../../../../../../css/application.css" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bdd.application.view.sidewindow.options.category.OptionsCategory_DashboardView">
+    <VBox spacing="3.0">
+        <padding>
+            <Insets bottom="2.0" left="2.0" right="2.0" top="2.0" />
+        </padding>
+        <TitledPane fx:id="tPaneDashboard_request" animated="false" collapsible="false" text="tPaneDashboard_request">
+            <font>
+                <Font name="Calibri" size="14.0" />
+            </font>
+            <BorderPane>
+                <top>
+                    <VBox alignment="TOP_CENTER" spacing="30.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <GridPane alignment="CENTER" hgap="10.0" vgap="5.0">
+                            <columnConstraints>
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="250.0" minWidth="200.0" />
+                                <ColumnConstraints hgrow="SOMETIMES" maxWidth="600.0" minWidth="400.0" />
+                            </columnConstraints>
+                            <rowConstraints>
+                                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                            </rowConstraints>
+                            <Text fx:id="txtDashboard_request" strokeType="OUTSIDE" strokeWidth="0.0" text="txtDashboard_request" wrappingWidth="200.0" />
+                            <CustomComboBox_R fx:id="cmbDashboard_request" maxHeight="27.0" maxWidth="600.0" minHeight="27.0" minWidth="400.0" prefHeight="27.0" promptText="cmbDashboard_request" GridPane.columnIndex="1" />
+                        </GridPane>
+                    </VBox>
+                </top>
+            <center>
+               <StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" BorderPane.alignment="CENTER">
+                  <children>
+                     <TitledPane fx:id="tPaneDashboard_result" animated="false" collapsible="false" text="tPaneDashboard_result" StackPane.alignment="CENTER">
+                        <content>
+                           <WebView fx:id="webDashboard_result" minHeight="300.0" prefHeight="-1.0" prefWidth="-1.0" />
+                        </content>
+                        <font>
+                           <Font name="Calibri" size="13.0" />
+                        </font>
+                        <StackPane.margin>
+                           <Insets top="10.0" />
+                        </StackPane.margin>
+                     </TitledPane>
+                  </children>
+                  <BorderPane.margin>
+                     <Insets />
+                  </BorderPane.margin>
+               </StackPane>
+            </center>
+            </BorderPane>
+        </TitledPane>
+    </VBox>
+</StackPane>

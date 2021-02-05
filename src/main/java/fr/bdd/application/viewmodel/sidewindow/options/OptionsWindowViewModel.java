@@ -2,6 +2,7 @@ package fr.bdd.application.viewmodel.sidewindow.options;
 
 import de.saxsys.mvvmfx.utils.commands.CompositeCommand;
 import de.saxsys.mvvmfx.utils.validation.CompositeValidator;
+import fr.bdd.application.view.sidewindow.options.category.OptionsCategory_DashboardView;
 import fr.bdd.application.view.sidewindow.options.category.OptionsCategory_DatabaseView;
 import fr.bdd.application.view.sidewindow.options.category.OptionsCategory_GeneralView;
 import fr.bdd.application.viewmodel.ViewModel_SceneCycle;
@@ -89,10 +90,19 @@ public class OptionsWindowViewModel extends ViewModel_SceneCycle {
                         "generalCategory",
                         new Image(this.getClass().getResourceAsStream("/img/option/option_gear.png")),
                         OptionsCategory_GeneralView.class,
-                        this.categoryScope_));
+                        this.categoryScope_),
+                new CategoryListItemViewModel<>(
+                        "databaseCategory",
+                        new Image(this.getClass().getResourceAsStream("/img/option/option_database.png")),
+                        OptionsCategory_DatabaseView.class,
+                        this.categoryScope_),
+                new CategoryListItemViewModel<>(
+                        "dashboardCategory",
+                        new Image(this.getClass().getResourceAsStream("/img/option/option_database.png")),
+                        OptionsCategory_DashboardView.class,
+                        this.categoryScope_)
+                );
 
-
-        addCategory();
         bindCommandFromCategory();
         this.categoryScope_.optionsBaseSceneProperty().bind(this.optionRootNode_);
     }
@@ -117,32 +127,6 @@ public class OptionsWindowViewModel extends ViewModel_SceneCycle {
             this.option_Command_.register(category.getSceneClassViewModel_().getComposite_Command());
         }
         this.optionValidator_.addValidators(validatorList.toArray(new CompositeValidator[0]));
-    }
-
-    /**
-     * Method to add category panel on the list with the reference of user db_sav_log.
-     *
-     * @author Gaetan Brenckle
-     */
-    private void addCategory() {
-        if (LOGGER.isTraceEnabled()) {
-            LOGGER.trace("[public][method] usage of OptionsWindowViewModel.addCategory().");
-        }
-
-        CategoryListItemViewModel currentViewModel = null;
-
-        if (true) {
-            if (this.olistCategoryItemViews_.filtered(viewModel -> viewModel.getCategoryNamePassed_().equals("databaseCategory")).size() == 0) {
-
-                this.olistCategoryItemViews_.add(new CategoryListItemViewModel<>(
-                        "databaseCategory",
-                        new Image(this.getClass().getResourceAsStream("/img/option/option_database.png")),
-                        OptionsCategory_DatabaseView.class,
-                        this.categoryScope_));
-            }
-        } else {
-            this.olistCategoryItemViews_.removeAll(this.olistCategoryItemViews_.filtered(viewModel -> viewModel.getCategoryNamePassed_().equals("databaseCategory")));
-        }
     }
 
     /**
