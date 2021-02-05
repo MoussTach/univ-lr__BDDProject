@@ -82,7 +82,7 @@ public class Document_Author {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID.
      */
     public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
@@ -93,7 +93,7 @@ public class Document_Author {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Author>} - return the property of the variable author_ID.
+     * @return {@link ObjectProperty} - return the property of the variable author_ID.
      */
     public ObjectProperty<Author> author_IDProperty() {
         return author_ID;

@@ -288,7 +288,7 @@ public class Publication {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Person>} - return the property of the variable director.
+     * @return {@link ObjectProperty} - return the property of the variable director.
      */
     public ObjectProperty<Person> directorProperty() {
         return director;

@@ -57,6 +57,8 @@ public class MainWindow_SearchGraphViewModel extends ViewModel_SceneCycle {
      * Load all different conditions from the database.
      *
      * @author Gaetan Brenckle
+     *
+     * @return {@link Task} - return a task that will be executed
      */
     public Task<Void> load_Condition() {
 
@@ -82,7 +84,9 @@ public class MainWindow_SearchGraphViewModel extends ViewModel_SceneCycle {
 
                         updateProgress(0.4, 1.0);
 
+                        //TODO
                         listCondition.addAll(dao_condition.selectAll());
+
                         conn.commit();
 
                         if (LOGGER.isInfoEnabled()) {

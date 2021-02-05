@@ -110,32 +110,53 @@
                 <bottom>
                     <BorderPane>
                         <center>
-                            <ToolBar maxHeight="40.0" minHeight="40.0" minWidth="400.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <padding>
-                                    <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
-                                </padding>
-                            </ToolBar>
-                            <BorderPane style="-fx-background-color: rgba(255, 255, 255, 0);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
-                                <right>
-                                    <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" BorderPane.alignment="CENTER">
-                                        <padding>
-                                            <Insets left="10.0" right="40.0" />
-                                        </padding>
-                                        <Separator orientation="VERTICAL">
+                            <StackPane>
+                                <ToolBar maxHeight="40.0" minHeight="40.0" minWidth="400.0" nodeOrientation="RIGHT_TO_LEFT" prefHeight="40.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <padding>
+                                        <Insets bottom="5.0" left="20.0" right="20.0" top="5.0" />
+                                    </padding>
+                                </ToolBar>
+                                <BorderPane style="-fx-background-color: rgba(255, 255, 255, 0);" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                    <left>
+                                        <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" BorderPane.alignment="CENTER">
                                             <padding>
-                                                <Insets left="5.0" right="20.0" />
+                                                <Insets left="10.0" right="40.0" />
                                             </padding>
-                                        </Separator>
-                                        <Button fx:id="btnSearchDocument_Research" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" minWidth="150.0" mnemonicParsing="false" onAction="#act_btnSearchDocument_Research" prefWidth="150.0" text="btnSearchDocument_Research" HBox.hgrow="ALWAYS">
-                                            <graphic>
-                                                <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
-                                                    <Image url="@../../../../../../../img/search/search_research_64.png" />
-                                                </ImageView>
-                                            </graphic>
-                                        </Button>
-                                    </HBox>
-                                </right>
-                            </BorderPane>
+                                            <Separator orientation="VERTICAL">
+                                                <padding>
+                                                    <Insets left="5.0" right="20.0" />
+                                                </padding>
+                                            </Separator>
+                                            <Button fx:id="btnSearchDocument_Delete" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" minWidth="150.0" mnemonicParsing="false" onAction="#act_btnSearchDocument_Delete" prefWidth="150.0" text="btnSearchDocument_Delete" HBox.hgrow="ALWAYS">
+                                                <graphic>
+                                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                        <Image url="@../../../../../../../img/delete_64.png" />
+                                                    </ImageView>
+                                                </graphic>
+                                            </Button>
+                                        </HBox>
+                                    </left>
+                                    <right>
+                                        <HBox alignment="CENTER_RIGHT" maxHeight="40.0" minHeight="40.0" prefHeight="40.0" BorderPane.alignment="CENTER">
+                                            <padding>
+                                                <Insets left="10.0" right="40.0" />
+                                            </padding>
+                                            <Separator orientation="VERTICAL">
+                                                <padding>
+                                                    <Insets left="5.0" right="20.0" />
+                                                </padding>
+                                            </Separator>
+                                            <Button fx:id="btnSearchDocument_Research" contentDisplay="RIGHT" maxWidth="1.7976931348623157E308" minWidth="150.0" mnemonicParsing="false" onAction="#act_btnSearchDocument_Research" prefWidth="150.0" text="btnSearchDocument_Research" HBox.hgrow="ALWAYS">
+                                                <graphic>
+                                                    <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                        <Image url="@../../../../../../../img/search/search_research_64.png" />
+                                                    </ImageView>
+                                                </graphic>
+                                            </Button>
+                                        </HBox>
+                                    </right>
+                                </BorderPane>
+                            </StackPane>
                         </center>
                     </BorderPane>
                 </bottom>

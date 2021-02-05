@@ -5,9 +5,6 @@ import fr.bdd.application.viewmodel.ViewModel_SceneCycle;
 import fr.bdd.application.viewmodel.taskmanager.TaskArray;
 import fr.bdd.application.viewmodel.taskmanager.Task_Custom;
 import fr.bdd.application.viewmodel.taskmanager.ThreadArray;
-import fr.bdd.custom.remastered.controls.list.CustomComboBox_R;
-import fr.bdd.custom.remastered.controls.tabview.CustomTableView;
-import fr.bdd.custom.remastered.controls.text.CustomTextField_R;
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.db_project.dao.DAO_Category;
 import fr.bdd.job.db_project.dao.DAO_Condition;
@@ -17,23 +14,15 @@ import fr.bdd.job.db_project.jobclass.Condition;
 import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.language.LanguageBundle;
 import fr.bdd.log.generate.CustomLogger;
-import javafx.application.Platform;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.*;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.util.Pair;
 
-import java.net.URL;
 import java.sql.Connection;
-import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -69,6 +58,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     private final StringProperty searchDocument_Category_tabLabel_ = new SimpleStringProperty(this.resBundle_.get().getString("tabSearchDocument_Category"));
     private final StringProperty searchDocument_Condition_tabLabel_ = new SimpleStringProperty(this.resBundle_.get().getString("tabSearchDocument_Condition"));
 
+    private final StringProperty searchDocument_Delete_label_ = new SimpleStringProperty(this.resBundle_.get().getString("btnSearchDocument_Delete"));
     private final StringProperty searchDocument_Research_label_ = new SimpleStringProperty(this.resBundle_.get().getString("btnSearchDocument_Research"));
 
 
@@ -82,7 +72,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     private final ListProperty<Condition> listSearchDocument_Condition_ = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ObjectProperty<Condition> searchDocument_Condition_selected_ = new SimpleObjectProperty<>();
 
-    private final ObjectProperty<LocalDate> searchDocument_StartDate_value_ = new SimpleObjectProperty<>(LocalDate.now());
+    private final ObjectProperty<LocalDate> searchDocument_StartDate_value_ = new SimpleObjectProperty<>();
     private final ObjectProperty<LocalDate> searchDocument_EndDate_value_ = new SimpleObjectProperty<>(null);
 
     private final ListProperty<Document> list_document_ = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -129,6 +119,81 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
 
         searchDocument_StartDate_value_.set(null);
         searchDocument_EndDate_value_.set(null);
+
+        //Load fields
+        TASKMANAGER.addArray(new TaskArray(ThreadArray.ExecutionType.PARALLEL)
+                .addTask(new Pair(load_Category(), new TaskArray(ThreadArray.ExecutionType.END)))
+                .addTask(new Pair(load_Condition(), new TaskArray(ThreadArray.ExecutionType.END)))
+        );
+    }
+
+    /**
+     * Action when the button delete is pressed.
+     * It will delete the field selected.
+     *
+     * @author Gaetan Brenckle
+     */
+    public void actvm_Delete(Document document) {
+
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.actvm_Delete()");
+        }
+
+        Task<Void> task_searchDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/delete_64.png")), "delete a document") {
+            @Override
+            protected Void call_Task() throws Exception {
+                final List<Document> listDocument = new ArrayList<>();
+
+                final DAO_Document dao_document = new DAO_Document();
+
+                updateMessage("Try to delete a document");
+                updateProgress(0.0, 1.0);
+
+                try (Connection conn = Main.DB_CONNECTION.getDataSource().getConnection()) {
+
+                    try {
+                        dao_document.setConnection(conn);
+                        conn.setAutoCommit(false);
+
+                        updateProgress(0.4, 1.0);
+                        dao_document.delete(document);
+                        conn.commit();
+
+                        if (LOGGER.isInfoEnabled()) {
+                            LOGGER.info("Document deleted");
+                        }
+
+                        updateMessage("Successfully deleted a document");
+                        updateProgress(1, 1.0);
+
+                    } catch (Exception e) {
+                        if (LOGGER.isErrorEnabled()) {
+                            LOGGER.error(String.format("Error when synchronize", e.getMessage()), e);
+                        }
+
+                        updateMessage("Failed to delete a document");
+
+                        try {
+                            conn.rollback();
+
+                        } catch (SQLException e1) {
+                            if (LOGGER.isErrorEnabled()) {
+                                LOGGER.error(String.format("Error when try to rollback : %s", e1.getMessage()), e1);
+                            }
+                        }
+
+                        throw e;
+                    }
+                }
+
+                return null;
+            }
+        };
+
+        //Search document
+        TASKMANAGER.addArray(new TaskArray(ThreadArray.ExecutionType.PARALLEL)
+                .addTask(new Pair(task_searchDocument, new TaskArray(ThreadArray.ExecutionType.END)))
+        );
     }
 
     /**
@@ -143,7 +208,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.actvm_Research()");
         }
 
-        Task<Void> task_searchDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of document",true) {
+        Task<Void> task_searchDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of document") {
             @Override
             protected Void call_Task() throws Exception {
                 final List<Document> listDocument = new ArrayList<>();
@@ -170,13 +235,12 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                                 listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%%%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
                         }
 
-                        /*TODO
                         if (!searchDocument_Author_value_.get().isEmpty()) {
                             if (searchDocument_button_StartWith_ID_value_.get())
                                 listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
                             else
                                 listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%%%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
-                        }*/
+                        }
 
                         if (searchDocument_Category_selected_.get() != null) {
                             listParams.put("AND category_ID = ?", new Pair<>(searchDocument_Category_selected_.get().getcategory_ID(), PreparedStatementAware.listType.STRING));
@@ -240,6 +304,8 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
      * Load all different Category from the database.
      *
      * @author Gaetan Brenckle
+     *
+     * @return {@link Task} - return a task that will be executed
      */
     public Task<Void> load_Category() {
 
@@ -247,7 +313,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.load_Category()");
         }
 
-        return new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of category",true) {
+        return new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of category") {
             @Override
             protected Void call_Task() throws Exception {
                 final List<Category> listCategory = new ArrayList<>();
@@ -306,6 +372,8 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
      * Load all different conditions from the database.
      *
      * @author Gaetan Brenckle
+     *
+     * @return {@link Task} - return a task that will be executed
      */
     public Task<Void> load_Condition() {
 
@@ -313,7 +381,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.load_Condition()");
         }
 
-        return new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of condition",true) {
+        return new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of condition") {
             @Override
             protected Void call_Task() throws Exception {
                 final List<Condition> listCondition = new ArrayList<>();
@@ -547,6 +615,17 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     }
 
     /**
+     * Property of the variable searchDocument_Delete_label_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link StringProperty} - return the property of the variable searchDocument_Delete_label_.
+     */
+    public StringProperty searchDocument_Delete_label_Property() {
+        return searchDocument_Delete_label_;
+    }
+
+    /**
      * Property of the variable searchDocument_Research_label_Property.
      *
      * @author Gaetan Brenckle
@@ -720,6 +799,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
         this.searchDocument_Category_tabLabel_.set(this.resBundle_.get().getString("tabSearchDocument_Category"));
         this.searchDocument_Condition_tabLabel_.set(this.resBundle_.get().getString("tabSearchDocument_Condition"));
 
+        this.searchDocument_Delete_label_.set(this.resBundle_.get().getString("btnSearchDocument_Delete"));
         this.searchDocument_Research_label_.set(this.resBundle_.get().getString("btnSearchDocument_Research"));
 
 

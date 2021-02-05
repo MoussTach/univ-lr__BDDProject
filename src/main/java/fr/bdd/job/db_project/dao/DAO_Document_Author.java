@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
+import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.job.db_project.jobclass.Document_Author;
 import fr.bdd.log.generate.CustomLogger;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * DAO pattern class.
  * Used for the job class {@link Document_Author}
  *
- * @Document_Author Gaetan Brenckle
+ * @author Gaetan Brenckle
  */
 public class DAO_Document_Author implements Dao<Document_Author> {
 
@@ -28,7 +29,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
      * Default constructor.
      * Need to call {@link DAO_Document_Author#setConnection(Connection)} before any other function.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      */
     public DAO_Document_Author() {
     }
@@ -36,7 +37,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
     /**
      * Constructor with the Connection argument.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param conn - {@link Connection} - connection used.
      */
@@ -47,7 +48,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
     /**
      * Setter of the connection.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param conn - {@link Connection} - Connection used.
      */
@@ -59,7 +60,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
     /**
      * SELECT with the index of the associate job class.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param id - {@link Integer} - index of the associate job class. Can handle null.
      * @return - {@link Document_Author} - the job class that can be found with the index
@@ -100,10 +101,10 @@ public class DAO_Document_Author implements Dao<Document_Author> {
     /**
      * SELECT with the index of the associate job class.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
-     * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
-     * @return - {@link Document_Author} - the job class that can be found with the index
+     * @param map - {@link HashMap} - index of the associate job class. Can handle null.
+     * @return - {@link List} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
     */
     public final List<Document_Author> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
@@ -150,7 +151,50 @@ public class DAO_Document_Author implements Dao<Document_Author> {
     /**
      * SELECT of all occurance of the Document_Author class.
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
+     *
+     * @param id - {@link Document} - index of the associate job class. Can handle null.
+     * @return - {@link List} - a list that contain all occurance of {@link Document_Author}, the job class associate.
+     * @throws SQLException - throw the exception to force a try catch when used.
+     */
+    public List<Document_Author> selectAll_document(Document id) throws SQLException {
+        final List<Document_Author> retDocument_Authors = new ArrayList<>();
+        DAO_Author dao_author = new DAO_Author(this.connectionHandle_);
+
+
+        if (id == null) {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("%s select when the given id is null", "Document_author"));
+            }
+            return retDocument_Authors;
+        }
+
+        final String selectAll_sql = String.format("%s %s %s",
+                String.format("SELECT %s, %s", "document_ID", "author_ID"),
+                String.format("FROM %s ", "Document_Author"),
+                String.format("WHERE %s = ? ", "document_ID"));
+
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
+        prepSelectAll.setString(1, id.getdocument_ID());
+
+        try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
+            while (resultSelectAll.next()) {
+                Document_Author Document_Author =
+                        new Document_Author()
+                                .setauthor_ID(dao_author.select(resultSelectAll.getInt("author_ID")));
+
+                Document_Author.setdocument_ID(id);
+                retDocument_Authors.add(Document_Author);
+            }
+        }
+
+        return retDocument_Authors;
+    }
+
+    /**
+     * SELECT of all occurance of the Document_Author class.
+     *
+     * @author Gaetan Brenckle
      *
      * @return - {@link List} - a list that contain all occurance of {@link Document_Author}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
@@ -190,7 +234,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
      * INSERT the job class.
      * Cannot use (ODBC table)
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param obj - {@link Document_Author} - insert the job class.
      * @return - boolean - the state of the sql insert.
@@ -248,7 +292,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
      * UPDATE the job class.
      * Cannot use (ODBC table)
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param obj - {@link Document_Author} - insert the job class.
      * @return - boolean - the state of the sql update.
@@ -309,7 +353,7 @@ public class DAO_Document_Author implements Dao<Document_Author> {
      * DELETE the job class.
      * Cannot use (ODBC table)
      *
-     * @Document_Author Gaetan Brenckle
+     * @author Gaetan Brenckle
      *
      * @param obj - {@link Document_Author} - insert the job class.
      * @return - boolean - the state of the sql delete.

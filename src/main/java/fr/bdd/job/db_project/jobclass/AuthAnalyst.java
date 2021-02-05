@@ -104,7 +104,7 @@ public class AuthAnalyst {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID.
      */
     public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
@@ -115,7 +115,7 @@ public class AuthAnalyst {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Person>} - return the property of the variable person_ID.
+     * @return {@link ObjectProperty} - return the property of the variable person_ID.
      */
     public ObjectProperty<Person> person_IDProperty() {
         return person_ID;
@@ -126,7 +126,7 @@ public class AuthAnalyst {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Date>} - return the property of the variable date.
+     * @return {@link ObjectProperty} - return the property of the variable date.
      */
     public ObjectProperty<Date> dateProperty() {
         return date;

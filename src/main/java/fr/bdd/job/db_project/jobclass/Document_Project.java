@@ -124,7 +124,7 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID.
      */
     public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
@@ -135,7 +135,7 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Project>} - return the property of the variable project_ID.
+     * @return {@link ObjectProperty} - return the property of the variable project_ID.
      */
     public ObjectProperty<Project> project_IDProperty() {
         return project_ID;
@@ -146,7 +146,7 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<AAP>} - return the property of the variable AAP_ID.
+     * @return {@link ObjectProperty} - return the property of the variable AAP_ID.
      */
     public ObjectProperty<AAP> AAP_IDProperty() {
         return AAP_ID;
@@ -157,7 +157,7 @@ public class Document_Project {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<RespGroup>} - return the property of the variable respGroup_ID.
+     * @return {@link ObjectProperty} - return the property of the variable respGroup_ID.
      */
     public ObjectProperty<RespGroup> respGroup_IDProperty() {
         return respGroup_ID;

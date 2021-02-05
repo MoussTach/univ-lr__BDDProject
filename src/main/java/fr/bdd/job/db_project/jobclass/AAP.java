@@ -135,7 +135,7 @@ public class AAP {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Person>} - return the property of the variable responsable.
+     * @return {@link ObjectProperty} - return the property of the variable responsable.
      */
     public ObjectProperty<Person> responsableProperty() {
         return responsable;
@@ -146,7 +146,7 @@ public class AAP {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Person>} - return the property of the variable student.
+     * @return {@link ObjectProperty} - return the property of the variable student.
      */
     public ObjectProperty<Person> studentProperty() {
         return student;

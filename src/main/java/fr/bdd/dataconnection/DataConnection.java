@@ -1,6 +1,7 @@
 package fr.bdd.dataconnection;
 
 import fr.bdd.log.generate.CustomLogger;
+import org.postgresql.util.PSQLException;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

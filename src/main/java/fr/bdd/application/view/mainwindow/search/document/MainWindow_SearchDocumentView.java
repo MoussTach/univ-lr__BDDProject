@@ -56,6 +56,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
     @FXML private TableColumn<Document, String> tabSearchDocument_Condition;
 
     @FXML private Button btnSearchDocument_Reinitialize;
+    @FXML private Button btnSearchDocument_Delete;
     @FXML private Button btnSearchDocument_Research;
 
 
@@ -69,6 +70,16 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         LOGGER.input(String.format("Press the button %s", btnSearchDocument_Reinitialize.getId()));
 
         this.mainWindow_searchDocumentViewModel.actvm_Reinitialize();
+    }
+
+    @FXML
+    public void act_btnSearchDocument_Delete() {
+        LOGGER.input(String.format("Press the button %s", btnSearchDocument_Delete.getId()));
+
+        Document document = tabPaneSearchDocument.getSelectionModel().getSelectedItem();
+        if (document != null) {
+            this.mainWindow_searchDocumentViewModel.actvm_Delete(document);
+        }
     }
 
     @FXML
@@ -86,8 +97,18 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
      */
     private void initialize_tab() {
         tabSearchDocument_ID.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());
-        tabSearchDocument_Title.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());//TODO binding
-        tabSearchDocument_Author.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());//TODO binding
+        tabSearchDocument_Title.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getdocument_Language().size() > 0)
+                return cellData.getValue().getdocument_Language().get(0).titleProperty();
+            else
+                return null;
+        });
+        tabSearchDocument_Author.setCellValueFactory(cellData -> {
+            if (cellData.getValue().getdocument_Author().size() > 0)
+                return cellData.getValue().getdocument_Author().get(0).getauthor_ID().nameProperty();
+            else
+                return null;
+        });
         tabSearchDocument_StartDate.setCellValueFactory(new PropertyValueFactory<>("dateCreation_start"));
         tabSearchDocument_EndDate.setCellValueFactory(new PropertyValueFactory<>("dateCreation_end"));
         tabSearchDocument_Category.setCellValueFactory(cellData -> cellData.getValue().getcategory_ID().category_IDProperty());
@@ -130,6 +151,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         tabSearchDocument_Category.textProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Category_tabLabel_Property());
         tabSearchDocument_Condition.textProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Condition_tabLabel_Property());
 
+        btnSearchDocument_Delete.textProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Delete_label_Property());
         btnSearchDocument_Research.textProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Research_label_Property());
 
         //Value
@@ -163,7 +185,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                     }
                 }
 
-                if (dPickerSearchDocument_EndDate.getValue() != null && !dPickerSearchDocument_StartDate.getValue().equals(date)) {
+                if (dPickerSearchDocument_EndDate.getValue() != null && !date.equals(timeMax)) {
                     setDisable(date.isAfter(dPickerSearchDocument_EndDate.getValue()));
                 }
             }
@@ -174,7 +196,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                 LocalDate date = super.fromString(string);
 
                 LocalDate timeMax = dPickerSearchDocument_EndDate.getValue();
-                if ((timeMax == null) || date.isBefore(timeMax)) {
+                if ((timeMax == null) || (date.isBefore(timeMax) || date.equals(timeMax))) {
                     return date;
                 } else {
                     return null;
@@ -202,7 +224,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                     }
                 }
 
-                if (dPickerSearchDocument_StartDate.getValue() != null) {
+                if (dPickerSearchDocument_StartDate.getValue() != null && !date.equals(timeMin)) {
                     setDisable(date.isBefore(dPickerSearchDocument_StartDate.getValue()));
                 }
             }
@@ -213,7 +235,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                 LocalDate date = super.fromString(string);
 
                 LocalDate timeMin = dPickerSearchDocument_StartDate.getValue();
-                if ((timeMin == null) || date.isAfter(timeMin)) {
+                if ((timeMin == null) || (date.isAfter(timeMin) || date.equals(timeMin))) {
                     return date;
                 } else {
                     return null;
@@ -254,6 +276,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         tabSearchDocument_Category.textProperty().unbind();
         tabSearchDocument_Condition.textProperty().unbind();
 
+        btnSearchDocument_Delete.textProperty().unbind();
         btnSearchDocument_Research.textProperty().unbind();
 
         //Value

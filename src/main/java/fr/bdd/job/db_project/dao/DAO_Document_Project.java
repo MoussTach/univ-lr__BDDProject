@@ -2,7 +2,8 @@ package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
-import fr.bdd.job.db_project.jobclass.Author;
+import fr.bdd.job.db_project.jobclass.Document_Project;
+import fr.bdd.job.db_project.jobclass.Project;
 import fr.bdd.log.generate.CustomLogger;
 
 import java.sql.Connection;
@@ -15,22 +16,22 @@ import java.util.Map;
 
 /**
  * DAO pattern class.
- * Used for the job class {@link Author}
+ * Used for the job class {@link Project}
  *
  * @author Gaetan Brenckle
  */
-public class DAO_Author implements Dao<Author> {
+public class DAO_Document_Project implements Dao<Document_Project> {
 
-    private static final CustomLogger LOGGER = CustomLogger.create(DAO_Author.class.getName());
+    private static final CustomLogger LOGGER = CustomLogger.create(DAO_Document_Project.class.getName());
     private Connection connectionHandle_ = null;
 
     /**
      * Default constructor.
-     * Need to call {@link DAO_Author#setConnection(Connection)} before any other function.
+     * Need to call {@link DAO_Document_Project#setConnection(Connection)} before any other function.
      *
      * @author Gaetan Brenckle
      */
-    public DAO_Author() {
+    public DAO_Document_Project() {
     }
 
     /**
@@ -40,7 +41,7 @@ public class DAO_Author implements Dao<Author> {
      *
      * @param conn - {@link Connection} - connection used.
      */
-    public DAO_Author(Connection conn)  {
+    public DAO_Document_Project(Connection conn)  {
         this.connectionHandle_ = conn;
     }
 
@@ -63,38 +64,37 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param id - {@link Integer} - index of the associate job class. Can handle null.
-     * @return - {@link Author} - the job class that can be found with the index
+     * @param id - {@link String} - index of the associate job class. Can handle null.
+     * @return - {@link Project} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     */
-    public final Author select(Integer id) throws SQLException {
-        Author retAuthor = null;
+*/
+    public final Project select(String id) throws SQLException{
+        /*Project retProject = null;
 
         if (id == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("Author select when the given id is null");
+                LOGGER.warn("Project select when the given id is null");
             }
-            return retAuthor;
+            return retProject;
         }
 
         final String select_sql = String.format("%s %s %s",
-                String.format("SELECT %s, %s", "author_ID", "name"),
-                String.format("FROM %s ", "Author"),
-                String.format("WHERE author_ID = ?"));
+                String.format("SELECT %s", "project_ID"),
+                String.format("FROM %s ", "Project"),
+                String.format("WHERE id = ?"));
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
-        prepSelect.setInt(id);
+        prepSelect.setString(id);
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
             if (resultSelect.next()) {
-                retAuthor =
-                        new Author()
-                                .setauthor_ID(resultSelect.getInt("author_ID"))
-                                .setname(resultSelect.getString("name"));
+                retProject =
+                        new Project()
+                                .setproject_ID(resultSelect.getString("project_ID"));
 
             }
-        }
-        return retAuthor;
+        }*/
+        return null;
     }
 
     /**
@@ -106,20 +106,20 @@ public class DAO_Author implements Dao<Author> {
      * @return - {@link List} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
 */
-    public final List<Author> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
-        final List<Author> retAuthors = new ArrayList<>();
+    public final List<Project> selectByMultiProject(HashMap<String, String> map) throws SQLException{
+        final List<Project> retProjects = new ArrayList<>();
 
         if (map == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn("Author select when the given id is null");
+                LOGGER.warn("Project select when the given id is null");
             }
-            return retAuthors;
+            return retProjects;
         }
 
 
         StringBuilder select_sql = new StringBuilder(String.format("%s %s %s",
-                String.format("SELECT %s, %s", "author_ID", "name"),
-                String.format("FROM %s ", "Author"),
+                String.format("SELECT %s", "project_ID"),
+                String.format("FROM %s ", "Project"),
                 String.format("WHERE 1=1")
         ));
 
@@ -135,50 +135,48 @@ public class DAO_Author implements Dao<Author> {
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
             while (resultSelect.next()) {
-                Author Author =
-                        new Author()
-                                    .setauthor_ID(resultSelect.getInt("author_ID"))
-                                    .setname(resultSelect.getString("name"));
-                retAuthors.add(Author);
+                Project Project =
+                        new Project().setproject_ID(resultSelect.getString("project_ID"));
+                retProjects.add(Project);
             }
         }
-        return retAuthors;
+        return retProjects;
     }
 
     /**
-     * SELECT of all occurance of the Author class.
+     * SELECT of all occurance of the Project class.
      *
      * @author Gaetan Brenckle
      *
-     * @return - {@link List} - a list that contain all occurance of {@link Author}, the job class associate.
+     * @return - {@link List} - a list that contain all occurance of {@link Document_Project}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-    */
+     */
     @Override
-    public List<Author> selectAll() throws SQLException {
-        final List<Author> retAuthors = new ArrayList<>();
+    public List<Document_Project> selectAll() throws SQLException{
+        /*final List<Project> retProjects = new ArrayList<>();
 
-        String format = String.format("%s %s",
-                String.format("SELECT %s, %s", "author_ID", "name"),
-                String.format("FROM %s ", "Author"));
+        String format = String.format("%s %s %s",
+                String.format("SELECT %s", "project_ID"),
+                String.format("FROM %s ", "Project"));
         final String selectAll_sql = format;
 
         final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
 
+
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
             while (resultSelectAll.next()) {
-                Author Author =
-                        new Author()
-                                .setauthor_ID(resultSelectAll.getInt("author_ID"))
-                                .setname(resultSelectAll.getString("name"));
-                retAuthors.add(Author);
+                Project Project =
+                        new Project()
+                                .setproject_ID(resultSelectAll.getString("project_ID"));
+                retProjects.add(Project);
             }
         }
-
-        return retAuthors;
+*/
+        return null;
     }
 
     @Override
-    public List<Author> selectAll(List<Author> excludeList) throws SQLException {
+    public List<Document_Project> selectAll(List<Document_Project> excludeList) throws SQLException{
         return null;
     }
 
@@ -188,31 +186,24 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link Author} - insert the job class.
+     * @param obj - {@link Project} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
 */
     @Override
-    public boolean insert(Author obj) throws SQLException {
-        boolean retBool = true;
+    public boolean insert(Document_Project obj) throws SQLException{
+        /*boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "Author"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "Project"));
             }
             return false;
         }
 
-        if (obj.getauthor_ID() == null) {
+        if (obj.getproject_ID() == null || obj.getproject_ID().isEmpty()) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "author_ID"));
-            }
-            retBool = false;
-        }
-
-        if (obj.getname() == null || obj.getname().isEmpty()) {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "name"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "project_ID"));
             }
             retBool = false;
         }
@@ -222,22 +213,21 @@ public class DAO_Author implements Dao<Author> {
         }
 
         String insert_sql = String.format("%s %s ",
-                String.format("INSERT INTO %s (%s, %s)", "Author", "author_ID", "name"),
-                "VALUES (?, ?)");
+                String.format("INSERT INTO %s (%s)", "Project", "project_ID"),
+                "VALUES (?)");
 
         final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
-        prepInsert.setInt(obj.getauthor_ID());
-        prepInsert.setString(obj.getname());
+        prepInsert.setString(obj.getproject_ID());
 
         retBool = prepInsert.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Insert a new %s : [%s]", "Author", prepInsert.printSqlStatement(insert_sql));
+            String printedSql = String.format("Insert a new %s : [%s]", "Project", prepInsert.printSqlStatement(insert_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
-        }
-        return retBool;
+        }*/
+        return true;
     }
 
     /**
@@ -246,31 +236,24 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link Author} - insert the job class.
+     * @param obj - {@link Document_Project} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
 */
     @Override
-    public boolean update(Author obj) throws SQLException {
-        boolean retBool = true;
+    public boolean update(Document_Project obj) throws SQLException{
+        /*boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "Author"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "Project"));
             }
             return false;
         }
 
-        if (obj.getauthor_ID() == null) {
+        if (obj.getproject_ID() == null || obj.getproject_ID().isEmpty()) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "author_ID"));
-            }
-            retBool = false;
-        }
-
-        if (obj.getname() == null || obj.getname().isEmpty()) {
-            if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "name"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "project_ID"));
             }
             retBool = false;
         }
@@ -279,25 +262,23 @@ public class DAO_Author implements Dao<Author> {
             return false;
         }
 
-        String update_sql = String.format("%s %s %s %s ",
-                String.format("UPDATE %s", "Author"),
-                String.format("SET %s = ?", "author_ID"),
-                String.format("SET %s = ?", "name"),
-                String.format("WHERE %s = ?", "author_ID"));
+        String update_sql = String.format("%s %s %s ",
+                String.format("UPDATE %s", "Project"),
+                String.format("SET %s = ?", "project_ID"),
+                String.format("WHERE %s = ?", "project_ID"));
 
         final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
-        prepUpdate.setInt(obj.getauthor_ID());
-        prepUpdate.setString(obj.getname());
+        prepUpdate.setString(obj.getproject_ID());
 
         retBool = prepUpdate.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Update a new %s : [%s]", "Author", prepUpdate.printSqlStatement(update_sql));
+            String printedSql = String.format("Update a new %s : [%s]", "Project", prepUpdate.printSqlStatement(update_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
-        }
-        return retBool;
+        }*/
+        return true;
     }
 
 
@@ -307,26 +288,26 @@ public class DAO_Author implements Dao<Author> {
      *
      * @author Gaetan Brenckle
      *
-     * @param obj - {@link Author} - insert the job class.
+     * @param obj - {@link Document_Project} - insert the job class.
      * @return - boolean - the state of the sql delete.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
-    public boolean delete(Author obj) throws SQLException {
-        boolean retBool = true;
+    public boolean delete(Document_Project obj) throws SQLException {
+        /*boolean retBool = true;
 
         if (obj == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("%s on parameter to insert is null.", "Author"));
+                LOGGER.warn(String.format("%s on parameter to insert is null.", "Project"));
             }
             return false;
         }
 
-        if (obj.getauthor_ID() == null) {
+        if (obj.getproject_ID() == null || obj.getproject_ID().isEmpty()) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.warn(String.format("The parameter %s on the class is null", "author_ID"));
+                LOGGER.warn(String.format("The parameter %s on the class is null", "project_ID"));
             }
-            retBool = false;
+            return false;
         }
 
         if (!retBool) {
@@ -334,21 +315,20 @@ public class DAO_Author implements Dao<Author> {
         }
 
         String delete_sql = String.format("%s %s ",
-                String.format("DELETE FROM %s", "Author"),
-                String.format("WHERE %s = ?", "author_ID"));
+                String.format("DELETE FROM %s", "Project"),
+                String.format("WHERE %s = ?", "project_ID"));
 
         final PreparedStatementAware prepDelete = new PreparedStatementAware(connectionHandle_.prepareStatement(delete_sql));
-        prepDelete.setInt(obj.getauthor_ID());
+        prepDelete.setString(obj.getproject_ID());
 
         retBool = prepDelete.executeUpdate() > 0;
 
         if (LOGGER.isInfoEnabled() && retBool) {
-            String printedSql = String.format("Delete a new %s : [%s]", "Author", prepDelete.printSqlStatement(delete_sql));
+            String printedSql = String.format("Delete a new %s : [%s]", "Project", prepDelete.printSqlStatement(delete_sql));
 
             LOGGER.info(printedSql);
             // DbLogger.getInstance().dbLog(Level.INFO, printedSql);
-        }
-
-        return retBool;
+        }*/
+        return true;
     }
 }

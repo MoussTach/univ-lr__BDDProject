@@ -113,9 +113,8 @@ public class Launch extends Application {
 
         } catch (Exception e) {
             if (LOGGER.isFatalEnabled()) {
-                LOGGER.fatal(String.format("FATAL ERROR, ABORT THE PROGRAM : %s", e.getMessage()), e);
+                LOGGER.fatal(String.format("FATAL ERROR, %s", e.getMessage()), e);
             }
-            System.exit(1);
         }
     }
 

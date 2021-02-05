@@ -25,10 +25,6 @@ public class MenuBarView extends FxmlView_SceneCycle<MenuBarViewModel> implement
     @FXML
     public Menu menuBarFile;
     @FXML
-    public MenuItem menuBarFile_menuItemConnection;
-    @FXML
-    public MenuItem menuBarFile_menuItemDisconnection;
-    @FXML
     public MenuItem menuBarFile_menuItemOption;
 
     @FXML
@@ -41,26 +37,6 @@ public class MenuBarView extends FxmlView_SceneCycle<MenuBarViewModel> implement
     @InjectViewModel
     private MenuBarViewModel menuBarViewModel;
 
-
-    /**
-     * action on menu validation of the menu menuBarFile_menuItemConnection.
-     *
-     * @author Gaetan Brenckle
-     */
-    @FXML
-    private void act_menuItem_connection() {
-        LOGGER.input(String.format("Press the menuItem %s", menuBarFile_menuItemConnection.getId()));
-    }
-
-    /**
-     * action on menu validation of the menu menuBarFile_menuItemDisconnection.
-     *
-     * @author Gaetan Brenckle
-     */
-    @FXML
-    private void act_menuBarFile_menuItemDisconnection() {
-        LOGGER.input(String.format("Press the menuItem %s", menuBarFile_menuItemDisconnection.getId()));
-    }
 
     /**
      * action on menu validation of the menu menuBarFile.
@@ -108,8 +84,6 @@ public class MenuBarView extends FxmlView_SceneCycle<MenuBarViewModel> implement
         this.setViewModel(menuBarViewModel);
 
         menuBarFile.textProperty().bind(menuBarViewModel.menuBarFile_label_Property());
-        menuBarFile_menuItemConnection.textProperty().bind(menuBarViewModel.menuBarFile_menuItemConnection_label_Property());
-        menuBarFile_menuItemDisconnection.textProperty().bind(menuBarViewModel.menuBarFile_menuItemDisconnection_label_Property());
         menuBarFile_menuItemOption.textProperty().bind(menuBarViewModel.menuBarFile_menuItemOption_labelProperty());
 
         menuBarHelp.textProperty().bind(menuBarViewModel.menuBarHelp_label_Property());
@@ -129,8 +103,6 @@ public class MenuBarView extends FxmlView_SceneCycle<MenuBarViewModel> implement
     @Override
     public void onViewRemoved_Cycle() {
         menuBarFile.textProperty().unbind();
-        menuBarFile_menuItemConnection.textProperty().unbind();
-        menuBarFile_menuItemDisconnection.textProperty().unbind();
         menuBarFile_menuItemOption.textProperty().unbind();
 
         menuBarHelp.textProperty().unbind();

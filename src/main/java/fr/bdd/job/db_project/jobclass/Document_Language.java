@@ -212,7 +212,7 @@ public class Document_Language {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID.
      */
     public ObjectProperty<Document> document_IDProperty() {
         return document_ID;
@@ -223,7 +223,7 @@ public class Document_Language {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Language>} - return the property of the variable language_ID.
+     * @return {@link ObjectProperty} - return the property of the variable language_ID.
      */
     public ObjectProperty<Language> language_IDProperty() {
         return language_ID;

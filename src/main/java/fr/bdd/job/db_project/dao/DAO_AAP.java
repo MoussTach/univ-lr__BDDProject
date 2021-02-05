@@ -104,8 +104,8 @@ public class DAO_AAP implements Dao<AAP> {
      *
      * @author Gaetan Brenckle
      *
-     * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
-     * @return - {@link AAP} - the job class that can be found with the index
+     * @param map - {@link HashMap} - index of the associate job class. Can handle null.
+     * @return - {@link List} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     public final List<AAP> selectByMultiCondition(HashMap<String, String> map) throws SQLException {

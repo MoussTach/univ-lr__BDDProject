@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.jobclass;
 
 import javafx.beans.property.*;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 
 import java.time.LocalDate;
 import java.util.Date;
@@ -30,8 +31,17 @@ public class Document {
     private final ObjectProperty<Person> Recipient = new SimpleObjectProperty<>(null);
     private final StringProperty representation = new SimpleStringProperty("n/a");
     private final StringProperty otherRelatedResources = new SimpleStringProperty("n/a");
-    private final ListProperty<ObjectProperty<Document_Language>> document_Language = new SimpleListProperty<>(FXCollections.observableArrayList());
-    private final ListProperty<ObjectProperty<Document_Author>> document_Author = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    private final ListProperty<Document_Language> document_Language = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<Document_Publication> document_publication = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<Document_Author> document_Author = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    private final ListProperty<AuthDesc> authDesc = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<AuthRevision> authRevision = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<AuthAnalyst> authAnalyst = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<AuthTranscript> authTranscript = new SimpleListProperty<>(FXCollections.observableArrayList());
+
+    private final ListProperty<Document_Project> document_project = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     /**
      * Default Constructor
@@ -203,23 +213,76 @@ public class Document {
     }
 
     /**
-     * Getter for the variable otherRelatedResources.
+     * Getter for the variable document_Language.
      *
-     * @return {@link List<ObjectProperty<Document_Language>>} - return the variable otherRelatedResources.
+     * @return {@link List} - return the variable document_Language.
      */
-    public List<ObjectProperty<Document_Language>> getdocument_Language() {
+    public List<Document_Language> getdocument_Language() {
         return document_Language.get();
     }
 
     /**
-     * Getter for the variable otherRelatedResources.
+     * Getter for the variable document_publication.
      *
-     * @return {@link List<ObjectProperty<Document_Author>> } - return the variable otherRelatedResources.
+     * @return {@link List} - return the variable document_publication.
      */
-    public List<ObjectProperty<Document_Author>> getdocument_Author() {
+    public List<Document_Publication> getDocument_publication() {
+        return document_publication.get();
+    }
+
+    /**
+     * Getter for the variable document_Author.
+     *
+     * @return {@link List} - return the variable document_Author.
+     */
+    public List<Document_Author> getdocument_Author() {
         return document_Author.get();
     }
 
+    /**
+     * Getter for the variable authDesc.
+     *
+     * @return {@link List} - return the variable authDesc.
+     */
+    public List<AuthDesc> getAuthDesc() {
+        return authDesc.get();
+    }
+
+    /**
+     * Getter for the variable authRevision.
+     *
+     * @return {@link List} - return the variable authRevision.
+     */
+    public List<AuthRevision> getAuthRevision() {
+        return authRevision.get();
+    }
+
+    /**
+     * Getter for the variable authAnalyst.
+     *
+     * @return {@link List} - return the variable authAnalyst.
+     */
+    public List<AuthAnalyst> getAuthAnalyst() {
+        return authAnalyst.get();
+    }
+
+    /**
+     * Getter for the variable authTranscript.
+     *
+     * @return {@link List} - return the variable authTranscript.
+     */
+    public List<AuthTranscript> getAuthTranscript() {
+        return authTranscript.get();
+    }
+
+    /**
+     * Getter for the variable document_project.
+     *
+     * @return {@link List} - return the variable document_project.
+     */
+    public List<Document_Project> getDocument_project() {
+        return document_project.get();
+    }
 
     /**
      * Setter for the variable document_ID.
@@ -387,23 +450,34 @@ public class Document {
     }
 
     /**
-     * Setter for the variable otherRelatedResources.
+     * Setter for the variable document_Language.
      *
-     * @param document_Language - {@link ObjectProperty<Document_Language>} - otherRelatedResources of this class.
-     * @return - {@link List<ObjectProperty<Document_Language>>} - builder pattern return
+     * @param document_Language - {@link Document_Language} - document_Language of this class.
+     * @return - {@link Document} - builder pattern return
      */
-    public Document addDocument_Language(ObjectProperty<Document_Language> document_Language) {
+    public Document addDocument_Language(Document_Language document_Language) {
         this.document_Language.add(document_Language);
+        return this;
+    }
+
+    /**
+     * Setter for the variable document_publication.
+     *
+     * @param document_publication - {@link Document_Publication} - document_publication of this class.
+     * @return - {@link Document} - builder pattern return
+     */
+    public Document addDocument_publication(Document_Publication document_publication) {
+        this.document_publication.add(document_publication);
         return this;
     }
 
     /**
      * Setter for the variable otherRelatedResources.
      *
-     * @param document_Author - {@link ObjectProperty<Document_Author>} - otherRelatedResources of this class.
-     * @return - {@link List<ObjectProperty<Document_Author>>} - builder pattern return
+     * @param document_Author - {@link Document_Author} - otherRelatedResources of this class.
+     * @return - {@link Document} - builder pattern return
      */
-    public Document addDocument_Author(ObjectProperty<Document_Author> document_Author) {
+    public Document addDocument_Author(Document_Author document_Author) {
         this.document_Author.add(document_Author);
         return this;
     }
@@ -425,7 +499,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Category>} - return the property of the variable category_ID.
+     * @return {@link ObjectProperty} - return the property of the variable category_ID.
      */
     public ObjectProperty<Category> category_IDProperty() {
         return category_ID;
@@ -436,7 +510,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<LocalDate>} - return the property of the variable dateCreation_start.
+     * @return {@link ObjectProperty} - return the property of the variable dateCreation_start.
      */
     public ObjectProperty<LocalDate> dateCreation_startProperty() {
         return dateCreation_start;
@@ -447,7 +521,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<LocalDate>} - return the property of the variable dateCreation_end.
+     * @return {@link ObjectProperty} - return the property of the variable dateCreation_end.
      */
     public ObjectProperty<LocalDate> dateCreation_endProperty() {
         return dateCreation_end;
@@ -458,7 +532,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<NatureOfDoc>} - return the property of the variable natureOfDoc_ID.
+     * @return {@link ObjectProperty} - return the property of the variable natureOfDoc_ID.
      */
     public ObjectProperty<NatureOfDoc> natureOfDoc_IDProperty() {
         return natureOfDoc_ID;
@@ -469,7 +543,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Condition>} - return the property of the variable condition_ID.
+     * @return {@link ObjectProperty} - return the property of the variable condition_ID.
      */
     public ObjectProperty<Condition> condition_IDProperty() {
         return condition_ID;
@@ -546,7 +620,7 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Person>} - return the property of the variable Recipient.
+     * @return {@link ObjectProperty} - return the property of the variable Recipient.
      */
     public ObjectProperty<Person> RecipientProperty() {
         return Recipient;
@@ -575,26 +649,93 @@ public class Document {
     }
 
     /**
-     * Property of the variable otherRelatedResources.
+     * Property of the variable document_Language.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ListProperty<ObjectProperty<Document_Language>> } - return the property of the variable otherRelatedResources.
+     * @return {@link ListProperty} - return the property of the variable document_Language.
      */
-    public ListProperty<ObjectProperty<Document_Language>> document_LanguageProperty() {
+    public ListProperty<Document_Language> document_LanguageProperty() {
         return document_Language;
     }
 
     /**
-     * Property of the variable otherRelatedResources.
+     * Property of the variable document_publication.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ListProperty<ObjectProperty<Document_Author>> } - return the property of the variable otherRelatedResources.
+     * @return {@link ListProperty} - return the property of the variable document_publication.
      */
-    public ListProperty<ObjectProperty<Document_Author>> document_AuthorProperty() {
+    public ListProperty<Document_Publication> document_publicationProperty() {
+        return document_publication;
+    }
+
+    /**
+     * Property of the variable document_Author.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable document_Author.
+     */
+    public ListProperty<Document_Author> document_AuthorProperty() {
         return document_Author;
     }
+
+    /**
+     * Property of the variable authDesc.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable authDesc.
+     */
+    public ListProperty<AuthDesc> authDescProperty() {
+        return authDesc;
+    }
+
+    /**
+     * Property of the variable authRevision.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable authRevision.
+     */
+    public ListProperty<AuthRevision> authRevisionProperty() {
+        return authRevision;
+    }
+
+    /**
+     * Property of the variable authAnalyst.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable authAnalyst.
+     */
+    public ListProperty<AuthAnalyst> authAnalystProperty() {
+        return authAnalyst;
+    }
+
+    /**
+     * Property of the variable authTranscript.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable authTranscript.
+     */
+    public ListProperty<AuthTranscript> authTranscriptProperty() {
+        return authTranscript;
+    }
+
+    /**
+     * Property of the variable document_project.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable document_project.
+     */
+    public ListProperty<Document_Project> document_projectProperty() {
+        return document_project;
+    }
+
 
     /**
      * ToString methods, created when this class is used on listing

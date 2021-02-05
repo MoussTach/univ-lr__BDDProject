@@ -39,8 +39,6 @@ public class MenuBarViewModel extends ViewModel_SceneCycle {
     private final StringProperty menuBarFile_label_ = new SimpleStringProperty(this.resBundle_.get().getString("menuBarFile"));
 
     private final StringProperty userConnectionWindow_title_ = new SimpleStringProperty(this.resBundleWindow_.get().getString("userConnectionWindows_title"));
-    private final StringProperty menuBarFile_menuItemConnection_label_ = new SimpleStringProperty(this.resBundle_.get().getString("menuBarFile_menuItemConnection"));
-    private final StringProperty menuBarFile_menuItemDisconnection_label_ = new SimpleStringProperty(this.resBundle_.get().getString("menuBarFile_menuItemDisconnection"));
     private final StringProperty menuBarFile_menuItemOption_label_ = new SimpleStringProperty(this.resBundle_.get().getString("menuBarFile_menuItemOption"));
     private final StringProperty optionsWindow_title_ = new SimpleStringProperty(this.resBundleWindow_.get().getString("optionsWindows_title"));
 
@@ -129,28 +127,6 @@ public class MenuBarViewModel extends ViewModel_SceneCycle {
     }
 
     /**
-     * Property of the variable menuBarFile_menuItemConnection_label_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable menuBarFile_menuItemConnection_label_.
-     */
-    public StringProperty menuBarFile_menuItemConnection_label_Property() {
-        return menuBarFile_menuItemConnection_label_;
-    }
-
-    /**
-     * Property of the variable menuBarFile_menuItemDisconnection_label_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable menuBarFile_menuItemDisconnection_label_.
-     */
-    public StringProperty menuBarFile_menuItemDisconnection_label_Property() {
-        return menuBarFile_menuItemDisconnection_label_;
-    }
-
-    /**
      * Property of the variable menuBarFile_menuItemOption_label_.
      *
      * @author Gaetan Brenckle
@@ -193,8 +169,6 @@ public class MenuBarViewModel extends ViewModel_SceneCycle {
      */
     private void listener_bundleLanguage(ObservableValue<? extends ResourceBundle> observable, ResourceBundle oldValue, ResourceBundle newValue) {
         this.menuBarFile_label_.set(this.resBundle_.get().getString("menuBarFile"));
-
-        this.menuBarFile_menuItemConnection_label_.set(this.resBundle_.get().getString("menuBarFile_menuItemConnection"));
         this.menuBarFile_menuItemOption_label_.set(this.resBundle_.get().getString("menuBarFile_menuItemOption"));
 
         this.menuBarHelp_label_.set(this.resBundle_.get().getString("menuBarHelp"));

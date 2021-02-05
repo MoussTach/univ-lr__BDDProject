@@ -181,7 +181,7 @@ public class DbProperties_postgres extends DbConnection {
             }
             this.dataConnection_ = new DataConnection("org.postgresql.Driver", "jdbc:postgresql", server, port, name, user, password);
             try (Connection conn = this.dataConnection_.getConnection()) {
-                if (conn.isValid(3)) {
+                if (conn != null && conn.isValid(3)) {
 
                     isConnected_.set(true);
 
@@ -191,7 +191,6 @@ public class DbProperties_postgres extends DbConnection {
                     return true;
                 }
             }
-
         } catch (SQLException e) {
             if (LOGGER.isErrorEnabled()) {
                 LOGGER.error(String.format("Error caught : exception when try connecting : %s", e.getMessage()), e);

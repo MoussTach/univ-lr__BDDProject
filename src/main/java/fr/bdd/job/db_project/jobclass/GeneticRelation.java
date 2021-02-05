@@ -104,7 +104,7 @@ public class GeneticRelation {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID_src.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID_src.
      */
     public ObjectProperty<Document> document_ID_srcProperty() {
         return document_ID_src;
@@ -115,7 +115,7 @@ public class GeneticRelation {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Document>} - return the property of the variable document_ID_dest.
+     * @return {@link ObjectProperty} - return the property of the variable document_ID_dest.
      */
     public ObjectProperty<Document> document_ID_destProperty() {
         return document_ID_dest;

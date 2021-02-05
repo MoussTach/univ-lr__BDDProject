@@ -68,7 +68,6 @@ public class DAO_Document implements Dao<Document> {
      * @param id - {@link String} - index of the associate job class. Can handle null.
      * @return - {@link Document} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @ - throw this exception when the given list dont have the key wanted
      */
     public final Document select(String id) throws SQLException {
         Document retDocument = null;
@@ -76,6 +75,15 @@ public class DAO_Document implements Dao<Document> {
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
         DAO_Condition dao_condition = new DAO_Condition(this.connectionHandle_);
         DAO_Person dao_person = new DAO_Person(this.connectionHandle_);
+
+        DAO_Document_Language dao_document_language = new DAO_Document_Language(this.connectionHandle_);
+        //DAO_Publication dao_publication = new DAO_Publication(this.connectionHandle_);
+        DAO_Document_Author dao_document_author = new DAO_Document_Author(this.connectionHandle_);
+
+        //DAO_AuthDesc dao_authDesc = new DAO_AuthDesc(this.connectionHandle_);
+        //DAO_AuthAnalyst dao_authAnalyst = new DAO_AuthAnalyst(this.connectionHandle_);
+        //DAO_AuthTranscript dao_authTranscript = new DAO_AuthTranscript(this.connectionHandle_);
+        //DAO_Document_Project dao_document_project = new DAO_Document_Project(this.connectionHandle_);
 
         if (id == null) {
             if (LOGGER.isWarnEnabled()) {
@@ -112,6 +120,9 @@ public class DAO_Document implements Dao<Document> {
                                 .setrepresentation(resultSelect.getString("representation"))
                                 .setotherRelatedResources(resultSelect.getString("otherRelatedResources"));
 
+                retDocument.document_LanguageProperty().addAll(dao_document_language.selectAll_document(retDocument));
+                retDocument.document_AuthorProperty().addAll(dao_document_author.selectAll_document(retDocument));
+
             }
             return retDocument;
         }
@@ -122,9 +133,8 @@ public class DAO_Document implements Dao<Document> {
      * @author Gaetan Brenckle
      *
      * @param map - {@link HashMap} - index of the associate job class. Can handle null.
-     * @return - {@link Document} - the job class that can be found with the index
+     * @return - {@link List} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @ - throw this exception when the given list dont have the key wanted
      */
     public final List<Document> selectByMultiCondition(HashMap<String, Pair<?, PreparedStatementAware.listType>> map) throws SQLException {
         final List<Document> retCategories = new ArrayList<>();
@@ -132,6 +142,10 @@ public class DAO_Document implements Dao<Document> {
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
         DAO_Condition dao_condition = new DAO_Condition(this.connectionHandle_);
         DAO_Person dao_person = new DAO_Person(this.connectionHandle_);
+
+        DAO_Document_Language dao_document_language = new DAO_Document_Language(this.connectionHandle_);
+        DAO_Document_Author dao_document_author = new DAO_Document_Author(this.connectionHandle_);
+
 
         if (map == null) {
             if (LOGGER.isWarnEnabled()) {
@@ -204,6 +218,9 @@ public class DAO_Document implements Dao<Document> {
                     document.setdateCreation_end(resultSelect.getDate("dateCreation_end").toLocalDate());
                 else
                     document.setdateCreation_end(null);
+
+                document.document_LanguageProperty().addAll(dao_document_language.selectAll_document(document));
+                document.document_AuthorProperty().addAll(dao_document_author.selectAll_document(document));
                 retCategories.add(document);
             }
         }
@@ -217,7 +234,6 @@ public class DAO_Document implements Dao<Document> {
      *
      * @return - {@link List} - a list that contain all occurance of {@link Document}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
     public List<Document> selectAll() throws SQLException {
@@ -283,7 +299,6 @@ public class DAO_Document implements Dao<Document> {
      * @param obj - {@link Document} - insert the job class.
      * @return - boolean - the state of the sql insert.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
     public boolean insert(Document obj) throws SQLException {
@@ -362,7 +377,6 @@ public class DAO_Document implements Dao<Document> {
      * @param obj - {@link Document} - insert the job class.
      * @return - boolean - the state of the sql update.
      * @throws SQLException - throw the exception to force a try catch when used.
-     * @ - throw this exception when the given list dont have the key wanted
      */
     @Override
     public boolean update(Document obj) throws SQLException {

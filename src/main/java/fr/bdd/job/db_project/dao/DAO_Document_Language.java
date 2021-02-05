@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
+import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.job.db_project.jobclass.Document_Language;
 import fr.bdd.log.generate.CustomLogger;
 
@@ -108,8 +109,8 @@ public class DAO_Document_Language implements Dao<Document_Language> {
      *
      * @author Gaetan Brenckle
      *
-     * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
-     * @return - {@link Document_Language} - the job class that can be found with the index
+     * @param map - {@link HashMap} - index of the associate job class. Can handle null.
+     * @return - {@link List} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     public final List<Document_Language> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
@@ -164,12 +165,61 @@ public class DAO_Document_Language implements Dao<Document_Language> {
      *
      * @author Gaetan Brenckle
      *
+     * @param id - {@link Document} - index of the associate job class. Can handle null.
+     * @return - {@link List} - a list that contain all occurance of {@link Document_Language}, the job class associate.
+     * @throws SQLException - throw the exception to force a try catch when used.
+     */
+    public List<Document_Language> selectAll_document(Document id) throws SQLException {
+        final List<Document_Language> retDocumentLanguage = new ArrayList<>();
+        DAO_Language dao_language = new DAO_Language(this.connectionHandle_);
+
+        if (id == null) {
+            if (LOGGER.isWarnEnabled()) {
+                LOGGER.warn(String.format("%s select when the given id is null", "Document_Language"));
+            }
+            return retDocumentLanguage;
+        }
+
+        final String selectAll_sql = String.format("%s %s %s",
+                String.format("SELECT %s, %s, %s, %s, %s, %s, %s, %s", "document_ID", "language_ID", "title", "subTitle", "subject", "description", "resume", "notes"),
+                String.format("FROM %s ", "Document_Language"),
+                String.format("WHERE %s = ? ", "document_ID"));;
+
+        final PreparedStatementAware prepSelectAll = new PreparedStatementAware(connectionHandle_.prepareStatement(selectAll_sql));
+        prepSelectAll.setString(1, id.getdocument_ID());
+
+
+        try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
+            while (resultSelectAll.next()) {
+                Document_Language document_Language =
+                        new Document_Language()
+                                .setlanguage_ID(dao_language.select(resultSelectAll.getString("language_ID")))
+                                .settitle(resultSelectAll.getString("title"))
+                                .setsubTitle(resultSelectAll.getString("subTitle"))
+                                .setsubject(resultSelectAll.getString("subject"))
+                                .setdescription(resultSelectAll.getString("description"))
+                                .setresume(resultSelectAll.getString("resume"))
+                                .setnotes(resultSelectAll.getString("notes"));
+
+                document_Language.setdocument_ID(id);
+                retDocumentLanguage.add(document_Language);
+            }
+        }
+
+        return retDocumentLanguage;
+    }
+
+    /**
+     * SELECT of all occurance of the Document_Language class.
+     *
+     * @author Gaetan Brenckle
+     *
      * @return - {@link List} - a list that contain all occurance of {@link Document_Language}, the job class associate.
      * @throws SQLException - throw the exception to force a try catch when used.
      */
     @Override
     public List<Document_Language> selectAll() throws SQLException {
-        final List<Document_Language> retCategories = new ArrayList<>();
+        final List<Document_Language> retDocumentLanguage = new ArrayList<>();
         DAO_Document dao_document = new DAO_Document(this.connectionHandle_);
         DAO_Language dao_language = new DAO_Language(this.connectionHandle_);
 
@@ -193,11 +243,11 @@ public class DAO_Document_Language implements Dao<Document_Language> {
                                 .setdescription(resultSelectAll.getString("description"))
                                 .setresume(resultSelectAll.getString("resume"))
                                 .setnotes(resultSelectAll.getString("notes"));
-                retCategories.add(Document_Language);
+                retDocumentLanguage.add(Document_Language);
             }
         }
 
-        return retCategories;
+        return retDocumentLanguage;
     }
 
     @Override

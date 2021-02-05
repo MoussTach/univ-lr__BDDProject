@@ -7,7 +7,7 @@
     <groupId>fr.bdd</groupId>
     <artifactId>project_BDD</artifactId>
     <packaging>jar</packaging>
-    <version>1.0</version>
+    <version>1.0.0.0</version>
 
     <name>project_BDD</name>
 
@@ -29,26 +29,7 @@
         <connection>scm:git:git@github.com:MoussTach/univ-lr__BDDProject.git</connection>
         <developerConnection>scm:git:git@github.com:MoussTach/univ-lr__BDDProject.git</developerConnection>
     </scm>
-
     <dependencies>
-
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-base</artifactId>
-            <version>15.0.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx</artifactId>
-            <version>15.0.1</version>
-            <type>pom</type>
-        </dependency>
-        <dependency>
-            <groupId>org.openjfx</groupId>
-            <artifactId>javafx-web</artifactId>
-            <version>15</version>
-        </dependency>
-
         <!-- ********************************************************
                                      Interface
              ******************************************************** -->
@@ -115,7 +96,6 @@
             <artifactId>commons-io</artifactId>
             <version>2.5</version>
         </dependency>
-
     </dependencies>
 
     <dependencyManagement>
@@ -245,7 +225,7 @@
                             <classPath>
                                 <mainClass>fr.bdd.application.Main</mainClass>
                             </classPath>
-                            <icon>src/main/resources/img/logo/logo_sav_bline.ico</icon>
+                            <icon>src/main/resources/img/logo/Logo_univLR_64.ico</icon>
                             <jre>
                                 <minVersion>1.8.0</minVersion>
                                 <initialHeapSize>512</initialHeapSize>
@@ -256,12 +236,12 @@
                                 <txtFileVersion>1.0.0.0</txtFileVersion>
                                 <fileDescription>Projet réalisé par Brenckle Gaetan et Florent Cadet</fileDescription>
                                 <copyright>Copyright (c) 2021 </copyright>
-                                <companyName>MoussTach</companyName>
+                                <companyName>univ-LR</companyName>
                                 <productVersion>${project.version}</productVersion>
                                 <txtProductVersion>${project.version}</txtProductVersion>
                                 <productName>${project.artifactId}</productName>
                                 <internalName>${project.artifactId}</internalName>
-                                <originalFilename>Projet_BDD.exe</originalFilename>
+                                <originalFilename>project_BDD.exe</originalFilename>
                             </versionInfo>
                         </configuration>
                     </execution>
@@ -301,7 +281,7 @@
     </build>
 
     <properties>
-        <arg-java-config>-Djava.library.path=${basedir}/target/${dll-directory}/64 -Dfile.encoding=UTF-8 -Xmx4096m</arg-java-config>
+        <arg-java-config></arg-java-config>
         <dataCreated-directory>data_created</dataCreated-directory>
         <data-directory>data_ressources</data-directory>
         <dll-directory>webkit</dll-directory>
