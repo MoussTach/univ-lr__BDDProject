@@ -50,22 +50,6 @@
                                                                                 <CustomTextField_R fx:id="tfSearchDocument_ID" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="tfSearchDocument_ID" HBox.hgrow="ALWAYS" />
                                                                             </children>
                                                                         </HBox>
-                                                                        <HBox HBox.hgrow="ALWAYS">
-                                                                            <children>
-                                                                                <ToggleButton fx:id="tbtnSearchDocument_StartWith_Author" maxHeight="1.7976931348623157E308" mnemonicParsing="false" text="&gt;">
-                                                                                    <font>
-                                                                                        <Font name="Calibri Bold" size="14.0" />
-                                                                                    </font>
-                                                                                    <padding>
-                                                                                        <Insets left="7.0" right="7.0" />
-                                                                                    </padding>
-                                                                                    <HBox.margin>
-                                                                                        <Insets right="-1.0" />
-                                                                                    </HBox.margin>
-                                                                                </ToggleButton>
-                                                                                <CustomTextField_R fx:id="tfSearchDocument_Author" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" promptText="tfSearchDocument_Author" HBox.hgrow="ALWAYS" />
-                                                                            </children>
-                                                                        </HBox>
                                                                     </children>
                                                                 </HBox>
                                                                 <HBox maxWidth="1.7976931348623157E308" spacing="10.0" VBox.vgrow="ALWAYS">

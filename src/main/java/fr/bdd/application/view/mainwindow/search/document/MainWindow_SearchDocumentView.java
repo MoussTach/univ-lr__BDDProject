@@ -35,8 +35,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
 
     @FXML private CustomTextField_R tfSearchDocument_ID;
     @FXML private ToggleButton tbtnSearchDocument_StartWith_ID;
-    @FXML private CustomTextField_R tfSearchDocument_Author;
-    @FXML private ToggleButton tbtnSearchDocument_StartWith_Author;
 
     @FXML private CustomComboBox_R<Category> cbSearchDocument_Category;
     @FXML private CustomComboBox_R<Condition> cbSearchDocument_Condition;
@@ -133,7 +131,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         tPaneSearchDocument_title.textProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_title_label_Property());
 
         tfSearchDocument_ID.promptTextProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_ID_label_Property());
-        tfSearchDocument_Author.promptTextProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Author_label_Property());
 
         cbSearchDocument_Category.promptTextProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Category_label_Property());
         cbSearchDocument_Condition.promptTextProperty().bind(this.mainWindow_searchDocumentViewModel.searchDocument_Condition_label_Property());
@@ -157,8 +154,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         //Value
         tfSearchDocument_ID.textProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_ID_value_Property());
         tbtnSearchDocument_StartWith_ID.selectedProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_ID_value_Property());
-        tfSearchDocument_Author.textProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Author_value_Property());
-        tbtnSearchDocument_StartWith_Author.selectedProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_Author_value_Property());
         cbSearchDocument_Category.listItemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Category_Property());
         cbSearchDocument_Category.valueProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Category_selected_Property());
         cbSearchDocument_Condition.listItemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Condition_Property());
@@ -258,7 +253,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         tPaneSearchDocument_title.textProperty().unbind();
 
         tfSearchDocument_ID.promptTextProperty().unbind();
-        tfSearchDocument_Author.promptTextProperty().unbind();
 
         cbSearchDocument_Category.promptTextProperty().unbind();
         cbSearchDocument_Condition.promptTextProperty().unbind();
@@ -282,8 +276,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         //Value
         tfSearchDocument_ID.textProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_ID_value_Property());
         tbtnSearchDocument_StartWith_ID.selectedProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_ID_value_Property());
-        tfSearchDocument_Author.textProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Author_value_Property());
-        tbtnSearchDocument_StartWith_Author.selectedProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_Author_value_Property());
         cbSearchDocument_Category.itemsProperty().unbind();
         cbSearchDocument_Category.valueProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Category_selected_Property());
         cbSearchDocument_Condition.itemsProperty().unbind();

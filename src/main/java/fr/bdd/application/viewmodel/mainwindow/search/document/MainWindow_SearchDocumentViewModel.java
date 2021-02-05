@@ -41,7 +41,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     private final StringProperty searchDocument_title_label_ = new SimpleStringProperty(this.resBundle_.get().getString("tPaneSearchDocument_title"));
 
     private final StringProperty searchDocument_ID_label_ = new SimpleStringProperty(this.resBundle_.get().getString("tfSearchDocument_ID"));
-    private final StringProperty searchDocument_Author_label_ = new SimpleStringProperty(this.resBundle_.get().getString("tfSearchDocument_Author"));
     private final StringProperty searchDocument_Category_label_ = new SimpleStringProperty(this.resBundle_.get().getString("cbSearchDocument_Category"));
     private final StringProperty searchDocument_Condition_label_ = new SimpleStringProperty(this.resBundle_.get().getString("cbSearchDocument_Condition"));
 
@@ -65,8 +64,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     //Value
     private final StringProperty searchDocument_ID_value_ = new SimpleStringProperty("");
     private final BooleanProperty searchDocument_button_StartWith_ID_value_ = new SimpleBooleanProperty(false);
-    private final StringProperty searchDocument_Author_value_ = new SimpleStringProperty("");
-    private final BooleanProperty SearchDocument_button_StartWith_Author_value_ = new SimpleBooleanProperty(false);
     private final ListProperty<Category> listSearchDocument_Category_ = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ObjectProperty<Category> searchDocument_Category_selected_ = new SimpleObjectProperty<>();
     private final ListProperty<Condition> listSearchDocument_Condition_ = new SimpleListProperty<>(FXCollections.observableArrayList());
@@ -113,7 +110,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
         }
 
         searchDocument_ID_value_.set("");
-        searchDocument_Author_value_.set("");
         searchDocument_Category_selected_.set(null);
         searchDocument_Condition_selected_.set(null);
 
@@ -139,7 +135,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.actvm_Delete()");
         }
 
-        Task<Void> task_searchDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/delete_64.png")), "delete a document") {
+        Task<Void> task_DeleteDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/delete_64.png")), "delete a document") {
             @Override
             protected Void call_Task() throws Exception {
                 final List<Document> listDocument = new ArrayList<>();
@@ -190,9 +186,11 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             }
         };
 
+        task_DeleteDocument.setOnSucceeded(event -> actvm_Research());
+
         //Search document
         TASKMANAGER.addArray(new TaskArray(ThreadArray.ExecutionType.PARALLEL)
-                .addTask(new Pair(task_searchDocument, new TaskArray(ThreadArray.ExecutionType.END)))
+                .addTask(new Pair(task_DeleteDocument, new TaskArray(ThreadArray.ExecutionType.END)))
         );
     }
 
@@ -229,13 +227,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                         HashMap<String, Pair<?, PreparedStatementAware.listType>> listParams = new HashMap<>();
 
                         if (!searchDocument_ID_value_.get().isEmpty()) {
-                            if (searchDocument_button_StartWith_ID_value_.get())
-                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
-                            else
-                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%%%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
-                        }
-
-                        if (!searchDocument_Author_value_.get().isEmpty()) {
                             if (searchDocument_button_StartWith_ID_value_.get())
                                 listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
                             else
@@ -461,17 +452,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     }
 
     /**
-     * Property of the variable searchDocument_Author_label_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable searchDocument_Author_label_.
-     */
-    public StringProperty searchDocument_Author_label_Property() {
-        return searchDocument_Author_label_;
-    }
-
-    /**
      * Property of the variable searchDocument_Category_label_.
      *
      * @author Gaetan Brenckle
@@ -661,28 +641,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     }
 
     /**
-     * Property of the variable searchDocument_Author_value_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable searchDocument_Author_value_.
-     */
-    public StringProperty searchDocument_Author_value_Property() {
-        return searchDocument_Author_value_;
-    }
-
-    /**
-     * Property of the variable SearchDocument_button_StartWith_Author_value_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link BooleanProperty} - return the property of the variable SearchDocument_button_StartWith_Author_value_.
-     */
-    public BooleanProperty searchDocument_button_StartWith_Author_value_Property() {
-        return SearchDocument_button_StartWith_Author_value_;
-    }
-
-    /**
      * Property of the variable listSearchDocument_Category_.
      *
      * @author Gaetan Brenckle
@@ -782,7 +740,6 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
         this.searchDocument_title_label_.set(this.resBundle_.get().getString("tPaneSearchDocument_title"));
 
         this.searchDocument_ID_label_.set(this.resBundle_.get().getString("tfSearchDocument_ID"));
-        this.searchDocument_Author_label_.set(this.resBundle_.get().getString("tfSearchDocument_Author"));
         this.searchDocument_Category_label_.set(this.resBundle_.get().getString("cbSearchDocument_Category"));
         this.searchDocument_Condition_label_.set(this.resBundle_.get().getString("cbSearchDocument_Condition"));
 

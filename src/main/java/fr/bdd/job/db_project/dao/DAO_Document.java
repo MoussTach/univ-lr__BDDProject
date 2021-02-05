@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.dao;
 
 import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
+import fr.bdd.job.db_project.jobclass.Condition;
 import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.log.generate.CustomLogger;
 import javafx.util.Pair;
