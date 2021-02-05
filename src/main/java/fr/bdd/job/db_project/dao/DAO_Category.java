@@ -82,7 +82,7 @@ public class DAO_Category implements Dao<Category> {
         final String select_sql = String.format("%s %s %s",
                 String.format("SELECT %s, %s, %s", "category_ID", "dataCategory", "prefix"),
                 String.format("FROM %s ", "Category"),
-                String.format("WHERE id = ?"));
+                String.format("WHERE category_ID = ?"));
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);

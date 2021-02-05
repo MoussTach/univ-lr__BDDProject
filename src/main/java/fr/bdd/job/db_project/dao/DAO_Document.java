@@ -4,6 +4,7 @@ import fr.bdd.custom.sql.PreparedStatementAware;
 import fr.bdd.job.dao.Dao;
 import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.log.generate.CustomLogger;
+import javafx.util.Pair;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -97,8 +98,8 @@ public class DAO_Document implements Dao<Document> {
                         new Document()
                                 .setdocument_ID(resultSelect.getString("document_ID"))
                                 .setcategory_ID(dao_category.select(resultSelect.getString("category_ID")))
-                                .setdateCreation_start(resultSelect.getDate("dateCreation_start"))
-                                .setdateCreation_end(resultSelect.getDate("dateCreation_end"))
+                                .setdateCreation_start(resultSelect.getDate("dateCreation_start").toLocalDate())
+                                .setdateCreation_end(resultSelect.getDate("dateCreation_end").toLocalDate())
                                 .setnatureOfDoc_ID(dao_natureOfDoc.select(resultSelect.getString("natureOfDoc_ID")))
                                 .setcondition_ID(dao_condition.select(resultSelect.getString("condition_ID")))
                                 .setformat(resultSelect.getString("format"))
@@ -120,12 +121,12 @@ public class DAO_Document implements Dao<Document> {
      *
      * @author Gaetan Brenckle
      *
-     * @param map - {@link HashMap<String, String>} - index of the associate job class. Can handle null.
+     * @param map - {@link HashMap} - index of the associate job class. Can handle null.
      * @return - {@link Document} - the job class that can be found with the index
      * @throws SQLException - throw the exception to force a try catch when used.
      * @ - throw this exception when the given list dont have the key wanted
      */
-    public final List<Document> selectByMultiCondition(HashMap<String, String> map) throws SQLException {
+    public final List<Document> selectByMultiCondition(HashMap<String, Pair<?, PreparedStatementAware.listType>> map) throws SQLException {
         final List<Document> retCategories = new ArrayList<>();
         DAO_Category dao_category = new DAO_Category(this.connectionHandle_);
         DAO_NatureOfDoc dao_natureOfDoc = new DAO_NatureOfDoc(this.connectionHandle_);
@@ -146,24 +147,42 @@ public class DAO_Document implements Dao<Document> {
                 String.format("WHERE 1=1")
         ));
 
-        for (Map.Entry<String,String> entry : map.entrySet()) {
+        for (Map.Entry<String,Pair<?, PreparedStatementAware.listType>> entry : map.entrySet()) {
             select_sql.append(String.format(" %s ", entry.getKey()));
         }
 
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql.toString()));
-        for (Map.Entry<String,String> entry : map.entrySet()) {
-            prepSelect.setString(entry.getValue());
+        for (Map.Entry<String, Pair<?, PreparedStatementAware.listType>> entry : map.entrySet()) {
+
+            switch (entry.getValue().getValue()) {
+                case STRING:
+                    prepSelect.setString(String.valueOf(entry.getValue().getKey()));
+                    break;
+                case INT:
+                    prepSelect.setInt(Integer.parseInt(String.valueOf(entry.getValue().getKey())));
+                    break;
+                case DOUBLE:
+                    prepSelect.setDouble(Double.parseDouble(String.valueOf(entry.getValue().getKey())));
+                    break;
+                case LONG:
+                    prepSelect.setLong(Long.parseLong(String.valueOf(entry.getValue().getKey())));
+                    break;
+                case BOOLEAN:
+                    prepSelect.setBoolean(Boolean.parseBoolean(String.valueOf(entry.getValue().getKey())));
+                    break;
+                case DATE:
+                    prepSelect.setDate(java.sql.Date.valueOf(String.valueOf(entry.getValue().getKey())));
+                    break;
+            }
         }
 
         try(final ResultSet resultSelect = prepSelect.executeQuery()) {
             while (resultSelect.next()) {
-                Document Document =
+                Document document =
                         new Document()
                                 .setdocument_ID(resultSelect.getString("document_ID"))
                                 .setcategory_ID(dao_category.select(resultSelect.getString("category_ID")))
-                                .setdateCreation_start(resultSelect.getDate("dateCreation_start"))
-                                .setdateCreation_end(resultSelect.getDate("dateCreation_end"))
                                 .setnatureOfDoc_ID(dao_natureOfDoc.select(resultSelect.getString("natureOfDoc_ID")))
                                 .setcondition_ID(dao_condition.select(resultSelect.getString("condition_ID")))
                                 .setformat(resultSelect.getString("format"))
@@ -175,7 +194,17 @@ public class DAO_Document implements Dao<Document> {
                                 .setRecipient(dao_person.select(resultSelect.getInt("recipient")))
                                 .setrepresentation(resultSelect.getString("representation"))
                                 .setotherRelatedResources(resultSelect.getString("otherRelatedResources"));
-                retCategories.add(Document);
+
+                if (resultSelect.getDate("dateCreation_start") != null)
+                    document.setdateCreation_start(resultSelect.getDate("dateCreation_start").toLocalDate());
+                else
+                    document.setdateCreation_start(null);
+
+                if (resultSelect.getDate("dateCreation_end") != null)
+                    document.setdateCreation_end(resultSelect.getDate("dateCreation_end").toLocalDate());
+                else
+                    document.setdateCreation_end(null);
+                retCategories.add(document);
             }
         }
         return retCategories;
@@ -208,12 +237,10 @@ public class DAO_Document implements Dao<Document> {
 
         try(final ResultSet resultSelectAll = prepSelectAll.executeQuery()) {
             while (resultSelectAll.next()) {
-                Document Document =
+                Document document =
                         new Document()
                                 .setdocument_ID(resultSelectAll.getString("document_ID"))
                                 .setcategory_ID(dao_category.select(resultSelectAll.getString("category_ID")))
-                                .setdateCreation_start(resultSelectAll.getDate("dateCreation_start"))
-                                .setdateCreation_end(resultSelectAll.getDate("dateCreation_end"))
                                 .setnatureOfDoc_ID(dao_natureOfDoc.select(resultSelectAll.getString("natureOfDoc_ID")))
                                 .setcondition_ID(dao_condition.select(resultSelectAll.getString("condition_ID")))
                                 .setformat(resultSelectAll.getString("format"))
@@ -225,7 +252,17 @@ public class DAO_Document implements Dao<Document> {
                                 .setRecipient(dao_person.select(resultSelectAll.getInt("recipient")))
                                 .setrepresentation(resultSelectAll.getString("representation"))
                                 .setotherRelatedResources(resultSelectAll.getString("otherRelatedResources"));
-                retCategories.add(Document);
+
+                if (resultSelectAll.getDate("dateCreation_start") != null)
+                    document.setdateCreation_start(resultSelectAll.getDate("dateCreation_start").toLocalDate());
+                else
+                    document.setdateCreation_start(null);
+
+                if (resultSelectAll.getDate("dateCreation_end") != null)
+                    document.setdateCreation_end(resultSelectAll.getDate("dateCreation_end").toLocalDate());
+                else
+                    document.setdateCreation_end(null);
+                retCategories.add(document);
             }
         }
 
@@ -291,8 +328,8 @@ public class DAO_Document implements Dao<Document> {
         final PreparedStatementAware prepInsert = new PreparedStatementAware(connectionHandle_.prepareStatement(insert_sql));
         prepInsert.setString(obj.getdocument_ID());
         prepInsert.setString(obj.getcategory_ID().getcategory_ID());
-        prepInsert.setDate((Date) obj.getdateCreation_start());
-        prepInsert.setDate((Date) obj.getdateCreation_end());
+        prepInsert.setDate(java.sql.Date.valueOf(obj.getdateCreation_start()));
+        prepInsert.setDate(java.sql.Date.valueOf(obj.getdateCreation_end()));
         prepInsert.setString(obj.getnatureOfDoc_ID().getnatureOfDoc_ID());
         prepInsert.setString(obj.getcondition_ID().getcondition_ID());
         prepInsert.setString(obj.getformat());
@@ -384,8 +421,8 @@ public class DAO_Document implements Dao<Document> {
         final PreparedStatementAware prepUpdate = new PreparedStatementAware(connectionHandle_.prepareStatement(update_sql));
         prepUpdate.setString(obj.getdocument_ID());
         prepUpdate.setString(obj.getcategory_ID().getcategory_ID());
-        prepUpdate.setDate((Date) obj.getdateCreation_start());
-        prepUpdate.setDate((Date) obj.getdateCreation_end());
+        prepUpdate.setDate(java.sql.Date.valueOf(obj.getdateCreation_start()));
+        prepUpdate.setDate(java.sql.Date.valueOf(obj.getdateCreation_end()));
         prepUpdate.setString(obj.getnatureOfDoc_ID().getnatureOfDoc_ID());
         prepUpdate.setString(obj.getcondition_ID().getcondition_ID());
         prepUpdate.setString(obj.getformat());

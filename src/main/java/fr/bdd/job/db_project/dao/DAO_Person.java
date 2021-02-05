@@ -80,7 +80,7 @@ public class DAO_Person implements Dao<Person> {
         final String select_sql = String.format("%s %s %s",
                 String.format("SELECT %s, %s, %s", "person_ID", "name", "title"),
                 String.format("FROM %s ", "Person"),
-                String.format("WHERE id = ?"));
+                String.format("WHERE person_ID = ?"));
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setInt(id);

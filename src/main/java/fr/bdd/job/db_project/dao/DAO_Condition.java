@@ -81,7 +81,7 @@ public class DAO_Condition implements Dao<Condition> {
         final String select_sql = String.format("%s %s %s",
                 String.format("SELECT %s", "condition_ID"),
                 String.format("FROM %s ", "Condition"),
-                String.format("WHERE id = ?"));
+                String.format("WHERE condition_ID = ?"));
 
         final PreparedStatementAware prepSelect = new PreparedStatementAware(connectionHandle_.prepareStatement(select_sql));
         prepSelect.setString(id);

@@ -27,7 +27,8 @@ public class PreparedStatementAware implements PreparedStatement {
         INT,
         DOUBLE,
         LONG,
-        BOOLEAN
+        BOOLEAN,
+        DATE
     }
 
     public PreparedStatementAware(PreparedStatement delegate) {
@@ -280,6 +281,9 @@ public class PreparedStatementAware implements PreparedStatement {
                     break;
                 case BOOLEAN:
                     setBoolean(autoIncrement++, Boolean.parseBoolean(String.valueOf(key)));
+                    break;
+                case DATE:
+                    setDate(autoIncrement++, java.sql.Date.valueOf(String.valueOf(key)));
                     break;
             }
         }

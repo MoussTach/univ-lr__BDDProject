@@ -36,7 +36,7 @@ public interface ThreadFunctions<T> {
      *
      * @return - {@link Task} - return the task of the class.
      */
-    Task getTask();
+    Task<?> getTask();
 
 
     /**

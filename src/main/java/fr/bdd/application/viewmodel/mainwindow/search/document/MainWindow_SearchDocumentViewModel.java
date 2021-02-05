@@ -8,8 +8,13 @@ import fr.bdd.application.viewmodel.taskmanager.ThreadArray;
 import fr.bdd.custom.remastered.controls.list.CustomComboBox_R;
 import fr.bdd.custom.remastered.controls.tabview.CustomTableView;
 import fr.bdd.custom.remastered.controls.text.CustomTextField_R;
+import fr.bdd.custom.sql.PreparedStatementAware;
+import fr.bdd.job.db_project.dao.DAO_Category;
+import fr.bdd.job.db_project.dao.DAO_Condition;
+import fr.bdd.job.db_project.dao.DAO_Document;
 import fr.bdd.job.db_project.jobclass.Category;
 import fr.bdd.job.db_project.jobclass.Condition;
+import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.language.LanguageBundle;
 import fr.bdd.log.generate.CustomLogger;
 import javafx.application.Platform;
@@ -28,9 +33,11 @@ import javafx.util.Pair;
 
 import java.net.URL;
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -75,8 +82,12 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
     private final ListProperty<Condition> listSearchDocument_Condition_ = new SimpleListProperty<>(FXCollections.observableArrayList());
     private final ObjectProperty<Condition> searchDocument_Condition_selected_ = new SimpleObjectProperty<>();
 
-    private final ObjectProperty<LocalDate> searchDocument_StartDate_value_ = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<LocalDate> searchDocument_StartDate_value_ = new SimpleObjectProperty<>(LocalDate.now());
     private final ObjectProperty<LocalDate> searchDocument_EndDate_value_ = new SimpleObjectProperty<>(null);
+
+    private final ListProperty<Document> list_document_ = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ObjectProperty<Document> current_document_ = new SimpleObjectProperty<>();
+
 
     private ChangeListener<ResourceBundle> listener_ChangedValue_bundleLanguage_ = null;
 
@@ -92,13 +103,11 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             this.resBundle_.addListener(this.listener_ChangedValue_bundleLanguage_);
         }
 
-
-        /*TODO
         //Load fields
         TASKMANAGER.addArray(new TaskArray(ThreadArray.ExecutionType.PARALLEL)
                 .addTask(new Pair(load_Category(), new TaskArray(ThreadArray.ExecutionType.END)))
                 .addTask(new Pair(load_Condition(), new TaskArray(ThreadArray.ExecutionType.END)))
-        );*/
+        );
     }
 
 
@@ -109,6 +118,10 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
      * @author Gaetan Brenckle
      */
     public void actvm_Reinitialize() {
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.actvm_Reinitialize()");
+        }
+
         searchDocument_ID_value_.set("");
         searchDocument_Author_value_.set("");
         searchDocument_Category_selected_.set(null);
@@ -130,19 +143,96 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[public][method] Usage of the MainWindow_SearchDocumentViewModel.actvm_Research()");
         }
 
-        /* TODO
-        Platform.runLater(() -> {
-            if (machinePopOver_radio_Park_value_.get()) {
-                load_Machine_park();
-            } else if (machinePopOver_radio_Intervention_value_.get()) {
-                load_Machine_intervention();
-            } else if (machinePopOver_radio_Loan_value_.get()) {
-                load_Machine_loan();
-            } else {
-                load_Machine_all();
+        Task<Void> task_searchDocument = new Task_Custom<Void>(new Image(getClass().getResourceAsStream("/img/add_64.png")), "Load a list of document",true) {
+            @Override
+            protected Void call_Task() throws Exception {
+                final List<Document> listDocument = new ArrayList<>();
+
+                final DAO_Document dao_document = new DAO_Document();
+
+                updateMessage("Try to load a list of document");
+                updateProgress(0.0, 1.0);
+
+                try (Connection conn = Main.DB_CONNECTION.getDataSource().getConnection()) {
+
+                    try {
+                        dao_document.setConnection(conn);
+                        conn.setAutoCommit(false);
+
+                        updateProgress(0.4, 1.0);
+
+                        HashMap<String, Pair<?, PreparedStatementAware.listType>> listParams = new HashMap<>();
+
+                        if (!searchDocument_ID_value_.get().isEmpty()) {
+                            if (searchDocument_button_StartWith_ID_value_.get())
+                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
+                            else
+                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%%%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
+                        }
+
+                        /*TODO
+                        if (!searchDocument_Author_value_.get().isEmpty()) {
+                            if (searchDocument_button_StartWith_ID_value_.get())
+                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
+                            else
+                                listParams.put("AND document_ID LIKE ?", new Pair<>(String.format("%%%s%%", searchDocument_ID_value_.get()), PreparedStatementAware.listType.STRING));
+                        }*/
+
+                        if (searchDocument_Category_selected_.get() != null) {
+                            listParams.put("AND category_ID = ?", new Pair<>(searchDocument_Category_selected_.get().getcategory_ID(), PreparedStatementAware.listType.STRING));
+                        }
+
+                        if (searchDocument_Condition_selected_.get() != null) {
+                            listParams.put("AND condition_ID = ?", new Pair<>(searchDocument_Condition_selected_.get().getcondition_ID(), PreparedStatementAware.listType.STRING));
+                        }
+
+                        if (searchDocument_StartDate_value_.get() != null) {
+                            listParams.put("AND dateCreation_start >= ?", new Pair<>(searchDocument_StartDate_value_.get(), PreparedStatementAware.listType.DATE));
+                        }
+                        if (searchDocument_EndDate_value_.get() != null) {
+                            listParams.put("AND dateCreation_end <= ?", new Pair<>(searchDocument_EndDate_value_.get(), PreparedStatementAware.listType.DATE));
+                        }
+
+                        listDocument.addAll(dao_document.selectByMultiCondition(listParams));
+                        conn.commit();
+
+                        if (LOGGER.isInfoEnabled()) {
+                            LOGGER.info("List of document loaded");
+                        }
+
+                        updateMessage("Successfully loaded a list of document");
+                        updateProgress(1, 1.0);
+
+                    } catch (Exception e) {
+                        if (LOGGER.isErrorEnabled()) {
+                            LOGGER.error(String.format("Error when synchronize", e.getMessage()), e);
+                        }
+
+                        updateMessage("Failed to load a list of document");
+
+                        try {
+                            conn.rollback();
+
+                        } catch (SQLException e1) {
+                            if (LOGGER.isErrorEnabled()) {
+                                LOGGER.error(String.format("Error when try to rollback : %s", e1.getMessage()), e1);
+                            }
+                        }
+
+                        throw e;
+                    } finally {
+                        list_document_.setAll(listDocument);
+                    }
+                }
+
+                return null;
             }
-        });
-         */
+        };
+
+        //Search document
+        TASKMANAGER.addArray(new TaskArray(ThreadArray.ExecutionType.PARALLEL)
+                .addTask(new Pair(task_searchDocument, new TaskArray(ThreadArray.ExecutionType.END)))
+        );
     }
 
 
@@ -150,7 +240,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
      * Load all different Category from the database.
      *
      * @author Gaetan Brenckle
-     *//* TODO
+     */
     public Task<Void> load_Category() {
 
         if (LOGGER.isTraceEnabled()) {
@@ -162,7 +252,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             protected Void call_Task() throws Exception {
                 final List<Category> listCategory = new ArrayList<>();
 
-                final DAO_CPark dao_cPark = new DAO_CPark();
+                final DAO_Category dao_category = new DAO_Category();
 
                 updateMessage("Try to load a list of Category");
                 updateProgress(0.0, 1.0);
@@ -170,13 +260,12 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                 try (Connection conn = Main.DB_CONNECTION.getDataSource().getConnection()) {
 
                     try {
-                        dao_cPark.setConnection(conn);
+                        dao_category.setConnection(conn);
                         conn.setAutoCommit(false);
 
                         updateProgress(0.4, 1.0);
 
-                        listCategory.addAll(dao_cPark.selectAll());
-
+                        listCategory.addAll(dao_category.selectAll());
                         conn.commit();
 
                         if (LOGGER.isInfoEnabled()) {
@@ -191,7 +280,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                             LOGGER.error(String.format("Error when synchronize", e.getMessage()), e);
                         }
 
-                            updateMessage("Failed to load a list of category");
+                        updateMessage("Failed to load a list of category");
 
                         try {
                             conn.rollback();
@@ -211,13 +300,13 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                 return null;
             }
         };
-    }*/
+    }
 
     /**
      * Load all different conditions from the database.
      *
      * @author Gaetan Brenckle
-     *//* TODO
+     */
     public Task<Void> load_Condition() {
 
         if (LOGGER.isTraceEnabled()) {
@@ -229,7 +318,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
             protected Void call_Task() throws Exception {
                 final List<Condition> listCondition = new ArrayList<>();
 
-                final DAO_CPark dao_cPark = new DAO_CPark();
+                final DAO_Condition dao_condition = new DAO_Condition();
 
                 updateMessage("Try to load a list of condition");
                 updateProgress(0.0, 1.0);
@@ -237,13 +326,12 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                 try (Connection conn = Main.DB_CONNECTION.getDataSource().getConnection()) {
 
                     try {
-                        dao_cPark.setConnection(conn);
+                        dao_condition.setConnection(conn);
                         conn.setAutoCommit(false);
 
                         updateProgress(0.4, 1.0);
 
-                        listCondition.addAll(dao_cPark.selectAll());
-
+                        listCondition.addAll(dao_condition.selectAll());
                         conn.commit();
 
                         if (LOGGER.isInfoEnabled()) {
@@ -278,7 +366,7 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
                 return null;
             }
         };
-    }*/
+    }
 
 
     //Text
@@ -579,6 +667,28 @@ public class MainWindow_SearchDocumentViewModel extends ViewModel_SceneCycle {
      */
     public ObjectProperty<LocalDate> searchDocument_EndDate_value_Property() {
         return searchDocument_EndDate_value_;
+    }
+
+    /**
+     * Property of the variable list_document_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty} - return the property of the variable list_document_.
+     */
+    public ListProperty<Document> list_document_Property() {
+        return list_document_;
+    }
+
+    /**
+     * Property of the variable current_document_.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ObjectProperty} - return the property of the variable current_document_.
+     */
+    public ObjectProperty<Document> current_document_Property() {
+        return current_document_;
     }
 
 

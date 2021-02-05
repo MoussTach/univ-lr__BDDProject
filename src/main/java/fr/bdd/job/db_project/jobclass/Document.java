@@ -2,6 +2,7 @@ package fr.bdd.job.db_project.jobclass;
 
 import javafx.beans.property.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 /**
@@ -14,8 +15,8 @@ public class Document {
 
     private final StringProperty document_ID = new SimpleStringProperty("n/a");
     private final ObjectProperty<Category> category_ID = new SimpleObjectProperty<>(null);
-    private final ObjectProperty<Date> dateCreation_start = new SimpleObjectProperty<>(null);
-    private final ObjectProperty<Date> dateCreation_end = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<LocalDate> dateCreation_start = new SimpleObjectProperty<>(null);
+    private final ObjectProperty<LocalDate> dateCreation_end = new SimpleObjectProperty<>(null);
     private final ObjectProperty<NatureOfDoc> natureOfDoc_ID = new SimpleObjectProperty<>(null);
     private final ObjectProperty<Condition> condition_ID = new SimpleObjectProperty<>(null);
     private final StringProperty format = new SimpleStringProperty("n/a");
@@ -83,18 +84,18 @@ public class Document {
     /**
      * Getter for the variable dateCreation_start.
      *
-     * @return {@link Date} - return the variable dateCreation_start.
+     * @return {@link LocalDate} - return the variable dateCreation_start.
      */
-    public Date getdateCreation_start() {
+    public LocalDate getdateCreation_start() {
         return dateCreation_start.get();
     }
 
     /**
      * Getter for the variable dateCreation_end.
      *
-     * @return {@link Date} - return the variable dateCreation_end.
+     * @return {@link LocalDate} - return the variable dateCreation_end.
      */
-    public Date getdateCreation_end() {
+    public LocalDate getdateCreation_end() {
         return dateCreation_end.get();
     }
 
@@ -224,10 +225,10 @@ public class Document {
     /**
      * Setter for the variable dateCreation_start.
      *
-     * @param dateCreation_start - {@link Date} - dateCreation_start of this class.
+     * @param dateCreation_start - {@link LocalDate} - dateCreation_start of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setdateCreation_start(Date dateCreation_start) {
+    public Document setdateCreation_start(LocalDate dateCreation_start) {
         this.dateCreation_start.set(dateCreation_start);
         return this;
     }
@@ -235,10 +236,10 @@ public class Document {
     /**
      * Setter for the variable dateCreation_end.
      *
-     * @param dateCreation_end - {@link Date} - dateCreation_end of this class.
+     * @param dateCreation_end - {@link LocalDate} - dateCreation_end of this class.
      * @return - {@link Document} - builder pattern return
      */
-    public Document setdateCreation_end(Date dateCreation_end) {
+    public Document setdateCreation_end(LocalDate dateCreation_end) {
         this.dateCreation_end.set(dateCreation_end);
         return this;
     }
@@ -392,9 +393,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Date>} - return the property of the variable dateCreation_start.
+     * @return {@link ObjectProperty<LocalDate>} - return the property of the variable dateCreation_start.
      */
-    public ObjectProperty<Date> dateCreation_startProperty() {
+    public ObjectProperty<LocalDate> dateCreation_startProperty() {
         return dateCreation_start;
     }
 
@@ -403,9 +404,9 @@ public class Document {
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link ObjectProperty<Date>} - return the property of the variable dateCreation_end.
+     * @return {@link ObjectProperty<LocalDate>} - return the property of the variable dateCreation_end.
      */
-    public ObjectProperty<Date> dateCreation_endProperty() {
+    public ObjectProperty<LocalDate> dateCreation_endProperty() {
         return dateCreation_end;
     }
 

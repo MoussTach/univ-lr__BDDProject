@@ -4,16 +4,20 @@ import de.saxsys.mvvmfx.InjectViewModel;
 import fr.bdd.application.view.FxmlView_SceneCycle;
 import fr.bdd.application.viewmodel.mainwindow.search.document.MainWindow_SearchDocumentViewModel;
 import fr.bdd.custom.remastered.controls.list.CustomComboBox_R;
+import fr.bdd.custom.remastered.controls.tabview.CustomEditingCell_Basic;
+import fr.bdd.custom.remastered.controls.tabview.CustomEditingCell_Date;
 import fr.bdd.custom.remastered.controls.tabview.CustomTableView;
 import fr.bdd.custom.remastered.controls.text.CustomTextField_R;
 import fr.bdd.job.db_project.jobclass.Category;
 import fr.bdd.job.db_project.jobclass.Condition;
 import fr.bdd.job.db_project.jobclass.Document;
 import fr.bdd.log.generate.CustomLogger;
+import javafx.beans.binding.Bindings;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -67,12 +71,35 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         this.mainWindow_searchDocumentViewModel.actvm_Reinitialize();
     }
 
+    @FXML
+    public void act_btnSearchDocument_Research() {
+        LOGGER.input(String.format("Press the button %s", btnSearchDocument_Research.getId()));
+
+        this.mainWindow_searchDocumentViewModel.actvm_Research();
+    }
+
+
     /**
      * Initialize the tablerow
      *
      * @author Gaetan Brenckle
      */
     private void initialize_tab() {
+        tabSearchDocument_ID.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());
+        tabSearchDocument_Title.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());//TODO binding
+        tabSearchDocument_Author.setCellValueFactory(cellData -> cellData.getValue().document_IDProperty());//TODO binding
+        tabSearchDocument_StartDate.setCellValueFactory(new PropertyValueFactory<>("dateCreation_start"));
+        tabSearchDocument_EndDate.setCellValueFactory(new PropertyValueFactory<>("dateCreation_end"));
+        tabSearchDocument_Category.setCellValueFactory(cellData -> cellData.getValue().getcategory_ID().category_IDProperty());
+        tabSearchDocument_Condition.setCellValueFactory(cellData -> cellData.getValue().getcondition_ID().condition_IDProperty());
+
+        tabSearchDocument_ID.setCellFactory(param -> new CustomEditingCell_Basic<>());
+        tabSearchDocument_Title.setCellFactory(param -> new CustomEditingCell_Basic<>());
+        tabSearchDocument_Author.setCellFactory(param -> new CustomEditingCell_Basic<>());
+        tabSearchDocument_StartDate.setCellFactory(param -> new CustomEditingCell_Date<>("dd/MM/YYYY"));
+        tabSearchDocument_EndDate.setCellFactory(param -> new CustomEditingCell_Date<>("dd/MM/YYYY"));
+        tabSearchDocument_Category.setCellFactory(param -> new CustomEditingCell_Basic<>());
+        tabSearchDocument_Condition.setCellFactory(param -> new CustomEditingCell_Basic<>());
     }
 
 
@@ -110,9 +137,9 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         tbtnSearchDocument_StartWith_ID.selectedProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_ID_value_Property());
         tfSearchDocument_Author.textProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Author_value_Property());
         tbtnSearchDocument_StartWith_Author.selectedProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_button_StartWith_Author_value_Property());
-        cbSearchDocument_Category.itemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Category_Property());
+        cbSearchDocument_Category.listItemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Category_Property());
         cbSearchDocument_Category.valueProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Category_selected_Property());
-        cbSearchDocument_Condition.itemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Condition_Property());
+        cbSearchDocument_Condition.listItemsProperty().bind(this.mainWindow_searchDocumentViewModel.listSearchDocument_Condition_Property());
         cbSearchDocument_Condition.valueProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_Condition_selected_Property());
 
         dPickerSearchDocument_StartDate.valueProperty().bindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_StartDate_value_Property());
@@ -135,6 +162,10 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                         setBackground(new Background(new BackgroundFill(Color.LIGHTGREEN, CornerRadii.EMPTY, Insets.EMPTY)));
                     }
                 }
+
+                if (dPickerSearchDocument_EndDate.getValue() != null && !dPickerSearchDocument_StartDate.getValue().equals(date)) {
+                    setDisable(date.isAfter(dPickerSearchDocument_EndDate.getValue()));
+                }
             }
         });
         dPickerSearchDocument_StartDate.setConverter(new LocalDateStringConverter() {
@@ -143,7 +174,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                 LocalDate date = super.fromString(string);
 
                 LocalDate timeMax = dPickerSearchDocument_EndDate.getValue();
-                if ((timeMax != null) && date.isBefore(timeMax)) {
+                if ((timeMax == null) || date.isBefore(timeMax)) {
                     return date;
                 } else {
                     return null;
@@ -182,7 +213,7 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
                 LocalDate date = super.fromString(string);
 
                 LocalDate timeMin = dPickerSearchDocument_StartDate.getValue();
-                if ((timeMin != null) && date.isAfter(timeMin)) {
+                if ((timeMin == null) || date.isAfter(timeMin)) {
                     return date;
                 } else {
                     return null;
@@ -190,6 +221,8 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
             }
         });
 
+        tabPaneSearchDocument.setItems(this.mainWindow_searchDocumentViewModel.list_document_Property());
+        this.mainWindow_searchDocumentViewModel.current_document_Property().bind(tabPaneSearchDocument.getSelectionModel().selectedItemProperty());
     }
 
     @Override
@@ -236,5 +269,6 @@ public class MainWindow_SearchDocumentView extends FxmlView_SceneCycle<MainWindo
         dPickerSearchDocument_StartDate.valueProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_StartDate_value_Property());
         dPickerSearchDocument_EndDate.valueProperty().unbindBidirectional(this.mainWindow_searchDocumentViewModel.searchDocument_EndDate_value_Property());
 
+        this.mainWindow_searchDocumentViewModel.current_document_Property().unbind();
     }
 }
