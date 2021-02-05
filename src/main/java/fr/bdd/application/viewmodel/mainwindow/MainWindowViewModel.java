@@ -38,9 +38,7 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
     //Text
     private final StringProperty taskWindow_title_ = new SimpleStringProperty(this.resBundleWindow_.get().getString("taskWindow_title"));
     private final StringProperty tabCategory_SearchDocument_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchDocument_label"));
-    private final StringProperty tabCategory_SearchProject_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchProject_label"));
-    private final StringProperty tabCategory_SearchPerson_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchPerson_label"));
-    private final StringProperty tabCategory_SearchPublication_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchPublication_label"));
+    private final StringProperty tabCategory_SearchGraph_label_ = new SimpleStringProperty(this.resBundleSearch_.get().getString("lblTabCategory_SearchGraph_label"));
 
     //Value
     private final BooleanProperty taskWindow_isShowed_ = new SimpleBooleanProperty(false);
@@ -129,38 +127,15 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
     }
 
     /**
-     * Property of the variable tabCategory_SearchProject_label_.
+     * Property of the variable tabCategory_SearchDocument_label_.
      *
      * @author Gaetan Brenckle
      *
-     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchProject_label_.
+     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchDocument_label_.
      */
-    public StringProperty tabCategory_SearchProject_label_Property() {
-        return tabCategory_SearchProject_label_;
+    public StringProperty tabCategory_SearchGraph_label_Property() {
+        return tabCategory_SearchGraph_label_;
     }
-
-    /**
-     * Property of the variable tabCategory_SearchPerson_label_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchPerson_label_.
-     */
-    public StringProperty tabCategory_SearchPerson_label_Property() {
-        return tabCategory_SearchPerson_label_;
-    }
-
-    /**
-     * Property of the variable tabCategory_SearchPublication_label_.
-     *
-     * @author Gaetan Brenckle
-     *
-     * @return {@link StringProperty} - return the property of the variable tabCategory_SearchPublication_label_.
-     */
-    public StringProperty tabCategory_SearchPublication_label_Property() {
-        return tabCategory_SearchPublication_label_;
-    }
-
 
     /**
      * Setter for the scope property mainScope.bPaneNodeProperty().
@@ -213,9 +188,7 @@ public class MainWindowViewModel extends ViewModel_SceneCycle {
      */
     private void listener_bundleLanguage_search(ObservableValue<? extends ResourceBundle> observable, ResourceBundle oldValue, ResourceBundle newValue) {
         this.tabCategory_SearchDocument_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchDocument_label"));
-        this.tabCategory_SearchProject_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchProject_label"));
-        this.tabCategory_SearchPerson_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchPerson_label"));
-        this.tabCategory_SearchPublication_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchPublication_label"));
+        this.tabCategory_SearchGraph_label_.set(this.resBundleSearch_.get().getString("lblTabCategory_SearchGraph_label"));
     }
 
 

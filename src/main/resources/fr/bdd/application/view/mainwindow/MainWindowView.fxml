@@ -43,11 +43,11 @@
                     <BorderPane rotate="90.0">
                         <center>
                             <ImageView fitHeight="64.0" fitWidth="64.0">
-                                <Image url="@../../../../../img/search/search_Project_64.png" />
+                                <Image url="@../../../../../img/search/search_graph_64.png" />
                             </ImageView>
                         </center>
                         <bottom>
-                            <Label fx:id="lblTabCategory_SearchProject_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabSAV_label" textAlignment="CENTER" wrapText="true">
+                            <Label fx:id="lblTabCategory_SearchGraph_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabSAV_label" textAlignment="CENTER" wrapText="true">
                                 <padding>
                                     <Insets bottom="5.0" />
                                 </padding>
@@ -58,51 +58,7 @@
                 <ImageView>
                     <Image url="@../../../../../img/logo/Logo_univLR_64.png" />
                 </ImageView>
-                <!-- <fx:include source="section/sav/Search_SAV_SectionView.fxml" /> -->
-            </Tab>
-            <Tab>
-                <graphic>
-                    <BorderPane rotate="90.0">
-                        <center>
-                            <ImageView fitHeight="52.0" fitWidth="52.0">
-                                <Image url="@../../../../../img/search/search_Person_64.png" />
-                            </ImageView>
-                        </center>
-                        <bottom>
-                            <Label fx:id="lblTabCategory_SearchPerson_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabCustomer_label" textAlignment="CENTER" wrapText="true">
-                                <padding>
-                                    <Insets bottom="5.0" />
-                                </padding>
-                            </Label>
-                        </bottom>
-                    </BorderPane>
-                </graphic>
-                <ImageView>
-                    <Image url="@../../../../../img/logo/Logo_univLR_64.png" />
-                </ImageView>
-                <!-- <fx:include source="section/customer/Search_Customer_SectionView.fxml" /> -->
-            </Tab>
-            <Tab>
-                <graphic>
-                    <BorderPane rotate="90.0">
-                        <center>
-                            <ImageView fitHeight="52.0" fitWidth="52.0">
-                                <Image url="@../../../../../img/search/search_Publication_64.png" />
-                            </ImageView>
-                        </center>
-                        <bottom>
-                            <Label fx:id="lblTabCategory_SearchPublication_label" alignment="CENTER" contentDisplay="CENTER" maxWidth="70.0" style="-fx-text-fill: black; -fx-font-size: 10pt; -fx-font-weight: normal;" text="lblSearch_tabMachine_label" textAlignment="CENTER" wrapText="true">
-                                <padding>
-                                    <Insets bottom="5.0" />
-                                </padding>
-                            </Label>
-                        </bottom>
-                    </BorderPane>
-                </graphic>
-                <ImageView>
-                    <Image url="@../../../../../img/logo/Logo_univLR_64.png" />
-                </ImageView>
-                <!-- <fx:include source="section/machine/Search_Machine_SectionView.fxml" /> -->
+                <fx:include source="search/graph/MainWindow_SearchGraphView.fxml" />
             </Tab>
         </JFXTabPane>
     </center>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.net.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<Accordion fx:id="accOrdo" prefHeight="800.0" xmlns="http://javafx.com/javafx/10.0.2-internal" xmlns:fx="http://javafx.com/fxml/1" fx:controller="fr.bdd.application.view.mainwindow.search.graph.MainWindow_SearchGraphView">
+    <panes>
+        <TitledPane fx:id="tPaneOrdo_BasicInformations" animated="false" text="ordo_basic_title">
+            <font>
+                <Font name="Calibri" size="14.0" />
+            </font>
+            <BorderPane minWidth="0.0">
+                <padding>
+                    <Insets top="-1.0" />
+                </padding>
+                <top>
+                    <StackPane prefHeight="40.0" BorderPane.alignment="CENTER">
+                        <ToolBar maxHeight="1.7976931348623157E308" />
+                        <BorderPane>
+                            <right>
+                                <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                                    <padding>
+                                        <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                                    </padding>
+                                    <Button layoutX="35.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false">
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../../../../../../../img/search/search_research_64.png" />
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
+                            </right>
+                        </BorderPane>
+                    </StackPane>
+                </top>
+            <center>
+               <BarChart BorderPane.alignment="CENTER">
+                 <xAxis>
+                   <CategoryAxis side="BOTTOM" />
+                 </xAxis>
+                 <yAxis>
+                   <NumberAxis side="LEFT" />
+                 </yAxis>
+               </BarChart>
+            </center>
+            </BorderPane>
+        </TitledPane>
+        <TitledPane fx:id="tPaneOrdo_Machine" animated="false" expanded="false" text="ordo_Machine_title">
+            <font>
+                <Font name="Calibri" size="14.0" />
+            </font>
+            <BorderPane>
+                <padding>
+                    <Insets top="-1.0" />
+                </padding>
+                <top>
+                    <StackPane prefHeight="40.0" BorderPane.alignment="CENTER">
+                        <ToolBar maxHeight="1.7976931348623157E308" />
+                        <BorderPane>
+                            <right>
+                                <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                                    <padding>
+                                        <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                                    </padding>
+                                    <Button layoutX="35.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false">
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../../../../../../../img/search/search_research_64.png" />
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
+                            </right>
+                        </BorderPane>
+                    </StackPane>
+                </top>
+            <center>
+               <BarChart BorderPane.alignment="CENTER">
+                 <xAxis>
+                   <CategoryAxis side="BOTTOM" />
+                 </xAxis>
+                 <yAxis>
+                   <NumberAxis side="LEFT" />
+                 </yAxis>
+               </BarChart>
+            </center>
+            </BorderPane>
+        </TitledPane>
+        <TitledPane fx:id="tPaneOrdo_Pieces" animated="false" expanded="false" text="ordo_Pieces_title">
+            <font>
+                <Font name="Calibri" size="14.0" />
+            </font>
+            <BorderPane>
+                <top>
+                    <StackPane prefHeight="40.0" BorderPane.alignment="CENTER">
+                        <ToolBar maxHeight="1.7976931348623157E308" />
+                        <BorderPane>
+                            <right>
+                                <HBox spacing="5.0" BorderPane.alignment="CENTER">
+                                    <padding>
+                                        <Insets bottom="5.0" left="25.0" right="5.0" top="5.0" />
+                                    </padding>
+                                    <Button layoutX="35.0" layoutY="15.0" maxHeight="1.7976931348623157E308" mnemonicParsing="false">
+                                        <graphic>
+                                            <ImageView fitHeight="24.0" fitWidth="24.0" pickOnBounds="true" preserveRatio="true">
+                                                <Image url="@../../../../../../../img/search/search_research_64.png" />
+                                            </ImageView>
+                                        </graphic>
+                                    </Button>
+                                </HBox>
+                            </right>
+                        </BorderPane>
+                    </StackPane>
+                </top>
+                <padding>
+                    <Insets top="-1.0" />
+                </padding>
+            <center>
+               <BarChart BorderPane.alignment="CENTER">
+                 <xAxis>
+                   <CategoryAxis side="BOTTOM" />
+                 </xAxis>
+                 <yAxis>
+                   <NumberAxis side="LEFT" />
+                 </yAxis>
+               </BarChart>
+            </center>
+            </BorderPane>
+        </TitledPane>
+    </panes>
+    <stylesheets>
+        <URL value="@../../../../../../../css/application.css" />
+    </stylesheets>
+</Accordion>

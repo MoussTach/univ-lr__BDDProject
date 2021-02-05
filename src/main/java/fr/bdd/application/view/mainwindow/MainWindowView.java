@@ -31,9 +31,7 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
     @FXML public BorderPane bPaneMainView;
 
     @FXML private Label lblTabCategory_SearchDocument_label;
-    @FXML private Label lblTabCategory_SearchProject_label;
-    @FXML private Label lblTabCategory_SearchPerson_label;
-    @FXML private Label lblTabCategory_SearchPublication_label;
+    @FXML private Label lblTabCategory_SearchGraph_label;
 
     @FXML
     public StatusBar statusBarMainView;
@@ -61,10 +59,7 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
 
         //Text
         lblTabCategory_SearchDocument_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchDocument_label_Property());
-        lblTabCategory_SearchProject_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchProject_label_Property());
-        lblTabCategory_SearchPerson_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchPerson_label_Property());
-        lblTabCategory_SearchPublication_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchPublication_label_Property());
-
+        lblTabCategory_SearchGraph_label.textProperty().bind(this.mainWindowViewModel.tabCategory_SearchGraph_label_Property());
         //Value
         mainWindowViewModel.setbPaneMainProperty(bPaneMainView);
         mainWindowViewModel.bindProgressProperty(statusBarMainView.progressProperty());
@@ -96,9 +91,7 @@ public class MainWindowView extends FxmlView_SceneCycle<MainWindowViewModel> imp
     public void onViewRemoved_Cycle() {
         //Text
         lblTabCategory_SearchDocument_label.textProperty().unbind();
-        lblTabCategory_SearchProject_label.textProperty().unbind();
-        lblTabCategory_SearchPerson_label.textProperty().unbind();
-        lblTabCategory_SearchPublication_label.textProperty().unbind();
+        lblTabCategory_SearchGraph_label.textProperty().unbind();
 
         //Value
         statusBarMainView.progressProperty().unbind();
