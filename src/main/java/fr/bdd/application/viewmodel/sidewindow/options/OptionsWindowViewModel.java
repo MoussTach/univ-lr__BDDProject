@@ -8,7 +8,6 @@ import fr.bdd.application.view.sidewindow.options.category.OptionsCategory_Gener
 import fr.bdd.application.viewmodel.ViewModel_SceneCycle;
 import fr.bdd.application.viewmodel.sidewindow.options.category.CategoryListItemViewModel;
 import fr.bdd.application.viewmodel.sidewindow.options.category.CategoryScope;
-import fr.bdd.custom.remastered.dialog.ProgressDialog_Remastered;
 import fr.bdd.custom.remastered.mvvm.utils.CompositeCommand_Remastered;
 import fr.bdd.language.LanguageBundle;
 import fr.bdd.log.generate.CustomLogger;
@@ -130,27 +129,6 @@ public class OptionsWindowViewModel extends ViewModel_SceneCycle {
     }
 
     /**
-     * Create the default {@link ProgressDialog_Remastered} of this window.
-     * It's different that the {@link org.controlsfx.dialog.ProgressDialog} because the dialog must contain two progressBar
-     * at the same time. The first is for the worker, and the other for all action that demand a change on the ui.
-     *
-     * @param commands  - The additionnal command
-     * @return {@link ProgressDialog_Remastered} - return the dialog created
-     */
-    private ProgressDialog_Remastered default_ProgressDialog(CompositeCommand_Remastered... commands) {
-        ProgressDialog_Remastered dialog = new ProgressDialog_Remastered();
-        dialog.addListenedCommand(commands);
-
-        dialog.initStyle(StageStyle.UTILITY);
-        dialog.setHeaderText(null);
-        dialog.setGraphic(null);
-
-        dialog.getDialogPane().contentTextProperty().set(this.resBundle_.get().getString("loadingDialogBox_message"));
-        dialog.begin();
-        return dialog;
-    }
-
-    /**
      * action when the button to accept is pressed.
      *
      * @author Gaetan Brenckle
@@ -160,7 +138,7 @@ public class OptionsWindowViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[private][method] usage of OptionsWindowsViewModel.act_btnOk().");
         }
 
-        ProgressDialog_Remastered dialogOk = default_ProgressDialog(option_Command_);
+        option_Command_.execute();
     }
 
     /**
@@ -186,7 +164,7 @@ public class OptionsWindowViewModel extends ViewModel_SceneCycle {
             LOGGER.trace("[private][method] usage of OptionsWindowsViewModel.act_btnApply().");
         }
 
-        ProgressDialog_Remastered dialogOk = default_ProgressDialog(currentScene_Command_.get());
+        currentScene_Command_.get().execute();
     }
 
     /**
