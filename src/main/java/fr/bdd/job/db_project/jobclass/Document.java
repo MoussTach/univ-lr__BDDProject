@@ -1,9 +1,11 @@
 package fr.bdd.job.db_project.jobclass;
 
 import javafx.beans.property.*;
+import javafx.collections.FXCollections;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Job class.
@@ -28,6 +30,8 @@ public class Document {
     private final ObjectProperty<Person> Recipient = new SimpleObjectProperty<>(null);
     private final StringProperty representation = new SimpleStringProperty("n/a");
     private final StringProperty otherRelatedResources = new SimpleStringProperty("n/a");
+    private final ListProperty<ObjectProperty<Document_Language>> document_Language = new SimpleListProperty<>(FXCollections.observableArrayList());
+    private final ListProperty<ObjectProperty<Document_Author>> document_Author = new SimpleListProperty<>(FXCollections.observableArrayList());
 
     /**
      * Default Constructor
@@ -198,6 +202,23 @@ public class Document {
         return otherRelatedResources.get();
     }
 
+    /**
+     * Getter for the variable otherRelatedResources.
+     *
+     * @return {@link List<ObjectProperty<Document_Language>>} - return the variable otherRelatedResources.
+     */
+    public List<ObjectProperty<Document_Language>> getdocument_Language() {
+        return document_Language.get();
+    }
+
+    /**
+     * Getter for the variable otherRelatedResources.
+     *
+     * @return {@link List<ObjectProperty<Document_Author>> } - return the variable otherRelatedResources.
+     */
+    public List<ObjectProperty<Document_Author>> getdocument_Author() {
+        return document_Author.get();
+    }
 
 
     /**
@@ -365,6 +386,28 @@ public class Document {
         return this;
     }
 
+    /**
+     * Setter for the variable otherRelatedResources.
+     *
+     * @param document_Language - {@link ObjectProperty<Document_Language>} - otherRelatedResources of this class.
+     * @return - {@link List<ObjectProperty<Document_Language>>} - builder pattern return
+     */
+    public Document addDocument_Language(ObjectProperty<Document_Language> document_Language) {
+        this.document_Language.add(document_Language);
+        return this;
+    }
+
+    /**
+     * Setter for the variable otherRelatedResources.
+     *
+     * @param document_Author - {@link ObjectProperty<Document_Author>} - otherRelatedResources of this class.
+     * @return - {@link List<ObjectProperty<Document_Author>>} - builder pattern return
+     */
+    public Document addDocument_Author(ObjectProperty<Document_Author> document_Author) {
+        this.document_Author.add(document_Author);
+        return this;
+    }
+
 
     /**
      * Property of the variable document_ID.
@@ -529,6 +572,28 @@ public class Document {
      */
     public StringProperty otherRelatedResourcesProperty() {
         return otherRelatedResources;
+    }
+
+    /**
+     * Property of the variable otherRelatedResources.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty<ObjectProperty<Document_Language>> } - return the property of the variable otherRelatedResources.
+     */
+    public ListProperty<ObjectProperty<Document_Language>> document_LanguageProperty() {
+        return document_Language;
+    }
+
+    /**
+     * Property of the variable otherRelatedResources.
+     *
+     * @author Gaetan Brenckle
+     *
+     * @return {@link ListProperty<ObjectProperty<Document_Author>> } - return the property of the variable otherRelatedResources.
+     */
+    public ListProperty<ObjectProperty<Document_Author>> document_AuthorProperty() {
+        return document_Author;
     }
 
     /**
